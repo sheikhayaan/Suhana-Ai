@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Saved Work - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.saved-page{max-width:1120px;margin:0 auto;padding:50px 5% 100px;position:relative;z-index:2}
+.saved-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:18px;align-items:start}
+.saved-card{border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,rgba(5,8,18,.9),rgba(4,18,26,.72));padding:26px;backdrop-filter:blur(20px);clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px);position:relative;overflow:hidden}
+.saved-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 0,rgba(98,232,255,.14),transparent 34%),radial-gradient(circle at 92% 20%,rgba(67,255,210,.1),transparent 34%);pointer-events:none}.saved-card>*{position:relative}
+.kicker{display:inline-flex;border:1px solid rgba(98,232,255,.22);background:rgba(98,232,255,.08);color:#62e8ff;border-radius:999px;padding:7px 12px;font-size:.7rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+.title{font-family:Orbitron,monospace;font-size:clamp(2rem,4.6vw,4.6rem);line-height:.96;letter-spacing:-.05em;text-transform:uppercase;margin:0 0 12px}.title span{background:linear-gradient(90deg,#62e8ff,#43ffd2,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:rgba(255,255,255,.52);line-height:1.75}.prompt{white-space:pre-wrap;color:rgba(255,255,255,.7);line-height:1.7;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);padding:14px;margin-top:14px}
+.answer{line-height:1.75;color:rgba(255,255,255,.84)}.answer h1,.answer h2,.answer h3{color:#fff}.answer pre{white-space:pre-wrap;overflow:auto;border:1px solid rgba(255,255,255,.08);background:#020617;padding:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;text-decoration:none;font-weight:950;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}.btn.primary{background:linear-gradient(135deg,#62e8ff,#43ffd2);color:#020304;border:0}
+@media(max-width:900px){.saved-grid{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="saved-page">
+  <section class="saved-grid">
+    <aside class="saved-card">
+      <div class="kicker">{{ item.work_type }} Saved Work</div>
+      <h1 class="title">{{ item.title }} <span>Saved</span></h1>
+      <p class="sub">{{ item.source or "Suhana AI" }} · {{ item.created_at.strftime("%d %b %Y") }}</p>
+      {% if item.prompt %}
+      <div class="prompt">{{ item.prompt }}</div>
+      {% endif %}
+      <div class="actions">
+        <a class="btn primary" href="/dashboard">Dashboard</a>
+        <a class="btn" href="/ai-tutor">Tutor</a>
+        <a class="btn" href="/suhana-code">Code</a>
+        <a class="btn" href="/mission">New Goal</a>
+      </div>
+    </aside>
+    <article class="saved-card">
+      <div class="kicker">Output</div>
+      <div class="answer">{{ output_html|safe }}</div>
+    </article>
+  </section>
+</div>
+{% endblock %}

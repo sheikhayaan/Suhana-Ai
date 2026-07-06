@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Upgrade - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.upgrade-page{min-height:70vh;display:grid;place-items:center;padding:54px 5%;position:relative;z-index:2}
+.upgrade-modal{width:min(720px,100%);background:rgba(8,8,28,.9);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:34px;box-shadow:0 30px 120px rgba(0,0,0,.42);backdrop-filter:blur(20px)}
+.upgrade-badge{display:inline-flex;align-items:center;gap:8px;color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.2);border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;margin-bottom:18px}
+.upgrade-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399}
+.upgrade-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin-bottom:12px}
+.upgrade-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.upgrade-copy{color:rgba(255,255,255,.46);line-height:1.7;margin-bottom:24px}
+.upgrade-actions{display:flex;flex-wrap:wrap;gap:10px}
+.upgrade-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:50px;text-decoration:none;font-weight:900}
+.upgrade-btn.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000}
+.upgrade-btn.secondary{color:rgba(255,255,255,.72);background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="upgrade-page">
+  <section class="upgrade-modal">
+    <div class="upgrade-badge"><div class="upgrade-dot"></div>Free Limit Reached</div>
+    <h1 class="upgrade-title">{{ feature_label }} <span>limit used</span></h1>
+    <p class="upgrade-copy">Your free {{ feature_label|lower }} allowance is {{ limit }}. Buy credits for managed generation, or switch to BYOK and connect your own Gemini, ElevenLabs, Leonardo, Runway, or other provider keys.</p>
+    <div class="upgrade-actions">
+      <a class="upgrade-btn primary" href="/billing">Buy Credits</a>
+      <a class="upgrade-btn secondary" href="/settings">Switch to BYOK</a>
+      <a class="upgrade-btn secondary" href="/api-vault">Add API Keys</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

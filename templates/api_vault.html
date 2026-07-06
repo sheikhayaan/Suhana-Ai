@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}API Vault - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.vault-page{max-width:980px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}
+.vault-card{background:rgba(8,8,28,.78);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:34px;backdrop-filter:blur(18px);margin-bottom:18px}
+.vault-badge{display:inline-flex;align-items:center;gap:8px;color:#c4b5fd;background:rgba(196,181,253,.08);border:1px solid rgba(196,181,253,.2);border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;margin-bottom:18px}
+.vault-dot{width:7px;height:7px;border-radius:50%;background:#c4b5fd;box-shadow:0 0 10px #c4b5fd}
+.vault-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,4.8vw,3.2rem);line-height:1.08;margin-bottom:12px}
+.vault-title span{background:linear-gradient(90deg,#c4b5fd,#7dd3fc,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.vault-sub{color:rgba(255,255,255,.42);line-height:1.7;max-width:640px;margin-bottom:28px}
+.vault-form{display:grid;grid-template-columns:220px 1fr auto;gap:10px}
+.provider-guide{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.provider-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:14px}
+.provider-box strong{display:block;color:#fff;margin-bottom:6px}
+.provider-box span{display:block;color:rgba(255,255,255,.38);font-size:.78rem;line-height:1.5}
+.vault-form select,.vault-form input{height:46px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;padding:0 13px;outline:none}
+.vault-form option{color:#000}
+.vault-form button{border:0;border-radius:12px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;font-weight:900;padding:0 18px;cursor:pointer}
+.key-list{display:flex;flex-direction:column;gap:10px}
+.key-row{display:flex;justify-content:space-between;gap:14px;align-items:center;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:16px}
+.key-provider{font-weight:900;text-transform:capitalize;color:#fff}
+.key-mask{color:rgba(255,255,255,.35);font-size:.84rem}
+.delete-link{color:#f87171;text-decoration:none;font-weight:800;font-size:.84rem;background:transparent;border:0;cursor:pointer;font-family:inherit}
+.empty{color:rgba(255,255,255,.38)}
+@media(max-width:900px){.provider-guide{grid-template-columns:1fr}}
+@media(max-width:760px){.vault-card{padding:24px}.vault-form{grid-template-columns:1fr}.vault-form button{height:46px}.key-row{align-items:flex-start;flex-direction:column}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="vault-page">
+  <section class="vault-card">
+    <div class="vault-badge"><div class="vault-dot"></div>API Vault</div>
+    <h1 class="vault-title">Connect your <span>provider keys</span></h1>
+    <p class="vault-sub">Save user-owned API keys or account access tokens for BYOK mode. Connect separate providers for voiceover, image generation, and video generation.</p>
+
+    <form class="vault-form" method="POST">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+      <select name="provider" required>
+        <optgroup label="Voiceover">
+          <option value="elevenlabs">ElevenLabs Voiceover</option>
+        </optgroup>
+        <optgroup label="Image Generation">
+          <option value="gemini">Gemini / Nano Banana Pro</option>
+          <option value="leonardo">Leonardo AI</option>
+          <option value="openai">OpenAI Images</option>
+          <option value="stability">Stability AI</option>
+        </optgroup>
+        <optgroup label="Video Generation">
+          <option value="runway">Runway</option>
+          <option value="pika">Pika</option>
+          <option value="luma">Luma</option>
+        </optgroup>
+      </select>
+      <input type="password" name="key_value" placeholder="Paste API key or account token" required>
+      <button type="submit">Save Access</button>
+    </form>
+
+    <div class="provider-guide">
+      <div class="provider-box"><strong>Voiceover</strong><span>Use ElevenLabs for reel narration and text-to-speech.</span></div>
+      <div class="provider-box"><strong>Image Generation</strong><span>Use Gemini/Nano Banana Pro now. Leonardo, OpenAI, and Stability keys are saved for provider expansion.</span></div>
+      <div class="provider-box"><strong>Video Generation</strong><span>Save Runway, Pika, or Luma access for the upcoming real video provider flow.</span></div>
+    </div>
+  </section>
+
+  <section class="vault-card">
+    <h2 class="vault-title" style="font-size:1.2rem">Saved Keys</h2>
+    {% if keys %}
+      <div class="key-list">
+        {% for key in keys %}
+          <div class="key-row">
+            <div>
+              <div class="key-provider">{{ key.provider }}</div>
+              <div class="key-mask">Key saved securely in your account workspace</div>
+            </div>
+            <form method="POST" action="/api-vault/delete/{{ key.id }}">
+              <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+              <button class="delete-link" type="submit">Delete</button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty">No API keys saved yet.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

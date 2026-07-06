@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.settings-page{max-width:980px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}
+.settings-card{background:rgba(8,8,28,.78);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:34px;backdrop-filter:blur(18px)}
+.settings-badge{display:inline-flex;align-items:center;gap:8px;color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.2);border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;margin-bottom:18px}
+.settings-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399}
+.settings-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,4.8vw,3.2rem);line-height:1.08;margin-bottom:12px}
+.settings-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.settings-sub{color:rgba(255,255,255,.42);line-height:1.7;max-width:640px;margin-bottom:28px}
+.mode-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:24px}
+.mode-card{display:block;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:20px;cursor:pointer;transition:.2s}
+.mode-card:hover{border-color:rgba(125,211,252,.24);background:rgba(125,211,252,.05)}
+.mode-card input{margin-right:8px}
+.mode-name{font-weight:900;color:#fff;margin-bottom:8px}
+.mode-desc{color:rgba(255,255,255,.36);font-size:.84rem;line-height:1.6}
+.settings-btn{border:0;border-radius:50px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;font-weight:900;padding:13px 24px;cursor:pointer}
+.settings-link{display:inline-flex;margin-left:10px;color:rgba(255,255,255,.62);text-decoration:none;border:1px solid rgba(255,255,255,.08);border-radius:50px;padding:12px 18px}
+@media(max-width:760px){.mode-grid{grid-template-columns:1fr}.settings-card{padding:24px}.settings-link{margin:12px 0 0}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-page">
+  <section class="settings-card">
+    <div class="settings-badge"><div class="settings-dot"></div>Generation Mode</div>
+    <h1 class="settings-title">Choose how AI <span>credits work</span></h1>
+    <p class="settings-sub">Use Suhana managed credits for a simple experience, or bring your own API keys when you want provider-level billing control.</p>
+
+    <form method="POST">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+      <div class="mode-grid">
+        <label class="mode-card">
+          <input type="radio" name="generation_mode" value="managed" {% if user.generation_mode == "managed" %}checked{% endif %}>
+          <div class="mode-name">Use Suhana Credits</div>
+          <div class="mode-desc">Your app uses platform API keys. Later this connects to subscriptions and credit packs.</div>
+        </label>
+
+        <label class="mode-card">
+          <input type="radio" name="generation_mode" value="byok" {% if user.generation_mode == "byok" %}checked{% endif %}>
+          <div class="mode-name">Bring My Own API Keys</div>
+          <div class="mode-desc">Users connect their own provider keys while paying you for workflow and rendering tools.</div>
+        </label>
+      </div>
+
+      <button class="settings-btn" type="submit">Save Settings</button>
+      <a class="settings-link" href="/api-vault">Open API Vault</a>
+    </form>
+  </section>
+</div>
+{% endblock %}

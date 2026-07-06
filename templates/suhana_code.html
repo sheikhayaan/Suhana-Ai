@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Suhana Code - AI Coding Agent{% endblock %}
+{% block extra_css %}
+<style>
+.code-page{max-width:1240px;margin:0 auto;padding:42px 5% 100px;position:relative;z-index:2}.code-shell{display:grid;grid-template-columns:390px 1fr;gap:16px}.panel{background:rgba(6,10,26,.86);border:1px solid rgba(125,211,252,.14);border-radius:22px;padding:22px;backdrop-filter:blur(18px);box-shadow:0 24px 80px rgba(0,0,0,.26);position:relative;overflow:hidden}.panel::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 0%,rgba(125,211,252,.12),transparent 35%);pointer-events:none}.panel>*{position:relative}.title{font-family:'Orbitron',monospace;font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.05;margin-bottom:10px}.title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.sub{color:rgba(255,255,255,.52);line-height:1.7;margin-bottom:18px}.code-vector{height:190px;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,#020617,#061426);position:relative;overflow:hidden;margin:0 0 16px}.code-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(125,211,252,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(125,211,252,.08) 1px,transparent 1px);background-size:26px 26px;mask-image:radial-gradient(circle,#000 25%,transparent 78%)}.code-core{position:absolute;left:50%;top:50%;width:82px;height:82px;transform:translate(-50%,-50%);border-radius:24px;background:linear-gradient(135deg,#7dd3fc,#34d399);display:grid;place-items:center;color:#020617;font-family:'Orbitron';font-weight:900;font-size:1.8rem;box-shadow:0 0 50px rgba(125,211,252,.35)}.code-orbit{position:absolute;left:50%;top:50%;border:1px solid rgba(125,211,252,.18);border-radius:50%;transform:translate(-50%,-50%);animation:spinCode 10s linear infinite}.code-orbit.o1{width:150px;height:150px}.code-orbit.o2{width:112px;height:112px;animation-direction:reverse;animation-duration:7s}.code-orbit::after{content:'';position:absolute;width:10px;height:10px;border-radius:50%;right:10px;top:25px;background:#34d399;box-shadow:0 0 18px #34d399}.code-lines{position:absolute;left:16px;right:16px;bottom:14px;font-family:Consolas,monospace;color:rgba(186,230,253,.8);font-size:.76rem}.field{margin-bottom:12px}.field label{display:block;font-size:.7rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:7px}.field textarea,.field select{width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);color:#fff;outline:none}.field textarea{min-height:190px;padding:13px;resize:vertical;line-height:1.6}.field select{height:46px;padding:0 12px}.field option{color:#020617}.btn{width:100%;height:50px;border:0;border-radius:15px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;font-weight:950;cursor:pointer}.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.chat{min-height:640px;display:grid;grid-template-rows:auto 1fr auto;padding:0;overflow:hidden}.chat-head{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:12px;align-items:center}.status{color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.16);border-radius:999px;padding:6px 10px;font-size:.72rem;font-weight:900}.chat-body{padding:22px;overflow:auto;display:flex;flex-direction:column;gap:14px}.msg{max-width:94%;border-radius:20px;padding:15px 17px;line-height:1.75}.msg.user{align-self:flex-end;background:linear-gradient(135deg,rgba(125,211,252,.18),rgba(52,211,153,.1));border:1px solid rgba(125,211,252,.18)}.msg.ai{align-self:flex-start;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}.answer h1,.answer h2,.answer h3,.answer h4{font-family:'Orbitron',monospace;color:#fff;margin:16px 0 8px}.answer p{margin:8px 0}.answer ul{margin:10px 0 10px 20px}.answer pre{white-space:pre-wrap;background:#020617;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;overflow:auto}.answer code{color:#7dd3fc}.composer{padding:16px;border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025)}.follow-row{display:grid;grid-template-columns:1fr auto;gap:10px}.follow-row textarea{min-height:52px;border-radius:14px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);color:#fff;padding:12px;resize:vertical}.follow-row button{border:0;border-radius:14px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;font-weight:950;padding:0 20px}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chips button{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.05);color:rgba(255,255,255,.76);border-radius:999px;padding:8px 10px;cursor:pointer;font-size:.78rem}.empty{display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.52);height:100%}.empty-orb{width:126px;height:126px;border-radius:34px;background:linear-gradient(135deg,rgba(125,211,252,.22),rgba(52,211,153,.1));border:1px solid rgba(125,211,252,.24);display:grid;place-items:center;font-family:'Orbitron';font-size:2.4rem;color:#7dd3fc;margin:0 auto 18px}@keyframes spinCode{to{transform:translate(-50%,-50%) rotate(360deg)}}@media(max-width:930px){.code-shell{grid-template-columns:1fr}.chat{min-height:520px}}@media(max-width:560px){.mode-grid,.follow-row{grid-template-columns:1fr}.follow-row button{height:46px}}
+.code-intro{position:fixed;inset:0;z-index:6000;display:grid;place-items:center;background:rgba(2,6,23,.9);backdrop-filter:blur(18px);animation:introFade .55s ease 1.15s forwards}.intro-box{width:min(460px,90vw);text-align:center}.intro-core{width:130px;height:130px;margin:0 auto 18px;background:linear-gradient(135deg,#7dd3fc,#34d399);display:grid;place-items:center;color:#020617;font-family:'Orbitron';font-size:3rem;font-weight:900;clip-path:polygon(24px 0,100% 0,calc(100% - 24px) 100%,0 100%);box-shadow:0 0 80px rgba(125,211,252,.4);animation:introPulse 1.2s ease-in-out infinite}.intro-title{font-family:'Orbitron';font-size:1.4rem}.intro-sub{color:rgba(255,255,255,.48);margin-top:8px;line-height:1.6}.intro-line{height:7px;margin:18px auto 0;width:80%;background:linear-gradient(90deg,#7dd3fc,#34d399);clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);animation:introLine 1s ease-in-out infinite}@keyframes introFade{to{opacity:0;visibility:hidden}}@keyframes introPulse{50%{transform:scale(1.05);filter:hue-rotate(35deg)}}@keyframes introLine{50%{width:52%}}
+</style>
+<style>
+.history-box{margin-top:14px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px}
+.history-box h3{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:#7dd3fc;margin:0 0 10px}
+.history-item{display:block;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);padding:10px;margin-bottom:8px;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.history-item b{display:block;font-size:.82rem;line-height:1.3}.history-item small{color:rgba(255,255,255,.42);font-size:.72rem}
+</style>
+<style>
+.chat{height:calc(100vh - 150px);min-height:640px;max-height:860px;grid-template-rows:auto minmax(0,1fr) auto}.chat-body{min-height:0;scroll-behavior:smooth}@media(max-width:930px){.chat{height:calc(100vh - 120px);min-height:520px}}@media(max-width:560px){.chat{height:72vh}}
+.code-page{max-width:1320px!important}
+.code-shell{grid-template-columns:minmax(360px,430px) minmax(0,1fr)!important;gap:20px!important;perspective:1400px}
+.code-page::after{content:'';position:absolute;left:50%;top:90px;width:min(920px,86vw);height:420px;transform:translateX(-50%);background:radial-gradient(circle,rgba(125,211,252,.14),rgba(52,211,153,.055) 42%,transparent 72%);filter:blur(18px);z-index:-1;animation:codeAurora 7s ease-in-out infinite}
+.code-shell .panel{clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px)!important;border-radius:0!important}
+.code-shell aside.panel{background:linear-gradient(145deg,rgba(4,8,24,.96),rgba(8,20,46,.74))!important}
+.code-shell .chat{background:linear-gradient(145deg,rgba(4,8,24,.92),rgba(8,18,42,.68))!important}
+.code-vector{height:250px!important;border-radius:0!important;clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px);background:radial-gradient(circle at 50% 45%,rgba(125,211,252,.16),transparent 44%),linear-gradient(145deg,#020617,#071426)!important;perspective:900px}
+.code-grid{animation:gridDrift 11s linear infinite;transform:rotateX(62deg) rotateZ(-14deg) scale(1.4)}
+.code-core{width:104px!important;height:104px!important;border-radius:0!important;clip-path:polygon(22% 0,100% 16%,78% 100%,0 84%);animation:codeCoreMorph 4.8s ease-in-out infinite}
+.code-orbit.o1{width:210px!important;height:210px!important}.code-orbit.o2{width:150px!important;height:150px!important}
+.code-node{position:absolute;z-index:3;border:1px solid rgba(125,211,252,.2);background:rgba(255,255,255,.055);backdrop-filter:blur(12px);color:rgba(255,255,255,.78);font-size:.68rem;font-weight:950;padding:8px 10px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);animation:codeNodeFloat 4s ease-in-out infinite}
+.cn1{left:20px;top:34px}.cn2{right:24px;top:72px;animation-delay:.5s}.cn3{left:40px;bottom:46px;animation-delay:1s}
+.code-beam{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(125,211,252,.8),rgba(52,211,153,.48),transparent);filter:drop-shadow(0 0 14px rgba(125,211,252,.55));animation:codeBeam 3.6s ease-in-out infinite}.cb1{left:12%;right:12%;top:48%;transform:rotate(-18deg)}.cb2{left:16%;right:10%;top:61%;transform:rotate(22deg);animation-delay:.8s}
+.chat-head{background:rgba(255,255,255,.025)}.chat-body{background:linear-gradient(180deg,rgba(255,255,255,.012),transparent)}
+.msg{clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);border-radius:0!important}
+.empty-orb{border-radius:0!important;clip-path:polygon(22% 0,100% 16%,78% 100%,0 84%);animation:codeCoreMorph 4.8s ease-in-out infinite}
+@keyframes codeAurora{50%{opacity:.62;transform:translateX(-50%) scale(1.08)}}@keyframes codeCoreMorph{50%{transform:translate(-50%,-50%) rotate(45deg) scale(1.08);filter:hue-rotate(40deg)}}@keyframes codeNodeFloat{50%{transform:translateY(-12px);border-color:rgba(125,211,252,.4)}}@keyframes codeBeam{50%{opacity:.34;filter:blur(1px)}}
+@media(max-width:930px){.code-shell{grid-template-columns:1fr!important}.code-vector{height:220px!important}}
+</style>
+{% endblock %}
+{% block content %}
+<div class="code-page">
+  <div class="code-intro"><div class="intro-box"><div class="intro-core">S</div><div class="intro-title">Suhana Code Agent</div><div class="intro-sub">Loading immersive coding workspace...</div><div class="intro-line"></div></div></div>
+  <div class="code-shell">
+    <aside class="panel">
+      <h1 class="title">Suhana <span>Code</span></h1>
+      <p class="sub">Ask DSA, bugs, projects, concepts, optimization, or system design. Follow-ups continue in the same chat.</p>
+      <div class="code-vector">
+        <div class="code-grid"></div>
+        <div class="code-orbit o1"></div><div class="code-orbit o2"></div>
+        <div class="code-core">S</div>
+        <div class="code-node cn1">Parse</div><div class="code-node cn2">Solve</div><div class="code-node cn3">Test</div>
+        <div class="code-beam cb1"></div><div class="code-beam cb2"></div>
+        <div class="code-lines">analyze() -> solve() -> test() -> explain()</div>
+      </div>
+      <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="mode-grid">
+          <div class="field"><label>Language</label><select name="language">{% for lang in ["Python","C++","Java","JavaScript","TypeScript","SQL","HTML/CSS","React","Flask","Any"] %}<option value="{{ lang }}" {% if form.language == lang %}selected{% endif %}>{{ lang }}</option>{% endfor %}</select></div>
+          <div class="field"><label>Mode</label><select name="mode">{% for mode in ["DSA / Problem Solving","Debug my code","Explain concept","Generate project/code","Optimize solution","System design"] %}<option value="{{ mode }}" {% if form.mode == mode %}selected{% endif %}>{{ mode }}</option>{% endfor %}</select></div>
+        </div>
+        <div class="field"><label>AI Agent</label><select name="ai_agent">{% for agent in nim_agent_options %}<option value="{{ agent.value }}" {% if form.ai_agent == agent.value %}selected{% endif %}>{{ agent.label }}</option>{% endfor %}</select></div>
+        <div class="field"><label>Your coding question</label><textarea name="query" placeholder="Paste problem, error, code, or app idea..." required>{{ form.query }}</textarea></div>
+        <button class="btn" type="submit">Ask Suhana Code</button>
+      </form>
+      {% if recent_code_work %}
+      <div class="history-box">
+        <h3>Previous Code Work</h3>
+        {% for item in recent_code_work %}
+        <a class="history-item" href="/saved-work/{{ item.id }}"><b>{{ item.title }}</b><small>{{ item.created_at.strftime("%d %b") }} · {{ item.source }}</small></a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+    <section class="panel chat">
+      <div class="chat-head"><strong>Suhana Code Chat</strong><span class="status">{{ source or "Ready" }}</span></div>
+      <div class="chat-body">
+        {% if result %}
+          <div class="msg user">{{ form.follow_up or form.query }}</div>
+          <div class="msg ai answer">{{ result_html|safe }}</div>
+        {% else %}
+          <div class="empty"><div><div class="empty-orb">S</div><h2>Ask a coding problem.</h2><p>Get clean code, dry run, complexity, edge cases, and follow-up help.</p></div></div>
+        {% endif %}
+      </div>
+      {% if result %}
+      <div class="composer">
+        <form method="POST">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="query" value="{{ form.query }}"><input type="hidden" name="language" value="{{ form.language }}"><input type="hidden" name="mode" value="{{ form.mode }}"><input type="hidden" name="ai_agent" value="{{ form.ai_agent }}"><textarea name="previous_answer" hidden>{{ result }}</textarea>
+          <div class="follow-row"><textarea name="follow_up" id="codeFollow" placeholder="Ask follow-up..." required></textarea><button type="submit">Send</button></div>
+          <div class="chips"><button type="button" onclick="setCodeFollow('Optimize this and explain tradeoffs.')">Optimize</button><button type="button" onclick="setCodeFollow('Dry run with a difficult example.')">Dry run</button><button type="button" onclick="setCodeFollow('Give production-grade code with tests.')">Add tests</button></div>
+        </form>
+      </div>
+      {% endif %}
+    </section>
+  </div>
+</div>
+<script>function setCodeFollow(text){document.getElementById('codeFollow').value=text;document.getElementById('codeFollow').focus();}</script>
+{% endblock %}

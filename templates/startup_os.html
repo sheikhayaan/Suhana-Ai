@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Startup OS - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.os-page{max-width:1180px;margin:0 auto;padding:56px 5% 100px;position:relative;z-index:2}
+.os-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:stretch;margin-bottom:18px}
+.os-copy,.os-visual,.os-card{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(8,8,28,.84),rgba(4,10,24,.68));border-radius:28px;padding:28px;overflow:hidden;position:relative;backdrop-filter:blur(18px)}
+.os-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:#7dd3fc;font-weight:900;margin-bottom:16px}
+.os-title{font-family:'Orbitron',monospace;font-size:clamp(2.15rem,5vw,4.6rem);line-height:1.02;margin-bottom:16px}
+.os-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.os-sub{color:rgba(255,255,255,.46);line-height:1.78;max-width:680px}
+.os-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.os-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:14px;text-decoration:none;font-weight:900}.os-btn.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617}.os-btn.secondary{border:1px solid rgba(255,255,255,.12);color:#fff;background:rgba(255,255,255,.045)}
+.os-visual{min-height:360px;display:grid;place-items:center}.os-orbit{width:min(330px,70vw);aspect-ratio:1;border-radius:50%;border:1px solid rgba(125,211,252,.18);position:relative;animation:spin-slow 22s linear infinite}.os-orbit::before{content:'';position:absolute;inset:54px;border-radius:50%;border:1px solid rgba(52,211,153,.18)}.os-core{position:absolute;inset:34%;border-radius:32px;background:linear-gradient(135deg,#7dd3fc,#34d399);display:grid;place-items:center;color:#020617;font-family:'Orbitron',monospace;font-weight:900;box-shadow:0 0 70px rgba(125,211,252,.28);animation:pulse 3s ease-in-out infinite}.node{position:absolute;width:86px;min-height:54px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:16px;display:grid;place-items:center;text-align:center;font-size:.72rem;font-weight:850;color:rgba(255,255,255,.78);animation:counterSpin 22s linear infinite}.n1{left:50%;top:-18px;transform:translateX(-50%)}.n2{right:-26px;top:30%}.n3{right:8%;bottom:3%}.n4{left:8%;bottom:3%}.n5{left:-26px;top:30%}
+.os-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.os-card{min-height:210px}.os-card h3{font-family:'Orbitron',monospace;font-size:1.02rem;margin-bottom:10px}.os-card p{color:rgba(255,255,255,.43);line-height:1.65;font-size:.86rem}.os-tag{display:inline-flex;margin-top:16px;border:1px solid rgba(125,211,252,.16);background:rgba(125,211,252,.07);color:#7dd3fc;border-radius:999px;padding:6px 9px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em}
+@keyframes counterSpin{to{rotate:-360deg}}@keyframes pulse{50%{transform:scale(1.06);box-shadow:0 0 105px rgba(52,211,153,.26)}}@media(max-width:900px){.os-hero,.os-grid{grid-template-columns:1fr}.os-visual{min-height:300px}.node{width:74px;font-size:.66rem}}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="os-page">
+  <section class="os-hero">
+    <div class="os-copy">
+      <div class="os-kicker">Billion-dollar product layer</div>
+      <h1 class="os-title">Suhana <span>Startup OS</span></h1>
+      <p class="os-sub">This is the product map that turns Suhana AI from a tool website into a creator operating system: planning, brand memory, automated workflows, teams, marketplace, publishing, learning, and investor-grade analytics.</p>
+      <div class="os-actions">
+        <a class="os-btn primary" href="/creator-copilot">Open Creator Copilot</a>
+        <a class="os-btn secondary" href="/tools">Explore Tools</a>
+      </div>
+    </div>
+    <div class="os-visual" aria-hidden="true">
+      <div class="os-orbit">
+        <div class="os-core">OS</div>
+        <div class="node n1">Brand Memory</div>
+        <div class="node n2">Workflows</div>
+        <div class="node n3">Teams</div>
+        <div class="node n4">Publish</div>
+        <div class="node n5">Analytics</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="os-grid">
+    <div class="os-card"><h3>Creator Copilot</h3><p>User enters a niche and Suhana plans 30 days of scripts, reels, image prompts, captions, and posting ideas.</p><span class="os-tag">Built now</span></div>
+    <div class="os-card"><h3>Brand Memory</h3><p>Save brand colors, logo, voice, audience, offers, and reusable content rules for consistent generation.</p><span class="os-tag">Built now</span></div>
+    <div class="os-card"><h3>Workflow Builder</h3><p>Chain Script to Image to Voice to Reel so creators can generate complete campaigns with one command.</p><span class="os-tag">Built now</span></div>
+    <div class="os-card"><h3>Team Workspace</h3><p>Agencies invite members, manage clients, assign roles, and keep separate brand workspaces.</p><span class="os-tag">Scale</span></div>
+    <div class="os-card"><h3>Template Marketplace</h3><p>Creators sell reel, script, image, tutor, quiz, and automation templates inside Suhana.</p><span class="os-tag">Revenue</span></div>
+    <div class="os-card"><h3>Performance Coach</h3><p>Upload post results and Suhana suggests the next best hooks, formats, timing, and content pillars.</p><span class="os-tag">Built now</span></div>
+    <div class="os-card"><h3>BYOK + Managed</h3><p>Free users use managed quota, power users add their own keys for Gemini, OpenAI, image, video, and voice.</p><span class="os-tag">Already scaffolded</span></div>
+    <div class="os-card"><h3>One-click Publish</h3><p>Publish to Instagram, YouTube Shorts, LinkedIn, and X after provider approval and OAuth setup.</p><span class="os-tag">Platform</span></div>
+    <div class="os-card"><h3>Investor Dashboard</h3><p>Show usage, retention, top tools, feedback ratings, credits, and revenue projections from the app database.</p><span class="os-tag">Investor ready</span></div>
+  </section>
+</main>
+{% endblock %}

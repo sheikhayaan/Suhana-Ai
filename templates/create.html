@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+{% block title %}Create Reel — Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.page{max-width:860px;margin:0 auto;padding:48px 5% 80px;position:relative;z-index:2}
+.page::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:120px;
+  width:min(760px,90vw);
+  height:360px;
+  transform:translateX(-50%);
+  pointer-events:none;
+  z-index:-1;
+  background:radial-gradient(circle,rgba(255,255,255,.09),rgba(255,255,255,.026) 42%,transparent 72%);
+  filter:blur(18px);
+}
+@media(max-width:600px){.page{padding:32px 20px 60px}}
+
+/* HEADER */
+.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(125,211,252,.07);border:1px solid rgba(125,211,252,.18);border-radius:50px;padding:4px 14px 4px 8px;font-size:.72rem;color:#7dd3fc;letter-spacing:.05em;margin-bottom:18px}
+.bdot{width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;animation:bl 2s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.pg-title{font-family:'Orbitron',monospace;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:900;letter-spacing:-.02em;margin-bottom:8px;line-height:1.1}
+.pg-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gs 5s linear infinite}
+@keyframes gs{0%{background-position:0%}100%{background-position:200%}}
+.pg-sub{font-size:.9rem;color:rgba(255,255,255,.38);margin-bottom:36px;line-height:1.7}
+
+/* STEPS */
+.steps{display:flex;align-items:center;margin-bottom:32px}
+.stp{display:flex;align-items:center;gap:7px;font-size:.74rem;color:rgba(255,255,255,.28);letter-spacing:.03em;white-space:nowrap}
+.stp.on .sn{background:rgba(125,211,252,.12);border-color:rgba(125,211,252,.4);color:#7dd3fc;box-shadow:0 0 10px rgba(125,211,252,.2)}
+.stp.on{color:rgba(255,255,255,.7)}
+.sn{width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:rgba(255,255,255,.22);flex-shrink:0;transition:.3s}
+.sl{flex:1;height:1px;background:rgba(125,211,252,.1);margin:0 10px}
+@media(max-width:480px){.steps{display:none}}
+
+/* CARD */
+.card{background:rgba(255,255,255,.018);border:0;border-radius:22px;padding:28px 30px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);position:relative;overflow:hidden;margin-bottom:16px}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(125,211,252,.45),rgba(196,181,253,.3),rgba(52,211,153,.25),transparent)}
+.card-hd{font-family:'Orbitron',monospace;font-size:.76rem;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.card-hd::before{content:'';width:3px;height:13px;background:linear-gradient(180deg,#7dd3fc,#34d399);border-radius:2px;flex-shrink:0}
+.source-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+.source-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px;cursor:pointer;transition:.2s}
+.source-card:hover{border-color:rgba(125,211,252,.25);background:rgba(125,211,252,.05)}
+.source-card input{margin-right:6px}
+.source-name{font-weight:800;color:#fff;margin-bottom:5px}
+.source-desc{font-size:.72rem;line-height:1.45;color:rgba(255,255,255,.34)}
+.visual-prompt{width:100%;height:46px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;padding:0 14px;outline:none;margin-top:12px}
+.option-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.mini-select label{display:block;font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:6px}.mini-select select{width:100%;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);color:#fff;padding:0 12px;outline:none}.mini-select option{color:#020617}
+.tool-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;font-size:.76rem;color:rgba(255,255,255,.34)}
+.tool-links a{color:#7dd3fc;text-decoration:none;font-weight:800}
+@media(max-width:720px){.source-grid,.option-row{grid-template-columns:1fr}}
+
+/* FILE INPUT GROUPS */
+.file-input-group{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:12px 14px;margin-bottom:8px;animation:si .22s ease;transition:.2s}
+.file-input-group:hover{background:rgba(255,255,255,.05);border-color:rgba(125,211,252,.15)}
+@keyframes si{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.file-icon{width:36px;height:36px;border-radius:9px;background:rgba(125,211,252,.1);border:1px solid rgba(125,211,252,.18);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.file-input{flex:1;background:transparent;border:none;color:#fff;font-family:'Inter',sans-serif;font-size:.84rem;outline:none;cursor:pointer;min-width:0}
+.file-input::-webkit-file-upload-button{background:rgba(125,211,252,.1);border:1px solid rgba(125,211,252,.2);color:#7dd3fc;font-family:'Inter',sans-serif;font-size:.75rem;padding:5px 12px;border-radius:7px;cursor:pointer;transition:.2s;margin-right:10px}
+.file-input::-webkit-file-upload-button:hover{background:rgba(125,211,252,.2)}
+.remove-file-btn{width:28px;height:28px;border-radius:8px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.15);color:#f87171;font-size:16px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:inherit;line-height:1}
+.remove-file-btn:hover{background:rgba(248,113,113,.2)}
+.remove-file-btn:disabled{opacity:.22;cursor:not-allowed}
+.add-file-btn{display:inline-flex;align-items:center;gap:7px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;color:#7dd3fc;background:rgba(125,211,252,.07);border:1px solid rgba(125,211,252,.18);padding:9px 18px;border-radius:50px;cursor:pointer;transition:.2s;margin-top:6px;letter-spacing:.02em}
+.add-file-btn:hover{background:rgba(125,211,252,.14);border-color:rgba(125,211,252,.35);transform:translateY(-1px)}
+
+/* TEXTAREA */
+.lbl{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.lbl span{font-weight:400;letter-spacing:0;text-transform:none;color:rgba(255,255,255,.2)}
+.text-input{width:100%;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.07);border-radius:13px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:.875rem;line-height:1.7;resize:none;height:120px;outline:none;transition:.3s}
+.text-input::placeholder{color:rgba(255,255,255,.2)}
+.text-input:focus{border-color:rgba(125,211,252,.4);background:rgba(125,211,252,.03);box-shadow:0 0 0 3px rgba(125,211,252,.07)}
+
+/* SUBMIT */
+.submit-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;color:#000;background:linear-gradient(135deg,#7dd3fc,#34d399);border:none;padding:16px;border-radius:14px;cursor:pointer;box-shadow:0 0 30px rgba(125,211,252,.4),0 4px 16px rgba(0,0,0,.4);transition:.25s;letter-spacing:.03em;position:relative;overflow:hidden}
+.submit-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);opacity:0;transition:.2s}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 0 46px rgba(125,211,252,.65),0 8px 24px rgba(0,0,0,.5)}
+.submit-btn:hover::before{opacity:1}
+.hint{display:flex;align-items:center;gap:6px;font-size:.72rem;color:rgba(255,255,255,.22);margin-top:10px;justify-content:center}
+.hdot{width:5px;height:5px;border-radius:50%;background:#34d399;box-shadow:0 0 6px #34d399}
+.voice-status{margin-top:12px;border:1px solid rgba(125,211,252,.14);background:rgba(125,211,252,.045);border-radius:14px;padding:13px 14px;color:rgba(255,255,255,.52);font-size:.78rem;line-height:1.55}
+.voice-status strong{color:#7dd3fc}.voice-status a{color:#34d399;text-decoration:none;font-weight:900}
+
+/* INFO CARDS */
+.info-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+@media(max-width:600px){.info-row{grid-template-columns:1fr}}
+.ic{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:13px;padding:18px 16px;text-align:center;transition:.25s;cursor:default}
+.ic:hover{background:rgba(255,255,255,.04);border-color:rgba(125,211,252,.15);transform:translateY(-3px)}
+.ic-em{font-size:1.5rem;margin-bottom:8px}
+.ic-t{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.65);margin-bottom:3px}
+.ic-d{font-size:.7rem;color:rgba(255,255,255,.28);line-height:1.5}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+
+  <div class="badge"><div class="bdot"></div>AI Reel Studio</div>
+  <h1 class="pg-title">Create Your <span>AI Reel</span></h1>
+  <p class="pg-sub">Upload images or videos, add your voice script, and send one clean reel job to your dashboard gallery.</p>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="stp on"><div class="sn">1</div><span>Upload Files</span></div>
+    <div class="sl"></div>
+    <div class="stp" id="s2"><div class="sn">2</div><span>Add Script</span></div>
+    <div class="sl"></div>
+    <div class="stp" id="s3"><div class="sn">3</div><span>Generate</span></div>
+  </div>
+
+  <!-- FORM — 100% matching main.py fields -->
+  <form action="/create" enctype="multipart/form-data" method="post" id="myDropzone">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
+    <div class="card">
+      <div class="card-hd">Visual Source</div>
+      <div class="source-grid">
+        <label class="source-card">
+          <input type="radio" name="generation_source" value="upload" checked>
+          <div class="source-name">Upload Media</div>
+          <div class="source-desc">Use your own images or videos.</div>
+        </label>
+        <label class="source-card">
+          <input type="radio" name="generation_source" value="ai_image">
+          <div class="source-name">AI Image Visual</div>
+          <div class="source-desc">Generate a visual from your prompt if no upload is added.</div>
+        </label>
+        <label class="source-card">
+          <input type="radio" name="generation_source" value="ai_video">
+          <div class="source-name">AI Video Storyboard</div>
+          <div class="source-desc">Create a coming-soon video storyboard visual.</div>
+        </label>
+        {% if saved_asset_file %}
+        <label class="source-card">
+          <input type="radio" name="generation_source" value="saved_asset" checked>
+          <div class="source-name">Saved AI Asset</div>
+          <div class="source-desc">Use the visual created in AI Images or AI Video.</div>
+        </label>
+        {% endif %}
+      </div>
+      <input type="hidden" name="saved_asset_file" value="{{ saved_asset_file or '' }}">
+      <input class="visual-prompt" name="visual_prompt" value="{{ prefill_visual_prompt or '' }}" placeholder="Visual prompt, e.g. luxury gym transformation reel, cinematic, 9:16">
+      <div class="option-row">
+        <div class="mini-select">
+          <label>Aspect Ratio</label>
+          <select name="aspect_ratio">
+            <option value="9:16">9:16 Vertical reel</option>
+            <option value="16:9">16:9 Wide video</option>
+            <option value="1:1">1:1 Square</option>
+            <option value="4:5">4:5 Social portrait</option>
+          </select>
+        </div>
+        <div class="mini-select">
+          <label>Preferred AI Model</label>
+          <select name="preferred_model">
+            <option value="auto">Auto best free</option>
+            <option value="flux">Flux</option>
+            <option value="turbo">Turbo fast</option>
+            <option value="openai">OpenAI style</option>
+          </select>
+        </div>
+      </div>
+      <div class="tool-links">
+        Need visuals first?
+        <a href="/ai-images">Create AI Images</a>
+        <span>or</span>
+        <a href="/ai-video">Create AI Video storyboard</a>
+      </div>
+    </div>
+
+    <!-- UPLOAD FILES CARD -->
+    <div class="card">
+      <div class="card-hd">Upload Files</div>
+      <div class="fallback">
+        <div id="fileInputs">
+          <div class="file-input-group">
+            <div class="file-icon" id="icon_file1">📁</div>
+            <input name="file1" type="file" class="file-input" accept="image/*,video/*" onchange="onFileChange(this,'icon_file1')"/>
+            <input name="uuid" type="hidden" value="{{ myid }}">
+            <button type="button" class="remove-file-btn" onclick="removeFileInput(this)" disabled>×</button>
+          </div>
+        </div>
+        <button type="button" class="add-file-btn" onclick="addFileInput()">＋ &nbsp;Add Another File</button>
+      </div>
+    </div>
+
+    <!-- SCRIPT CARD -->
+    <div class="card">
+      <div class="card-hd">Voice Script</div>
+      <div class="lbl">Voiceover Text <span id="cc">0 / 500</span></div>
+      <textarea
+      class="text-input"
+      id="textInput"
+      name="text"
+      placeholder="Enter your text to be added as voice here..."
+      rows="4"
+      maxlength="500"
+      oninput="onScript()"
+      >{{ prefill_script or "" }}</textarea>
+      <div class="voice-status">
+        <strong>Voiceover:</strong>
+        {% if voice_provider_configured or (current_user and current_user.generation_mode == "byok") %}
+          Your script will be sent to the voice provider. In BYOK mode, add ElevenLabs in <a href="/api-vault">API Vault</a>.
+        {% else %}
+          Add an ElevenLabs key in <a href="/api-vault">API Vault</a> or `.env` for real narration. Without it Suhana still renders the reel, but uses silent fallback audio.
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- SUBMIT CARD -->
+    <div class="card">
+      <button type="submit" class="submit-btn" id="submitBtn">
+        ⚡ &nbsp;Create Reel
+      </button>
+      <div class="hint"><div class="hdot"></div>Usually takes 15–30 seconds to generate</div>
+    </div>
+
+  </form>
+
+  <!-- INFO CARDS -->
+  <div class="info-row">
+    <div class="ic"><div class="ic-em">✂️</div><div class="ic-t">Smart Cuts</div><div class="ic-d">Auto edits &amp; transitions applied by AI</div></div>
+    <div class="ic"><div class="ic-em">🗣️</div><div class="ic-t">AI Voiceover</div><div class="ic-d">Lifelike narration from your script</div></div>
+    <div class="ic"><div class="ic-em">🎵</div><div class="ic-t">Auto Music</div><div class="ic-d">Royalty-free soundtrack matched to mood</div></div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ── FILE COUNTER — starts at 2 because file1 already exists ── */
+let fileCounter = 2;
+
+function addFileInput() {
+  const wrap = document.getElementById('fileInputs');
+  const iconId = 'icon_file' + fileCounter;
+  const div = document.createElement('div');
+  div.className = 'file-input-group';
+  div.innerHTML = `
+    <div class="file-icon" id="${iconId}">📁</div>
+    <input name="file${fileCounter}" type="file" class="file-input" accept="image/*,video/*"
+           onchange="onFileChange(this,'${iconId}')"/>
+    <button type="button" class="remove-file-btn" onclick="removeFileInput(this)">×</button>`;
+  wrap.appendChild(div);
+  fileCounter++;
+  updateSteps();
+}
+
+function removeFileInput(button) {
+  button.parentElement.remove();
+  updateSteps();
+}
+
+function onFileChange(input, iconId) {
+  const icon = document.getElementById(iconId);
+  if (input.files && input.files[0]) {
+    const type = input.files[0].type;
+    icon.textContent = type.startsWith('video') ? '🎬' : '🖼️';
+  }
+  updateSteps();
+}
+
+function onScript() {
+  const ta = document.getElementById('textInput');
+  document.getElementById('cc').textContent = ta.value.length + ' / 500';
+  updateSteps();
+}
+
+function updateSteps() {
+  const inputs = document.querySelectorAll('.file-input[type=file]');
+  const hasFile = Array.from(inputs).some(i => i.value);
+  const hasScript = document.getElementById('textInput').value.trim().length > 0;
+  document.getElementById('s2').classList.toggle('on', hasScript);
+  document.getElementById('s3').classList.toggle('on', hasFile && hasScript);
+}
+
+/* ── SUBMIT LOADING ── */
+document.getElementById('myDropzone').addEventListener('submit', function () {
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = '⏳  Generating your reel...';
+  btn.style.opacity = '.75';
+  btn.style.pointerEvents = 'none';
+});
+onScript();
+</script>
+{% endblock %}

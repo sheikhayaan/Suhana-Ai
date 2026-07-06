@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Terms of Service - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.legal-page{max-width:980px;margin:0 auto;padding:52px 5% 100px;position:relative;z-index:2}.legal-card{border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,rgba(5,8,18,.9),rgba(4,18,26,.72));padding:30px;backdrop-filter:blur(20px);clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px)}.kicker{display:inline-flex;border:1px solid rgba(98,232,255,.22);background:rgba(98,232,255,.08);color:#62e8ff;border-radius:999px;padding:7px 12px;font-size:.7rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}.legal-card h1{font-family:Orbitron,monospace;font-size:clamp(2.1rem,5vw,4.8rem);line-height:.96;margin:0 0 18px}.legal-card h2{margin-top:28px;color:#fff}.legal-card p,.legal-card li{color:rgba(255,255,255,.68);line-height:1.75}.legal-card a{color:#62e8ff}.note{border:1px solid rgba(98,232,255,.18);background:rgba(98,232,255,.07);padding:14px;margin:18px 0;color:rgba(255,255,255,.78)}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="legal-page">
+  <article class="legal-card">
+    <div class="kicker">Terms</div>
+    <h1>Terms of Service</h1>
+    <p class="note">This is a launch-ready placeholder. Before charging customers at scale, have a qualified lawyer review it.</p>
+    <p>Last updated: {{ "2026" }}</p>
+    <h2>Use Of Suhana AI</h2>
+    <p>Suhana AI provides AI-powered learning, coding, content, PDF, image, reel, and productivity tools. You are responsible for how you use generated outputs.</p>
+    <h2>Accounts</h2>
+    <ul>
+      <li>You must provide accurate account information.</li>
+      <li>You are responsible for protecting your password and account access.</li>
+      <li>We may suspend accounts used for spam, abuse, illegal activity, scraping, or attempts to bypass usage limits.</li>
+    </ul>
+    <h2>AI Output</h2>
+    <p>AI-generated answers may be inaccurate, incomplete, or unsuitable for professional decisions. Verify educational, legal, medical, financial, and coding outputs before relying on them.</p>
+    <h2>Payments, Credits, And Refunds</h2>
+    <ul>
+      <li>Credits may be consumed by expensive actions such as image, voice, video, or large AI generations.</li>
+      <li>Subscriptions renew according to the selected billing cycle unless cancelled.</li>
+      <li>Refunds should be handled according to the refund policy shown during checkout or required by law.</li>
+    </ul>
+    <h2>Content Rights</h2>
+    <p>You keep ownership of content you submit and outputs generated for you, subject to provider terms and applicable law. Do not upload content you do not have rights to use.</p>
+    <h2>Limits And Availability</h2>
+    <p>We may apply rate limits, generation limits, file limits, queue limits, or provider fallbacks to keep the service reliable and affordable.</p>
+    <h2>Contact</h2>
+    <p>For support, billing, or legal questions, contact the Suhana AI founder/support email listed on your deployment.</p>
+  </article>
+</div>
+{% endblock %}

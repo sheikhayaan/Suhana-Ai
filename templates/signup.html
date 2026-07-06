@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.signup-page{
+  min-height:calc(100vh - 66px);
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:34px;
+  align-items:center;
+  max-width:1180px;
+  margin:0 auto;
+  padding:56px 5% 90px;
+}
+.signup-art,.signup-card{
+  background:rgba(8,8,28,.78);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  backdrop-filter:blur(18px);
+  overflow:hidden;
+}
+.signup-art{padding:42px;min-height:560px;display:flex;flex-direction:column;justify-content:space-between}
+.signup-badge{
+  display:inline-flex;align-items:center;gap:8px;width:max-content;
+  color:#7dd3fc;background:rgba(125,211,252,.08);
+  border:1px solid rgba(125,211,252,.2);
+  border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;
+}
+.signup-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399}
+.signup-art h1{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2.1rem,4.5vw,4.2rem);
+  line-height:1.05;margin:28px 0 14px;
+}
+.signup-art h1 span{
+  background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.signup-art p{color:rgba(255,255,255,.45);line-height:1.75;max-width:460px}
+.signup-vector{width:100%;max-width:470px;margin:28px auto 0;display:block}
+.signup-card{padding:38px 34px}
+.form-title{font-family:'Orbitron',monospace;font-size:1.55rem;margin-bottom:8px}
+.form-sub{color:rgba(255,255,255,.38);font-size:.88rem;margin-bottom:28px;line-height:1.6}
+.field{margin-bottom:16px}
+.field label{
+  display:block;font-size:.7rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px;
+}
+.field input{
+  width:100%;height:48px;border-radius:13px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+  color:#fff;padding:0 15px;font-family:'Inter',sans-serif;outline:none;
+}
+.field input:focus{
+  border-color:rgba(125,211,252,.45);
+  box-shadow:0 0 0 3px rgba(125,211,252,.08);
+}
+.signup-btn{
+  width:100%;height:50px;border:0;border-radius:14px;margin-top:8px;
+  background:linear-gradient(135deg,#7dd3fc,#34d399);
+  color:#000;font-weight:800;cursor:pointer;
+  box-shadow:0 0 30px rgba(125,211,252,.35);
+}
+.login-link{text-align:center;margin-top:20px;color:rgba(255,255,255,.38);font-size:.84rem}
+.login-link a{color:#7dd3fc;text-decoration:none}
+.google-btn{display:flex;align-items:center;justify-content:center;width:100%;height:48px;border-radius:14px;margin-bottom:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;text-decoration:none;font-weight:800}
+.purpose-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.purpose-card{position:relative}
+.purpose-card input{position:absolute;opacity:0}
+.purpose-card span{display:block;min-height:76px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(255,255,255,.045);padding:13px;color:rgba(255,255,255,.72);font-weight:900;cursor:pointer}
+.purpose-card small{display:block;margin-top:5px;color:rgba(255,255,255,.42);font-size:.72rem;line-height:1.35}
+.purpose-card input:checked+span{color:#020617;background:linear-gradient(135deg,#7dd3fc,#34d399);border-color:transparent;box-shadow:0 0 32px rgba(52,211,153,.18)}
+@media(max-width:900px){
+  .signup-page{grid-template-columns:1fr}
+  .signup-art{min-height:auto}
+}
+@media(max-width:560px){.purpose-grid{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-page">
+
+  <section class="signup-art">
+    <div>
+      <div class="signup-badge"><div class="signup-dot"></div>Creator Workspace</div>
+      <h1>Open your first <span>AI Studio</span></h1>
+      <p>Turn one goal into a complete AI workspace: lesson, quiz, code help, content plan, export, and saved progress.</p>
+    </div>
+
+    <svg class="signup-vector" viewBox="0 0 520 360" fill="none">
+      <rect x="70" y="48" width="380" height="240" rx="28" fill="rgba(125,211,252,.07)" stroke="rgba(125,211,252,.28)"/>
+      <rect x="112" y="86" width="140" height="178" rx="18" fill="rgba(2,2,12,.72)" stroke="rgba(255,255,255,.08)"/>
+      <rect x="278" y="92" width="106" height="18" rx="9" fill="#7dd3fc" opacity=".85"/>
+      <rect x="278" y="128" width="150" height="12" rx="6" fill="white" opacity=".22"/>
+      <rect x="278" y="154" width="128" height="12" rx="6" fill="white" opacity=".16"/>
+      <rect x="278" y="204" width="118" height="42" rx="21" fill="url(#btn)"/>
+      <circle cx="182" cy="142" r="34" fill="url(#orb)"/>
+      <path d="M145 218c18-36 57-36 75 0" stroke="#34d399" stroke-width="10" stroke-linecap="round"/>
+      <path d="M92 310c86-26 246-32 338 0" stroke="rgba(196,181,253,.35)" stroke-width="3"/>
+      <defs>
+        <linearGradient id="btn" x1="278" y1="204" x2="396" y2="246">
+          <stop stop-color="#7dd3fc"/><stop offset="1" stop-color="#34d399"/>
+        </linearGradient>
+        <linearGradient id="orb" x1="148" y1="108" x2="216" y2="176">
+          <stop stop-color="#c4b5fd"/><stop offset="1" stop-color="#7dd3fc"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </section>
+
+  <section class="signup-card">
+    <h2 class="form-title">Create Account</h2>
+    <p class="form-sub">Create your account and land directly in the goal builder, where Suhana chooses the right workflow for your purpose.</p>
+
+    <a class="google-btn" id="googleSignup" href="/login/google?next={{ next_url or '/mission' }}">Continue with Google</a>
+
+    <form method="POST">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="next" value="{{ next_url or '/mission' }}">
+      <div class="field">
+        <label>Why do you want to use Suhana?</label>
+        <div class="purpose-grid">
+          <label class="purpose-card"><input type="radio" name="purpose" value="student" checked><span>Student<small>Learn faster, revise, quiz, solve doubts.</small></span></label>
+          <label class="purpose-card"><input type="radio" name="purpose" value="engineer"><span>Engineer<small>Debug, DSA, projects, workflow help.</small></span></label>
+          <label class="purpose-card"><input type="radio" name="purpose" value="creator"><span>Creator<small>Scripts, reels, visuals, growth systems.</small></span></label>
+          <label class="purpose-card"><input type="radio" name="purpose" value="normal"><span>Everyday Work<small>PDFs, images, writing, planning.</small></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Your goal</label>
+        <input type="text" name="primary_goal" placeholder="Example: crack exams, grow Instagram, build projects, save time">
+      </div>
+      <div class="field">
+        <label>Name</label>
+        <input type="text" name="name" placeholder="Your name" autocomplete="name" required>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required>
+      </div>
+
+      <button class="signup-btn" type="submit">Create Account + Start Goal</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="/login">Sign in</a>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+const googleSignup=document.getElementById('googleSignup');
+if(googleSignup){
+  const syncGoogle=()=>{
+    const purpose=document.querySelector('input[name="purpose"]:checked')?.value || 'student';
+    const goal=document.querySelector('input[name="primary_goal"]')?.value || '';
+    googleSignup.href='/login/google?next={{ next_url or "/mission" }}&purpose='+encodeURIComponent(purpose)+'&primary_goal='+encodeURIComponent(goal);
+  };
+  document.querySelectorAll('input[name="purpose"],input[name="primary_goal"]').forEach(el=>el.addEventListener('input',syncGoogle));
+  syncGoogle();
+}
+</script>
+{% endblock %}

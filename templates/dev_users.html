@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Dev Users - Suhana AI{% endblock %}
+
+{% block content %}
+<div style="max-width:900px;margin:60px auto;color:white;padding:0 20px;">
+  <h1 style="font-family:Orbitron,monospace">Dev Credit Manager</h1>
+  {% for user in users %}
+  <form method="POST" action="/dev/add-credits/{{ user.id }}" style="background:rgba(8,8,28,.78);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:12px;">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    <strong>{{ user.name }}</strong> / {{ user.email }} / Credits: {{ user.credits }}
+    <br><br>
+    <input name="amount" type="number" value="25" style="height:38px;border-radius:8px;padding:0 10px">
+    <button style="height:38px;border:0;border-radius:8px;background:#7dd3fc;color:#000;font-weight:900;">Add Credits</button>
+  </form>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Billing - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.bill-page{max-width:1120px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}
+.bill-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.6rem);line-height:1.05;margin-bottom:12px}
+.bill-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.bill-sub{color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:28px}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.pack,.history{background:rgba(8,8,28,.78);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:24px;backdrop-filter:blur(18px)}
+.pack h2{font-family:'Orbitron',monospace;font-size:1rem;margin-bottom:8px}
+.credits{font-family:'Orbitron',monospace;color:#7dd3fc;font-size:2rem;margin-bottom:12px}
+.pack p,.tx{color:rgba(255,255,255,.4);line-height:1.6}
+.buy{border:0;border-radius:50px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;font-weight:900;padding:12px 20px;cursor:pointer}
+.tx{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(255,255,255,.07);padding:12px 0}
+@media(max-width:850px){.packs{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bill-page">
+  <h1 class="bill-title">Billing & <span>Credits</span></h1>
+  <p class="bill-sub">Current balance: <strong>{{ user.credits }}</strong> credits. Upgrade from Pricing for more saved work, exports, voiceover, reels, and priority generation.</p>
+
+  <div class="packs">
+    {% if is_admin %}
+    <form class="pack" method="POST"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><h2>Starter</h2><div class="credits">25</div><p>For testing scripts and basic renders.</p><input type="hidden" name="pack" value="starter"><button class="buy">Add Credits</button></form>
+    <form class="pack" method="POST"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><h2>Creator</h2><div class="credits">100</div><p>For regular content workflow testing.</p><input type="hidden" name="pack" value="creator"><button class="buy">Add Credits</button></form>
+    <form class="pack" method="POST"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><h2>Agency</h2><div class="credits">500</div><p>For bulk generation and demos.</p><input type="hidden" name="pack" value="agency"><button class="buy">Add Credits</button></form>
+    {% else %}
+    <div class="pack"><h2>Free</h2><div class="credits">10</div><p>Try missions, tutor, quiz, code, and saved work.</p><a class="buy" style="display:inline-flex;text-decoration:none" href="/pricing">View Plans</a></div>
+    <div class="pack"><h2>Pro Workspace</h2><div class="credits">More</div><p>More credits, exports, voiceover, reels, and priority AI.</p><a class="buy" style="display:inline-flex;text-decoration:none" href="/pricing">Upgrade</a></div>
+    <div class="pack"><h2>Team</h2><div class="credits">5 seats</div><p>Shared templates, saved work, and workspace controls.</p><a class="buy" style="display:inline-flex;text-decoration:none" href="/pricing">See Team</a></div>
+    {% endif %}
+  </div>
+
+  <div class="history">
+    <h2>Credit History</h2>
+    {% if transactions %}
+      {% for tx in transactions %}
+      <div class="tx"><span>{{ tx.reason }}</span><strong>{{ tx.amount }}</strong></div>
+      {% endfor %}
+    {% else %}
+      <p>No credit history yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

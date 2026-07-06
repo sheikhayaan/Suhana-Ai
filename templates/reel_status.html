@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}Reel Status - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.status-page{
+  max-width:980px;
+  margin:0 auto;
+  padding:54px 5% 100px;
+  position:relative;
+  z-index:2;
+}
+.status-card{
+  background:rgba(8,8,28,.78);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:34px;
+  backdrop-filter:blur(18px);
+  overflow:hidden;
+}
+.status-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:#7dd3fc;
+  background:rgba(125,211,252,.08);
+  border:1px solid rgba(125,211,252,.2);
+  border-radius:50px;
+  padding:6px 14px;
+  font-size:.75rem;
+  letter-spacing:.05em;
+  margin-bottom:18px;
+}
+.status-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#34d399;
+  box-shadow:0 0 10px #34d399;
+}
+.status-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2rem,4.8vw,3.4rem);
+  line-height:1.08;
+  margin-bottom:12px;
+}
+.status-title span{
+  background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.status-sub{
+  color:rgba(255,255,255,.42);
+  line-height:1.7;
+  max-width:620px;
+  margin-bottom:28px;
+}
+.status-row{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:18px;
+  align-items:start;
+}
+.status-box{
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;
+  padding:20px;
+}
+.status-label{
+  color:rgba(255,255,255,.32);
+  font-size:.7rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.status-value{
+  font-family:'Orbitron',monospace;
+  color:#34d399;
+  font-size:1.45rem;
+  text-transform:capitalize;
+}
+.status-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:22px;
+}
+.voice-box{margin-top:16px;border:1px solid rgba(125,211,252,.15);background:rgba(125,211,252,.045);border-radius:16px;padding:14px;color:rgba(255,255,255,.54);line-height:1.55;font-size:.82rem}.voice-box strong{color:#7dd3fc}
+.status-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:43px;
+  padding:0 20px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:800;
+  font-size:.84rem;
+}
+.status-btn.primary{
+  color:#000;
+  background:linear-gradient(135deg,#7dd3fc,#34d399);
+}
+.status-btn.secondary{
+  color:rgba(255,255,255,.62);
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+}
+.status-video{
+  width:100%;
+  max-width:360px;
+  aspect-ratio:9 / 16;
+  border-radius:18px;
+  background:#000;
+  display:block;
+}
+.status-wait{
+  min-height:360px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  color:rgba(255,255,255,.38);
+}
+.loader{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  margin:0 auto 18px;
+  background:
+    radial-gradient(circle at center,#08081c 55%,transparent 56%),
+    conic-gradient(#7dd3fc,#34d399,#c4b5fd,#7dd3fc);
+  animation:spin 1.2s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rate-overlay{position:fixed;inset:0;background:rgba(0,0,0,.58);display:grid;place-items:center;z-index:500;animation:fade .25s ease both}
+.rate-modal{width:min(520px,92vw);background:rgba(8,8,28,.96);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:26px;box-shadow:0 30px 120px rgba(0,0,0,.52);text-align:center}
+.stars{display:flex;justify-content:center;gap:8px;margin:18px 0}
+.star{font-size:2rem;background:transparent;border:0;color:#fde68a;cursor:pointer;filter:drop-shadow(0 0 10px rgba(253,230,138,.35));transition:.18s}
+.star:hover{transform:translateY(-2px) scale(1.08)}
+.rate-note{width:100%;min-height:78px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;padding:12px;resize:none}
+.rate-actions{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.rate-btn{border:0;border-radius:50px;padding:12px 18px;font-weight:900;cursor:pointer}
+.rate-btn.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000}
+.rate-btn.secondary{background:rgba(255,255,255,.06);color:rgba(255,255,255,.72)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@media(max-width:760px){
+  .status-card{padding:24px}
+  .status-row{grid-template-columns:1fr}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="status-page">
+  <section class="status-card">
+    <div class="status-badge"><div class="status-dot"></div>Reel Job</div>
+    <h1 class="status-title">Your reel is <span>{{ reel.status }}</span></h1>
+    <p class="status-sub">
+      This page tracks the current generation job. Keep the worker running in another terminal and refresh if needed.
+    </p>
+
+    <div class="status-row">
+      <div class="status-box">
+        <div class="status-label">Current Status</div>
+        <div class="status-value">{{ reel.status }}</div>
+        {% if voice_status %}
+        <div class="voice-box">
+          <strong>Voice:</strong> {{ voice_status.provider }}<br>
+          {{ voice_status.message }}
+        </div>
+        {% endif %}
+        <div class="status-actions">
+          {% if current_user %}
+          <a class="status-btn secondary" href="/dashboard">Dashboard</a>
+          {% endif %}
+          <a class="status-btn secondary" href="/create">New Reel</a>
+          <a class="status-btn secondary" href="/gallery">Gallery</a>
+        </div>
+      </div>
+
+      <div class="status-box">
+        {% if reel.status == "completed" and reel.output_file %}
+          <video
+            class="status-video"
+            src="{{ url_for('static', filename='reels/' ~ reel.output_file) }}"
+            controls
+            preload="metadata">
+          </video>
+          <div class="status-actions">
+            <a class="status-btn primary" href="{{ url_for('static', filename='reels/' ~ reel.output_file) }}" target="_blank">Open Reel</a>
+            <a class="status-btn secondary" href="{{ url_for('static', filename='reels/' ~ reel.output_file) }}" download>Download</a>
+          </div>
+        {% elif reel.status == "failed" %}
+          <div class="status-wait">
+            <div>
+              <div class="status-badge"><div class="status-dot"></div>Generation Failed</div>
+              <p>{{ reel.error_message or "The worker could not generate this reel. Try again with a different upload or check your API settings." }}</p>
+              <div class="status-actions" style="justify-content:center">
+                <a class="status-btn primary" href="/create">Try Again</a>
+                <a class="status-btn secondary" href="/settings">Check Settings</a>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="status-wait">
+            <div>
+              <div class="loader"></div>
+              <p>Your reel is queued or processing. This page refreshes automatically.</p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if reel.status == "completed" and reel.output_file %}
+<div class="rate-overlay" id="rateOverlay">
+  <form class="rate-modal" method="POST" action="/experience-feedback">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="feature" value="reel">
+    <input type="hidden" name="target_id" value="{{ reel.id }}">
+    <input type="hidden" name="rating" id="rateValue" value="5">
+    <div class="status-badge"><div class="status-dot"></div>Rate Your Experience</div>
+    <h2 style="font-family:'Orbitron',monospace;font-size:1.35rem;margin-bottom:8px">How was this reel?</h2>
+    <p style="color:rgba(255,255,255,.42);line-height:1.6">Your feedback helps improve Suhana AI for creators.</p>
+    <div class="stars">
+      <button class="star" type="button" onclick="setRating(1)">★</button>
+      <button class="star" type="button" onclick="setRating(2)">★</button>
+      <button class="star" type="button" onclick="setRating(3)">★</button>
+      <button class="star" type="button" onclick="setRating(4)">★</button>
+      <button class="star" type="button" onclick="setRating(5)">★</button>
+    </div>
+    <textarea class="rate-note" name="notes" placeholder="Optional note"></textarea>
+    <div class="rate-actions">
+      <button class="rate-btn primary" type="submit">Submit Rating</button>
+      <button class="rate-btn secondary" type="button" onclick="document.getElementById('rateOverlay').style.display='none'">Later</button>
+    </div>
+  </form>
+</div>
+<script>
+function setRating(value){
+  document.getElementById('rateValue').value = value;
+  document.querySelectorAll('.star').forEach((star, index) => {
+    star.style.opacity = index < value ? '1' : '.28';
+  });
+}
+setRating(5);
+</script>
+{% endif %}
+{% if reel.status not in ["completed", "failed"] %}
+<script>
+setTimeout(function(){
+  window.location.reload();
+}, 5000);
+</script>
+{% endif %}
+{% endblock %}

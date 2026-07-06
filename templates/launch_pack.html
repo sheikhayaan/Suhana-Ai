@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Launch Pack - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.lp-page{max-width:1280px;margin:0 auto;padding:44px 5% 100px;position:relative;z-index:2}
+.lp-hero{display:grid;grid-template-columns:.92fr 1.08fr;gap:18px;align-items:start}
+.lp-card{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:26px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(0,0,0,.56));backdrop-filter:blur(22px);box-shadow:0 30px 120px rgba(0,0,0,.38);padding:28px}
+.lp-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 0%,rgba(67,255,210,.16),transparent 32%),radial-gradient(circle at 88% 22%,rgba(167,139,250,.14),transparent 32%);pointer-events:none}.lp-card>*{position:relative}
+.lp-kicker{display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid rgba(98,232,255,.2);border-radius:999px;background:rgba(98,232,255,.08);color:#62e8ff;font-size:.7rem;font-weight:950;letter-spacing:.13em;text-transform:uppercase;margin-bottom:18px}.lp-kicker i{width:7px;height:7px;border-radius:50%;background:#43ffd2;box-shadow:0 0 16px #43ffd2}
+.lp-title{font-size:clamp(2.5rem,6vw,5.8rem);line-height:.88;letter-spacing:-.055em;text-transform:uppercase;margin:0 0 16px;font-weight:950}.lp-title span{display:block;background:linear-gradient(180deg,#fff,#93fff0 54%,#203735);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lp-sub{color:rgba(255,255,255,.62);line-height:1.72;margin:0 0 22px;max-width:620px}
+.role-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}.role-pill{position:relative}.role-pill input{position:absolute;opacity:0}.role-pill span{display:block;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px;background:rgba(255,255,255,.045);font-weight:900;color:rgba(255,255,255,.72);cursor:pointer}.role-pill input:checked+span{color:#020304;background:linear-gradient(135deg,#62e8ff,#43ffd2);border-color:transparent;box-shadow:0 0 34px rgba(67,255,210,.18)}
+.field{margin-bottom:14px}.field label{display:block;margin-bottom:8px;color:rgba(255,255,255,.5);font-size:.68rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase}.field input,.field select{width:100%;height:50px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.06);color:#fff;padding:0 14px;outline:none}.field option{color:#020304}.field input:focus,.field select:focus{border-color:rgba(98,232,255,.48);box-shadow:0 0 0 3px rgba(98,232,255,.1)}
+.lp-btn{width:100%;height:54px;border:0;border-radius:17px;background:linear-gradient(135deg,#fff,#dffff9);color:#020304;font-weight:950;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;box-shadow:0 22px 70px rgba(255,255,255,.13)}
+.lp-memory{margin:18px 0 0;padding:14px;border:1px solid rgba(167,139,250,.18);background:rgba(167,139,250,.07);border-radius:16px;color:rgba(255,255,255,.62);line-height:1.58;font-size:.86rem}
+.lp-output{min-height:720px}.lp-empty{min-height:560px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.55)}.lp-empty h2{font-size:clamp(2rem,4vw,4.6rem);line-height:.9;letter-spacing:-.045em;text-transform:uppercase;margin:12px 0;color:#fff}
+.result-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.source{border:1px solid rgba(98,232,255,.22);background:rgba(98,232,255,.08);color:#62e8ff;border-radius:999px;padding:7px 11px;font-size:.7rem;font-weight:950;white-space:nowrap}
+.asset-preview{display:grid;grid-template-columns:190px 1fr;gap:14px;align-items:center;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.045);border-radius:18px;padding:12px;margin-bottom:14px}.asset-preview img{width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.12)}
+.asset-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.asset-actions a{padding:10px 12px;border-radius:12px;text-decoration:none;font-size:.78rem;font-weight:950}.asset-actions .primary{background:#fff;color:#020304}.asset-actions .secondary{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+.plan{line-height:1.75;color:rgba(255,255,255,.82)}.plan h1,.plan h2,.plan h3{font-family:Inter,sans-serif;letter-spacing:-.03em;color:#fff;margin:22px 0 9px}.plan h1{font-size:2.2rem}.plan h2{font-size:1.55rem}.plan ul{padding-left:20px}.plan li{margin:7px 0}.md-table{overflow:auto;border-radius:16px;border:1px solid rgba(255,255,255,.1);margin:14px 0}.plan table{width:100%;border-collapse:collapse;min-width:680px;font-size:.84rem}.plan th,.plan td{border-bottom:1px solid rgba(255,255,255,.08);padding:11px;vertical-align:top}.plan th{color:#62e8ff;background:rgba(98,232,255,.08);text-align:left}.plan code{color:#43ffd2;background:rgba(67,255,210,.09);border-radius:6px;padding:2px 5px}
+.route-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}.route-card{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);border-radius:16px;padding:14px;text-decoration:none;color:#fff}.route-card b{display:block;margin-bottom:5px}.route-card span{font-size:.78rem;color:rgba(255,255,255,.52);line-height:1.45}
+.lp-recent{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.recent-pack{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);border-radius:18px;padding:15px;color:#fff}.recent-pack b{display:block;margin-bottom:5px}.recent-pack small{color:rgba(255,255,255,.45)}
+.lp-busy{position:fixed;inset:0;z-index:4000;display:none;place-items:center;background:rgba(0,0,0,.72);backdrop-filter:blur(18px)}.lp-busy.show{display:grid}.lp-busy-box{width:min(440px,88vw);border:1px solid rgba(255,255,255,.14);border-radius:24px;background:rgba(8,12,16,.88);padding:26px;text-align:center;box-shadow:0 30px 120px rgba(0,0,0,.5)}.lp-loader{width:84px;height:84px;margin:0 auto 18px;border-radius:50%;border:1px solid rgba(98,232,255,.28);border-top-color:#43ffd2;animation:lpSpin .9s linear infinite;box-shadow:0 0 44px rgba(67,255,210,.16)}@keyframes lpSpin{to{transform:rotate(360deg)}}
+@media(max-width:980px){.lp-hero{grid-template-columns:1fr}.lp-output{min-height:auto}.lp-recent{grid-template-columns:1fr 1fr}}@media(max-width:620px){.lp-page{padding:30px 18px 80px}.lp-card{padding:21px}.role-grid,.route-grid,.lp-recent,.asset-preview{grid-template-columns:1fr}.result-head{align-items:flex-start;flex-direction:column}}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="lp-page">
+  <section class="lp-hero">
+    <div class="lp-card">
+      <div class="lp-kicker"><i></i>AI command center</div>
+      <h1 class="lp-title">Decide your <span>next move</span></h1>
+      <p class="lp-sub">This is not another separate tool. It turns one problem into a working mind-map, then sends you to the correct Suhana workflow.</p>
+      <div class="route-grid">
+        <a class="route-card" href="/studio"><b>Studio</b><span>Brand, content plan, workflow, growth.</span></a>
+        <a class="route-card" href="/tools"><b>Tools</b><span>Tutor, code, PDF, image, quiz, reel.</span></a>
+        <a class="route-card" href="/ai-tutor"><b>Students</b><span>Lesson, examples, revision, quiz.</span></a>
+        <a class="route-card" href="/suhana-code"><b>Engineers</b><span>DSA, debug, projects, explanations.</span></a>
+      </div>
+      <form method="POST" id="launchPackForm" style="margin-top:18px">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field"><label>I am building for</label>
+          <div class="role-grid">
+            {% for role,label in [("creator","Creator"),("student","Student"),("founder","Founder"),("developer","Developer")] %}
+            <label class="role-pill"><input type="radio" name="role" value="{{ role }}" {% if form.role == role %}checked{% endif %}><span>{{ label }}</span></label>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="field"><label>Idea / topic / product</label><input name="topic" value="{{ form.topic }}" placeholder="Fitness for college students, class 10 trigonometry, SaaS CRM launch..." required></div>
+        <div class="field"><label>Audience</label><input name="audience" value="{{ form.audience }}" placeholder="Beginners, students, creators, startup founders..."></div>
+        <div class="field"><label>Goal</label><input name="goal" value="{{ form.goal }}" placeholder="Grow audience, study faster, launch product, build portfolio..."></div>
+        <div class="field"><label>Create visual asset</label><select name="make_image"><option value="no" {% if form.make_image == "no" %}selected{% endif %}>No, respond fastest</option><option value="yes" {% if form.make_image == "yes" %}selected{% endif %}>Yes, also make launch visual</option></select></div>
+        <div class="field"><label>Engine</label><select name="ai_agent"><option value="fast" {% if form.ai_agent == "fast" %}selected{% endif %}>Fast working engine</option>{% for agent in nim_agent_options %}<option value="{{ agent.value }}" {% if form.ai_agent == agent.value %}selected{% endif %}>Live AI - {{ agent.label }}</option>{% endfor %}</select></div>
+        <button class="lp-btn" type="submit">Generate Mind Map Pack</button>
+      </form>
+      <div class="lp-memory">
+        {% if memory %}
+        Using Brand Memory: {{ memory.brand_name or "Your brand" }} - {{ memory.niche or "niche not set" }} - {{ memory.tone or "tone not set" }}.
+        {% else %}
+        Tip: add Brand Memory once, then every launch pack follows your niche, tone, offer, colors, and content rules.
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="lp-card lp-output">
+      {% if result %}
+      <div class="result-head"><h2>Launch Pack Output</h2><span class="source">{{ source }}</span></div>
+      {% if image_file %}
+      <div class="asset-preview">
+        <img src="{{ url_for('static', filename='tools/' ~ image_file) }}" alt="Launch pack visual">
+        <div>
+          <strong>Launch visual created</strong>
+          <p class="lp-sub" style="margin:8px 0 0">Use this as your first content asset or send it into the reel builder.</p>
+          <div class="asset-actions">
+            <a class="primary" href="{{ url_for('static', filename='tools/' ~ image_file) }}" download>Download</a>
+            <a class="secondary" href="/create">Create Reel</a>
+            {% if current_run %}<a class="secondary" href="/workflow-builder/export/{{ current_run.id }}">Export PDF</a>{% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="asset-actions" style="margin-bottom:14px">
+        <a class="primary" href="/brand-memory">Improve Brand Memory</a>
+        <a class="secondary" href="/workflow-builder">Build Workflow</a>
+        <a class="secondary" href="/creator-copilot">30-Day Plan</a>
+      </div>
+      <div class="plan">{{ result_html }}</div>
+      {% else %}
+      <div class="lp-empty">
+        <div>
+          <div class="lp-kicker"><i></i>Ready</div>
+          <h2>Your working mind map appears here.</h2>
+          <p>Enter a real problem. Suhana will return the path, then you continue in Studio, Tutor, Code, or Tools.</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if latest_runs %}
+  <section class="lp-recent">
+    {% for run in latest_runs %}
+    <div class="recent-pack"><b>{{ run.title }}</b><small>{{ run.source }} - {{ run.created_at.strftime("%d %b %Y") }}</small></div>
+    {% endfor %}
+  </section>
+  {% endif %}
+</main>
+<div class="lp-busy" id="lpBusy" aria-hidden="true"><div class="lp-busy-box"><div class="lp-loader"></div><strong>Building your mind map...</strong><p class="lp-sub" style="margin:10px auto 0">Fast mode returns text first. Visual generation is optional.</p></div></div>
+<script>
+const launchPackForm=document.getElementById('launchPackForm');
+const lpBusy=document.getElementById('lpBusy');
+if(launchPackForm&&lpBusy){
+  launchPackForm.addEventListener('submit',()=>{lpBusy.classList.add('show')});
+}
+</script>
+{% endblock %}

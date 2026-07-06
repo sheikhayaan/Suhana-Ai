@@ -1,0 +1,583 @@
+{% extends "base.html" %}
+
+{% block title %}AI Tools - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.tools-page{max-width:1280px;margin:0 auto;padding:68px 5% 110px;position:relative;z-index:2}
+.tools-title{font-family:'Orbitron',monospace;font-size:clamp(2.6rem,5.6vw,5.4rem);line-height:.92;margin-bottom:14px;letter-spacing:-.015em}
+.tools-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tools-sub{color:rgba(255,255,255,.42);line-height:1.75;max-width:720px;margin-bottom:34px}
+.tools-lab{
+  display:grid;
+  grid-template-columns:1fr 1.15fr 1fr;
+  gap:14px;
+  min-height:250px;
+  margin:0 0 24px;
+  perspective:1000px;
+}
+.tools-lab-panel{
+  position:relative;
+  min-height:250px;
+  border:0;
+  border-radius:30px;
+  overflow:hidden;
+  background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.012));
+  box-shadow:0 28px 110px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(24px) saturate(1.2);
+  -webkit-backdrop-filter:blur(24px) saturate(1.2);
+  transform-style:preserve-3d;
+}
+.tools-lab-panel::before{
+  content:'';
+  position:absolute;
+  inset:26px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:22px;
+  transform:rotateX(62deg) rotateZ(36deg) translateZ(-20px);
+  animation:toolRing 11s linear infinite;
+}
+.tools-lab-panel::after{
+  content:'';
+  position:absolute;
+  width:112px;
+  height:112px;
+  border-radius:32px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(135deg,rgba(125,211,252,.9),rgba(52,211,153,.75));
+  box-shadow:0 0 60px rgba(125,211,252,.38),0 0 100px rgba(52,211,153,.16);
+  animation:toolCore 4.8s ease-in-out infinite;
+}
+.tools-lab-panel strong{
+  position:absolute;
+  left:18px;
+  bottom:18px;
+  z-index:3;
+  font-family:'Orbitron',monospace;
+  color:#fff;
+  white-space:nowrap;
+  max-width:calc(100% - 36px);
+  overflow:visible;
+}
+.tools-lab-panel span{
+  position:absolute;
+  left:18px;
+  right:auto;
+  top:18px;
+  z-index:3;
+  color:rgba(255,255,255,.72);
+  font-size:.76rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  max-width:calc(100% - 36px);
+  overflow:visible;
+}
+.tools-lab-panel .constellation-mini{position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.58;filter:drop-shadow(0 0 18px rgba(125,211,252,.22));animation:constellationFloat 7s ease-in-out infinite}
+.tools-lab-panel:nth-child(2){background:linear-gradient(145deg,rgba(12,10,32,.9),rgba(6,18,36,.68))}
+.tools-lab-panel:nth-child(3){background:linear-gradient(145deg,rgba(4,18,22,.88),rgba(13,18,46,.62))}
+.flagship{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:18px}
+.flagship-card{position:relative;overflow:hidden;min-height:240px;border:1px solid rgba(125,211,252,.2);background:linear-gradient(145deg,rgba(9,16,42,.9),rgba(4,10,24,.72));border-radius:26px;padding:28px;text-decoration:none;color:#fff;box-shadow:0 24px 90px rgba(0,0,0,.28)}
+.flagship-card::before{content:'';position:absolute;right:-60px;top:-70px;width:220px;height:220px;border:1px solid rgba(125,211,252,.16);transform:rotate(18deg);background:linear-gradient(135deg,rgba(125,211,252,.18),rgba(52,211,153,.06));animation:floaty 7s ease-in-out infinite}
+.flagship-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:#7dd3fc;font-weight:900;margin-bottom:16px}
+.flagship-title{font-family:'Orbitron',monospace;font-size:clamp(1.5rem,3vw,2.5rem);line-height:1.08;margin-bottom:12px}
+.flagship-copy{color:rgba(255,255,255,.48);line-height:1.7;max-width:620px}
+.flagship-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.flagship-pills span{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);border-radius:999px;padding:7px 10px;color:rgba(255,255,255,.72);font-size:.72rem}
+.startup-card{border-color:rgba(196,181,253,.18);background:linear-gradient(145deg,rgba(18,13,42,.88),rgba(5,10,24,.72))}
+.tool-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}.tool-search{flex:1;min-width:240px;height:48px;border-radius:16px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);color:#fff;padding:0 15px;outline:none}.tool-filter{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);color:rgba(255,255,255,.72);border-radius:999px;padding:0 14px;min-height:42px;cursor:pointer}.tool-filter.active{color:#020617;background:linear-gradient(135deg,#7dd3fc,#34d399);font-weight:900}
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tool-box{background:linear-gradient(145deg,rgba(8,8,28,.82),rgba(5,10,26,.72));border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:28px;text-decoration:none;color:#fff;transition:.28s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(18px);position:relative;overflow:hidden;min-height:230px}
+.tool-box::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 0%,rgba(125,211,252,.1),transparent 35%);opacity:.8;pointer-events:none}.tool-box>*{position:relative}
+.tool-box:hover{transform:translateY(-8px) rotateX(2deg);border-color:rgba(125,211,252,.34);background:rgba(125,211,252,.06);box-shadow:0 32px 110px rgba(0,0,0,.38),0 0 42px rgba(125,211,252,.12)}
+.tool-icon{width:auto;min-width:58px;max-width:112px;height:48px;border-radius:14px;background:rgba(125,211,252,.1);border:1px solid rgba(125,211,252,.18);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;font-weight:900;font-size:.86rem;padding:0 12px;white-space:nowrap;overflow-wrap:normal;word-break:keep-all}
+.tool-box::after{content:'';position:absolute;right:18px;bottom:18px;width:74px;height:74px;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.12),transparent 45%);box-shadow:0 0 28px rgba(255,255,255,.08);opacity:.46;pointer-events:none}
+.tool-box .tool-icon::after{display:none}
+.tool-name{font-weight:900;font-size:1rem;margin-bottom:8px}
+.tool-desc{color:rgba(255,255,255,.36);font-size:.85rem;line-height:1.6}
+.tool-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}.tool-meta span{font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:#7dd3fc;border:1px solid rgba(125,211,252,.16);background:rgba(125,211,252,.07);border-radius:999px;padding:4px 8px}
+@keyframes floaty{50%{transform:translate(-18px,22px) rotate(28deg)}}
+@keyframes toolRing{to{transform:rotateX(62deg) rotateZ(396deg)}}
+@keyframes toolCore{50%{transform:translate(-50%,-50%) translateY(-12px) rotate(10deg) scale(1.06);filter:saturate(1.35) brightness(1.08)}}
+@keyframes constellationFloat{50%{transform:translateY(-6px) scale(1.03);opacity:.78}}
+
+body.tools-immersive{background:#030303;color:#f6f6f1}
+.tools-page{
+  max-width:none;
+  width:100%;
+  padding:118px clamp(18px,3vw,56px) 120px;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 50% 10%,rgba(255,255,255,.08),transparent 28%),
+    linear-gradient(180deg,#030303,#070707 46%,#030303);
+}
+.tools-title{
+  max-width:1340px;
+  margin:0 auto 18px;
+  font-family:'Inter',sans-serif;
+  font-size:clamp(4.8rem,13vw,15.5rem);
+  line-height:.72;
+  letter-spacing:-.105em;
+  font-weight:900;
+  color:#f6f6f1;
+  text-transform:uppercase;
+}
+.tools-title span{
+  display:block;
+  background:linear-gradient(180deg,#f6f6f1 0%,#777 70%,#181818 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.tools-sub{
+  max-width:640px;
+  margin:0 auto 46px;
+  color:rgba(246,246,241,.62);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:.78rem;
+  line-height:1.8;
+}
+.tools-lab{
+  max-width:1340px;
+  margin:0 auto 28px;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  min-height:330px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.16);
+}
+.tools-lab-panel{
+  border-radius:0;
+  min-height:330px;
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(0,0,0,.64));
+  box-shadow:none;
+  backdrop-filter:none;
+}
+.tools-lab-panel::before{
+  inset:34px;
+  border-radius:0;
+  border-color:rgba(255,255,255,.2);
+}
+.tools-lab-panel::after{
+  width:142px;
+  height:142px;
+  border-radius:0;
+  background:linear-gradient(135deg,rgba(246,246,241,.92),rgba(118,146,255,.55),rgba(70,255,207,.34));
+  box-shadow:0 0 70px rgba(255,255,255,.16),0 0 120px rgba(70,255,207,.16);
+}
+.tools-lab-panel strong{
+  left:24px;
+  bottom:24px;
+  font-family:'Inter',sans-serif;
+  font-size:clamp(1.55rem,3vw,3.2rem);
+  letter-spacing:-.055em;
+  text-transform:uppercase;
+}
+.tools-lab-panel span{
+  left:24px;
+  top:24px;
+  color:rgba(255,255,255,.54);
+  font-size:.66rem;
+  letter-spacing:.28em;
+}
+.flagship{
+  max-width:1340px;
+  margin:0 auto 28px;
+}
+.flagship-card{
+  min-height:310px;
+  border-radius:0;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.035);
+  box-shadow:none;
+  padding:34px;
+  display:grid;
+  align-content:end;
+}
+.flagship-card::before{
+  width:320px;
+  height:320px;
+  border-color:rgba(255,255,255,.12);
+  border-radius:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);
+}
+.flagship-kicker{
+  color:rgba(255,255,255,.54);
+  letter-spacing:.28em;
+}
+.flagship-title{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(3rem,8vw,8rem);
+  letter-spacing:-.095em;
+  text-transform:uppercase;
+}
+.flagship-copy{
+  color:rgba(255,255,255,.62);
+  max-width:720px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:.78rem;
+}
+.flagship-pills span{
+  border-radius:0;
+  border-color:rgba(255,255,255,.18);
+  background:transparent;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+}
+.tool-controls{
+  max-width:1340px;
+  margin:0 auto 22px;
+  padding-top:18px;
+  border-top:1px solid rgba(255,255,255,.16);
+}
+.tool-search{
+  border-radius:0;
+  border-color:rgba(255,255,255,.18);
+  background:rgba(255,255,255,.035);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.tool-filter{
+  border-radius:0;
+  border-color:rgba(255,255,255,.16);
+  background:transparent;
+  color:rgba(255,255,255,.64);
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-size:.68rem;
+}
+.tool-filter.active{
+  color:#030303;
+  background:#f6f6f1;
+}
+.tools-grid{
+  max-width:1340px;
+  width:100%;
+  margin:0 auto;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));
+  gap:1px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.15);
+}
+.tool-box{
+  border:0;
+  border-radius:0;
+  min-height:290px;
+  width:100%;
+  padding:24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(0,0,0,.74));
+  box-shadow:none;
+  backdrop-filter:none;
+}
+.tool-box::before{
+  background:
+    radial-gradient(circle at var(--mx,50%) var(--my,20%),rgba(255,255,255,.18),transparent 28%),
+    linear-gradient(180deg,transparent,rgba(255,255,255,.045));
+}
+.tool-box::after{
+  right:20px;
+  bottom:20px;
+  width:92px;
+  height:92px;
+  border-radius:0;
+  border-color:rgba(255,255,255,.16);
+  background:transparent;
+}
+.tool-box:hover{
+  transform:translateY(-1px);
+  background:#f6f6f1!important;
+  color:#030303;
+  box-shadow:none;
+}
+.tool-box:hover .tool-desc,
+.tool-box:hover .tool-meta span{color:rgba(0,0,0,.58);border-color:rgba(0,0,0,.18)}
+.tool-icon{
+  min-width:0;
+  width:auto;
+  height:auto;
+  border-radius:0;
+  border:0;
+  background:transparent;
+  color:inherit;
+  margin-bottom:62px;
+  padding:0;
+  font-size:.7rem;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+}
+.tool-name{
+  font-size:clamp(1.45rem,2.5vw,2.7rem);
+  line-height:.94;
+  letter-spacing:-.055em;
+  text-transform:uppercase;
+}
+.tool-desc{
+  color:rgba(255,255,255,.48);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:.7rem;
+  line-height:1.7;
+}
+.tool-meta span{
+  border-radius:0;
+  background:transparent;
+  color:rgba(255,255,255,.52);
+  letter-spacing:.16em;
+}
+/* final readable tools layout: keep cinematic depth without text collisions */
+.tools-page{
+  padding-top:clamp(96px,11vh,132px)!important;
+  background:
+    radial-gradient(circle at 72% 6%,rgba(108,92,255,.18),transparent 30%),
+    radial-gradient(circle at 18% 18%,rgba(45,255,205,.14),transparent 28%),
+    linear-gradient(180deg,#020304 0%,#07100f 42%,#030405 100%)!important;
+}
+.tools-webgl-wrap{display:none!important}
+.tools-title{
+  width:min(1180px,92vw)!important;
+  margin:0 auto 18px!important;
+  text-align:center!important;
+  font-size:clamp(3.8rem,9.6vw,10.8rem)!important;
+  line-height:.82!important;
+  letter-spacing:-.045em!important;
+  overflow-wrap:break-word!important;
+}
+.tools-title span{display:inline!important}
+.tools-sub{
+  width:min(760px,90vw)!important;
+  margin:0 auto 40px!important;
+  text-align:center!important;
+  font-size:clamp(.78rem,1.1vw,.95rem)!important;
+  line-height:1.75!important;
+}
+.tools-lab{
+  width:min(1180px,92vw)!important;
+  min-height:240px!important;
+  gap:14px!important;
+  border:0!important;
+  background:transparent!important;
+}
+.tools-lab-panel{
+  border-radius:22px!important;
+  min-height:240px!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(0,0,0,.52))!important;
+  overflow:hidden!important;
+}
+.tools-lab-panel strong{
+  right:24px!important;
+  white-space:normal!important;
+  max-width:calc(100% - 48px)!important;
+  font-size:clamp(1.35rem,2.2vw,2.45rem)!important;
+  line-height:1.02!important;
+  letter-spacing:-.035em!important;
+}
+.tools-lab-panel span{
+  white-space:normal!important;
+  max-width:calc(100% - 48px)!important;
+}
+.flagship,.tool-controls,.tools-grid{width:min(1180px,92vw)!important;max-width:1180px!important}
+.flagship-card{
+  border-radius:24px!important;
+  min-height:240px!important;
+  padding:28px!important;
+  overflow:hidden!important;
+}
+.flagship-title{
+  font-size:clamp(2.2rem,5.8vw,5.6rem)!important;
+  line-height:.92!important;
+  letter-spacing:-.055em!important;
+  overflow-wrap:break-word!important;
+}
+.flagship-copy{font-size:.78rem!important;line-height:1.7!important}
+.tools-grid{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))!important;
+  gap:14px!important;
+  border:0!important;
+  background:transparent!important;
+}
+.tool-box{
+  min-height:268px!important;
+  padding:24px!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:22px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 82% 24%,rgba(255,255,255,.12),transparent 0 54px,transparent 55px),
+    linear-gradient(145deg,rgba(255,255,255,.07),rgba(0,0,0,.62))!important;
+  transform:none;
+}
+.tool-box.is-hidden{display:none!important}
+.tool-box>*{position:relative;z-index:2}
+.tool-box::after{
+  width:78px!important;
+  height:78px!important;
+  right:18px!important;
+  top:22px!important;
+  bottom:auto!important;
+  border-radius:50%!important;
+  opacity:.38!important;
+  z-index:1!important;
+}
+.tool-icon{
+  margin-bottom:34px!important;
+  max-width:calc(100% - 92px)!important;
+  white-space:normal!important;
+  line-height:1.25!important;
+}
+.tool-name{
+  font-size:clamp(1.35rem,2.05vw,2.05rem)!important;
+  line-height:1.02!important;
+  letter-spacing:-.025em!important;
+  max-width:calc(100% - 78px)!important;
+  overflow-wrap:break-word!important;
+}
+.tool-desc{
+  margin-top:10px!important;
+  font-size:.76rem!important;
+  line-height:1.62!important;
+  letter-spacing:.045em!important;
+  text-wrap:pretty;
+}
+.tool-meta{margin-top:16px!important}
+.tool-meta span{white-space:normal!important;line-height:1.25!important}
+.solution-lanes{
+  width:min(1180px,92vw);
+  max-width:1180px;
+  margin:0 auto 22px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.lane-card{
+  min-height:190px;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:18px;
+  text-decoration:none;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  overflow:hidden;
+  background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(0,0,0,.58));
+}
+.lane-card::before{
+  content:'';
+  position:absolute;
+  right:18px;
+  top:18px;
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  background:radial-gradient(circle at 32% 26%,#fff 0 10%,transparent 11%),radial-gradient(circle,#fff,var(--lane,#7dd3fc) 46%,rgba(0,0,0,.08));
+  box-shadow:0 0 48px var(--lane-glow,rgba(125,211,252,.32));
+}
+.lane-card>*{position:relative;z-index:2}
+.lane-card small{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.46);font-weight:950}
+.lane-card b{display:block;max-width:72%;font-size:clamp(1.1rem,1.7vw,1.7rem);line-height:1;letter-spacing:-.04em;text-transform:uppercase}
+.lane-card span{display:block;margin-top:10px;color:rgba(255,255,255,.58);font-size:.76rem;line-height:1.55}
+.lane-card:nth-child(1){--lane:#44ffd2;--lane-glow:rgba(68,255,210,.38)}
+.lane-card:nth-child(2){--lane:#7dd3fc;--lane-glow:rgba(125,211,252,.38)}
+.lane-card:nth-child(3){--lane:#c4b5fd;--lane-glow:rgba(196,181,253,.34)}
+.lane-card:nth-child(4){--lane:#fde68a;--lane-glow:rgba(253,230,138,.3)}
+@media(max-width:900px){.tools-grid,.flagship,.tools-lab{grid-template-columns:1fr}.tools-lab-panel{min-height:150px}}
+@media(max-width:760px){
+  .tools-page{padding-top:92px}
+  .tools-title{font-size:clamp(3rem,16vw,6rem)!important;letter-spacing:-.035em!important}
+  .tools-lab{min-height:auto}
+  .tools-lab-panel{min-height:220px}
+  .flagship-title{font-size:clamp(2.7rem,18vw,6rem)}
+  .tool-name{max-width:100%!important}
+  .tool-icon{max-width:100%!important}
+  .solution-lanes{grid-template-columns:1fr}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tools-page">
+  <div class="tools-webgl-wrap" id="suhana-tools-webgl" aria-hidden="true"></div>
+  <h1 class="tools-title">Solve one <span>real problem</span></h1>
+  <p class="tools-sub">Start with the lane that matches you. Studio decides the workflow; tools finish the job.</p>
+  <section class="solution-lanes" aria-label="Suhana AI solution lanes">
+    <a class="lane-card" href="/ai-tutor"><small>Students</small><div><b>Learn + score better</b><span>Lessons, examples, revision, quiz, weak-area repair.</span></div></a>
+    <a class="lane-card" href="/suhana-code"><small>Engineers</small><div><b>Build + debug faster</b><span>DSA, projects, bug fixes, architecture, tests.</span></div></a>
+    <a class="lane-card" href="/studio"><small>Creators</small><div><b>Plan + publish content</b><span>Brand memory, scripts, visuals, workflow, growth.</span></div></a>
+    <a class="lane-card" href="/pdf-merge"><small>Everyday</small><div><b>Finish daily work</b><span>PDFs, images, prompts, avatars, planning, utility tools.</span></div></a>
+  </section>
+  <div class="tools-lab" aria-hidden="true">
+    <div class="tools-lab-panel"><span>Learn</span><strong>Tutor + Quiz</strong></div>
+    <div class="tools-lab-panel"><span>Create</span><strong>Reels + Images</strong></div>
+    <div class="tools-lab-panel"><span>Build</span><strong>Code + PDF</strong></div>
+  </div>
+  <div class="flagship">
+    <a class="flagship-card" href="/studio">
+      <div class="flagship-kicker">Recommended</div>
+      <div class="flagship-title">Start Studio</div>
+      <p class="flagship-copy">The main cockpit: describe your problem once and Suhana routes you to the right workflow, script, tool, and next action.</p>
+      <div class="flagship-pills"><span>Simple</span><span>Monetizable</span><span>Growth loop</span></div>
+    </a>
+  </div>
+  <div class="tool-controls">
+    <input class="tool-search" id="toolSearch" placeholder="Search tools: tutor, reel, PDF, quiz, code...">
+    <button class="tool-filter active" data-filter="all">All</button>
+    <button class="tool-filter" data-filter="learn">Learn</button>
+    <button class="tool-filter" data-filter="create">Create</button>
+    <button class="tool-filter" data-filter="utility">Utility</button>
+    <button class="tool-filter" data-filter="play">Play</button>
+  </div>
+
+  <div class="tools-grid">
+    <a class="tool-box" data-cat="create" href="/studio"><div class="tool-icon">Studio</div><div class="tool-name">AI Strategy Studio</div><div class="tool-desc">Start here when you do not know which tool to use. Studio creates the script, workflow, and routing map.</div><div class="tool-meta"><span>Core</span><span>Start</span></div></a>
+    <a class="tool-box" data-cat="learn" href="/ai-tutor"><div class="tool-icon">Tutor</div><div class="tool-name">AI Tutor</div><div class="tool-desc">Learn any subject from class 6 to BTech with examples, revision notes, and quizzes.</div><div class="tool-meta"><span>Study</span><span>Chat</span></div></a>
+    <a class="tool-box" data-cat="learn" href="/ai-bridge"><div class="tool-icon">Prompt</div><div class="tool-name">Prompt Engineer</div><div class="tool-desc">Get optimized prompts for Gemini, ChatGPT, Claude, Llama, Copilot, image models, and more.</div><div class="tool-meta"><span>No API</span><span>Prompt</span></div></a>
+    <a class="tool-box" data-cat="learn" href="/suhana-code"><div class="tool-icon">Code</div><div class="tool-name">Suhana Code</div><div class="tool-desc">Solve DSA, debug code, and build projects with Gemini and ChatGPT assistance.</div><div class="tool-meta"><span>DSA</span><span>Debug</span></div></a>
+    <a class="tool-box" data-cat="create" href="/script-generator"><div class="tool-icon">Script</div><div class="tool-name">Script Generator</div><div class="tool-desc">Create hooks, scene plans, captions, and hashtags for short-form videos.</div><div class="tool-meta"><span>Reels</span><span>Copy</span></div></a>
+    <a class="tool-box" data-cat="create" href="/ai-images"><div class="tool-icon">Image</div><div class="tool-name">AI Images</div><div class="tool-desc">Generate vertical image concepts and send them into the reel builder.</div><div class="tool-meta"><span>Visual</span><span>Download</span></div></a>
+    <a class="tool-box" data-cat="create" href="/ai-video"><div class="tool-icon">Video</div><div class="tool-name">AI Video</div><div class="tool-desc">Create provider-ready video storyboard assets before reel generation.</div><div class="tool-meta"><span>Storyboard</span></div></a>
+    <a class="tool-box" data-cat="create" href="/create"><div class="tool-icon">Reel</div><div class="tool-name">AI Reel Generator</div><div class="tool-desc">Upload images and text, then generate vertical reels with voice/audio pipeline.</div><div class="tool-meta"><span>MP4</span><span>Voice</span></div></a>
+    <a class="tool-box" data-cat="learn" href="/ai-quiz"><div class="tool-icon">Quiz</div><div class="tool-name">AI Quiz Arena</div><div class="tool-desc">Generate locked tests for class 10, BTech, DSA, placement, and advanced topics.</div><div class="tool-meta"><span>Exam</span><span>Analysis</span></div></a>
+    <a class="tool-box" data-cat="create" href="/ml-growth-lab"><div class="tool-icon">ML</div><div class="tool-name">ML Growth Lab</div><div class="tool-desc">Predict content potential before posting with a local neural scoring engine.</div><div class="tool-meta"><span>ML</span><span>Predict</span></div></a>
+    <a class="tool-box" data-cat="play" href="/games"><div class="tool-icon">Game</div><div class="tool-name">Mind Games</div><div class="tool-desc">One-player and two-player games for focus breaks and mind refresh.</div><div class="tool-meta"><span>Focus</span><span>Fun</span></div></a>
+    <a class="tool-box" data-cat="create" href="/avatar-maker"><div class="tool-icon">Avatar</div><div class="tool-name">AI Avatar Maker</div><div class="tool-desc">Create beautiful profile avatars for creators, coders, teachers, and founders.</div><div class="tool-meta"><span>Profile</span></div></a>
+    <a class="tool-box" data-cat="utility" href="/pdf-merge"><div class="tool-icon">PDF</div><div class="tool-name">PDF Editor</div><div class="tool-desc">Merge PDFs, rotate pages, convert JPG to PDF, and compress documents/images.</div><div class="tool-meta"><span>Docs</span><span>Convert</span></div></a>
+    <a class="tool-box" data-cat="utility" href="/image-editor"><div class="tool-icon">Edit</div><div class="tool-name">Image Editor</div><div class="tool-desc">Apply quick edits like grayscale, contrast boost, and rotate. AI edits can be added next.</div><div class="tool-meta"><span>Polish</span></div></a>
+    <a class="tool-box" data-cat="utility" href="/billing"><div class="tool-icon">Pay</div><div class="tool-name">Billing & Credits</div><div class="tool-desc">Manage managed-mode credits and view transaction history.</div><div class="tool-meta"><span>Account</span></div></a>
+    <a class="tool-box" data-cat="utility" href="/ai-health"><div class="tool-icon">AI</div><div class="tool-name">AI Health Check</div><div class="tool-desc">Check Gemini and OpenAI connectivity when Tutor or Code falls back.</div><div class="tool-meta"><span>Debug</span><span>API</span></div></a>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const search=document.getElementById('toolSearch');
+const cards=[...document.querySelectorAll('.tool-box')];
+const filters=[...document.querySelectorAll('.tool-filter')];
+document.querySelectorAll('.tools-lab-panel').forEach(panel=>{
+  if(panel.querySelector('.constellation-mini')) return;
+  const layer=document.createElement('div');
+  layer.className='constellation-mini';
+  layer.innerHTML='<svg viewBox="0 0 240 150" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true"><path d="M42 52 L104 82 L178 42 L204 106 L104 82 L74 118" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1"/><g fill="white"><circle cx="42" cy="52" r="3"/><circle cx="104" cy="82" r="3"/><circle cx="178" cy="42" r="3"/><circle cx="204" cy="106" r="3"/><circle cx="74" cy="118" r="3"/></g></svg>';
+  panel.appendChild(layer);
+});
+function applyTools(){
+  const q=(search.value||'').toLowerCase();
+  const active=document.querySelector('.tool-filter.active').dataset.filter;
+  cards.forEach(card=>{
+    const matchesText=card.textContent.toLowerCase().includes(q);
+    const matchesCat=active==='all'||card.dataset.cat===active;
+    card.classList.toggle('is-hidden',!(matchesText&&matchesCat));
+  });
+}
+search.addEventListener('input',applyTools);
+filters.forEach(btn=>btn.addEventListener('click',()=>{filters.forEach(b=>b.classList.remove('active'));btn.classList.add('active');applyTools();}));
+</script>
+{% endblock %}

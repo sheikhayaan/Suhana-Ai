@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% block title %}Pricing — Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.pricing-page{padding:40px 48px 100px;max-width:1100px;margin:0 auto;position:relative;z-index:2}
+@media(max-width:600px){.pricing-page{padding:28px 20px 80px}}
+.pricing-page{
+  min-height:100vh;
+  max-width:none;
+  padding:96px clamp(18px,4vw,64px) 110px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(72,255,210,.13),transparent 28%),
+    radial-gradient(circle at 58% 48%,rgba(80,120,255,.12),transparent 26%),
+    #010204;
+}
+.pricing-page::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 50%,transparent 0 29%,rgba(72,255,210,.26) 29.3% 30%,transparent 30.4% 100%),
+    radial-gradient(ellipse at 50% 50%,transparent 0 34%,rgba(125,211,252,.16) 34.2% 34.8%,transparent 35.2% 100%),
+    conic-gradient(from var(--price-rot,0deg),rgba(72,255,210,.0),rgba(72,255,210,.22),rgba(125,211,252,.18),rgba(196,181,253,.14),rgba(72,255,210,.0));
+  animation:pricingShader 13s linear infinite;
+  opacity:.58;
+  filter:blur(.2px);
+}
+@keyframes pricingShader{to{--price-rot:360deg}}
+
+/* HEADER */
+.pg-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(125,211,252,.07);border:1px solid rgba(125,211,252,.18);border-radius:50px;padding:4px 14px 4px 8px;font-size:.72rem;color:#7dd3fc;letter-spacing:.05em;margin-bottom:18px}
+.ey-dot{width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;animation:bl 2s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.pg-h{font-family:'Inter',sans-serif;font-size:clamp(3.5rem,8vw,7.4rem);font-weight:250;letter-spacing:-.07em;margin-bottom:14px;line-height:.92}
+.pg-h span{background:linear-gradient(90deg,#f8fbff,#48ffd2,#7dd3fc);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gs 5s linear infinite}
+@keyframes gs{0%{background-position:0%}100%{background-position:200%}}
+.pg-sub{font-size:clamp(1rem,1.35vw,1.22rem);color:rgba(255,255,255,.66);max-width:660px;margin:0 auto 44px;line-height:1.75}
+
+/* TOGGLE */
+.billing-toggle{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:44px}
+.tg-label{font-size:.84rem;color:rgba(255,255,255,.35);transition:.2s}
+.tg-label.on{color:#fff}
+.tg-wrap{width:46px;height:24px;background:rgba(125,211,252,.12);border:1px solid rgba(125,211,252,.22);border-radius:50px;cursor:pointer;position:relative;transition:.3s;flex-shrink:0}
+.tg-wrap.y{background:rgba(125,211,252,.25);border-color:rgba(125,211,252,.45)}
+.tg-knob{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#7dd3fc,#34d399);position:absolute;top:2px;left:2px;transition:.3s;box-shadow:0 0 8px rgba(125,211,252,.5)}
+.tg-wrap.y .tg-knob{left:24px}
+.save-badge{font-size:.7rem;font-weight:700;color:#000;background:linear-gradient(135deg,#34d399,#7dd3fc);padding:2px 10px;border-radius:50px;letter-spacing:.04em;transition:opacity .3s}
+
+/* PRICE CARDS */
+.price-grid{display:grid;grid-template-columns:repeat(3,minmax(0,320px));justify-content:center;gap:26px;margin:0 auto 62px;max-width:1060px}
+@media(max-width:900px){.price-grid{grid-template-columns:1fr}}
+.pc{background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.14);border-radius:26px;padding:34px 28px;position:relative;overflow:visible;transition:.35s cubic-bezier(.16,1,.3,1);cursor:default;backdrop-filter:blur(18px) brightness(.96);box-shadow:0 26px 110px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.12)}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(125,211,252,.3),transparent);opacity:0;transition:.3s}
+.pc:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.12)}
+.pc:hover::before{opacity:1}
+.pc.feat{border-color:rgba(72,255,210,.38);background:linear-gradient(160deg,rgba(72,255,210,.16),rgba(125,211,252,.08),rgba(255,255,255,.04));box-shadow:0 0 72px rgba(72,255,210,.16),0 34px 140px rgba(0,0,0,.5);transform:translateY(-14px) scale(1.035)}
+.pc.feat::before{opacity:1;background:linear-gradient(90deg,transparent,rgba(125,211,252,.6),rgba(52,211,153,.4),transparent)}
+.pc-pop{position:absolute;top:20px;right:20px;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;padding:3px 11px;border-radius:50px}
+.pc-plan{font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:16px}
+.pc-price{font-family:'Inter',sans-serif;font-size:3.8rem;font-weight:250;letter-spacing:-.06em;color:#fff;line-height:1;margin-bottom:7px;transition:.3s}
+.pc-price small{font-size:.9rem;color:rgba(255,255,255,.3);font-family:'Inter',sans-serif;font-weight:400}
+.pc-cycle{font-size:.76rem;color:rgba(255,255,255,.28);margin-bottom:22px}
+.pc-div{height:1px;background:rgba(255,255,255,.06);margin-bottom:20px}
+.pc-ul{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:26px}
+.pc-ul li{display:flex;align-items:flex-start;gap:9px;font-size:.84rem;color:rgba(255,255,255,.55);line-height:1.5}
+.ck{width:17px;height:17px;border-radius:50%;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.22);display:flex;align-items:center;justify-content:center;font-size:9px;color:#34d399;flex-shrink:0;margin-top:1px}
+.ck.x{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.18);color:#f87171}
+.btn-plan{width:100%;display:flex;justify-content:center;align-items:center;font-family:'Inter',sans-serif;font-weight:800;font-size:.875rem;color:rgba(255,255,255,.78);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:13px;border-radius:16px;text-decoration:none;cursor:pointer;transition:.22s;letter-spacing:.03em;position:relative;overflow:hidden}
+.btn-plan::after{content:'';position:absolute;width:0;height:0;border-radius:50%;background:rgba(72,255,210,.22);left:var(--rx,50%);top:var(--ry,50%);transform:translate(-50%,-50%);transition:width .55s ease,height .55s ease}
+.btn-plan:hover::after{width:360px;height:360px}
+.btn-plan span,.btn-plan{z-index:1}
+.btn-plan:hover{color:#fff;border-color:rgba(125,211,252,.35);background:rgba(125,211,252,.06)}
+.btn-plan.prime{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;border:none;box-shadow:0 0 24px rgba(125,211,252,.38)}
+.btn-plan.prime:hover{box-shadow:0 0 40px rgba(125,211,252,.65);transform:translateY(-2px)}
+
+/* COMPARE TABLE */
+.compare-wrap{background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.12);border-radius:26px;overflow:hidden;backdrop-filter:blur(18px);margin:0 auto 52px;max-width:1060px}
+.ct-head{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)}
+.ct-h{padding:15px 20px;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.ct-h:not(:first-child){text-align:center}
+.ct-h.hl{color:#7dd3fc}
+.ct-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.04);transition:.18s}
+.ct-row:last-child{border-bottom:none}
+.ct-row:hover{background:rgba(255,255,255,.02)}
+.ct-c{padding:13px 20px;font-size:.82rem;color:rgba(255,255,255,.45)}
+.ct-c:not(:first-child){text-align:center}
+.ct-c .y{color:#34d399}
+.ct-c .no{color:rgba(255,255,255,.15)}
+.ct-c.hi{color:rgba(125,211,252,.8)}
+
+/* FAQ */
+.faqs{margin-bottom:0}
+.faq-title{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;text-align:center;margin-bottom:26px;color:#fff}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.faq-grid{grid-template-columns:1fr}}
+.faq{background:rgba(8,8,28,.7);border:1px solid rgba(255,255,255,.07);border-radius:15px;padding:20px 22px;cursor:pointer;transition:.2s;backdrop-filter:blur(12px)}
+.faq:hover{border-color:rgba(125,211,252,.2);background:rgba(125,211,252,.03)}
+.faq-q{font-size:.875rem;font-weight:600;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0}
+.faq-ic{color:rgba(255,255,255,.3);font-size:18px;transition:.2s;flex-shrink:0;line-height:1}
+.faq.open .faq-ic{transform:rotate(45deg);color:#7dd3fc}
+.faq-a{font-size:.82rem;color:rgba(255,255,255,.38);line-height:1.7;margin-top:10px;display:none}
+.faq.open .faq-a{display:block}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pricing-page">
+  <div style="text-align:center;padding-top:8px">
+    <div class="pg-eyebrow"><div class="ey-dot"></div>Simple, Transparent Pricing</div>
+    <h1 class="pg-h">Start Free. <span>Finish More.</span></h1>
+    <p class="pg-sub">Suhana AI is priced around useful work: saved history, exports, tutor/quiz, code help, reels, voiceover, and credits for expensive generation.</p>
+  </div>
+
+  <!-- BILLING TOGGLE -->
+  <div class="billing-toggle">
+    <span class="tg-label on" id="ml">Monthly</span>
+    <div class="tg-wrap" id="tg" onclick="toggleBilling()"><div class="tg-knob"></div></div>
+    <span class="tg-label" id="yl">Yearly</span>
+    <span class="save-badge" id="saveBadge" style="opacity:.3">Save 30%</span>
+  </div>
+
+  <!-- CARDS -->
+  <div class="price-grid">
+    <div class="pc">
+      <div class="pc-plan">Free</div>
+      <div class="pc-price" id="p0">₹0<small>/mo</small></div>
+      <div class="pc-cycle">No card needed · best for trying the workspace</div>
+      <div class="pc-div"></div>
+      <ul class="pc-ul">
+        <li><div class="ck">✓</div>Goal missions and dashboard</li>
+        <li><div class="ck">✓</div>Limited tutor, quiz, code, and script use</li>
+        <li><div class="ck">✓</div>Basic saved history</li>
+        <li><div class="ck">✓</div>Starter PDF exports</li>
+        <li><div class="ck x">✗</div><span style="opacity:.35">Limited voice/video credits</span></li>
+        <li><div class="ck x">✗</div><span style="opacity:.35">No priority generation</span></li>
+      </ul>
+      <a href="/mock-razorpay?plan=starter" class="btn-plan">Get Started Free</a>
+    </div>
+    <div class="pc feat">
+      <div class="pc-pop">MOST POPULAR</div>
+      <div class="pc-plan">Pro Workspace</div>
+      <div class="pc-price" id="p1">₹499<small>/mo</small></div>
+      <div class="pc-cycle" id="c1">Billed monthly · Cancel anytime</div>
+      <div class="pc-div"></div>
+      <ul class="pc-ul">
+        <li><div class="ck">✓</div>Unlimited saved missions and work history</li>
+        <li><div class="ck">✓</div>Advanced tutor, quiz analysis, and notes export</li>
+        <li><div class="ck">✓</div>Code assistant with saved answers</li>
+        <li><div class="ck">✓</div>More reel, image, and voiceover credits</li>
+        <li><div class="ck">✓</div>PDF exports and templates</li>
+        <li><div class="ck">✓</div>Priority AI generation queue</li>
+      </ul>
+      <a href="/mock-razorpay?plan=pro" class="btn-plan prime">Start Pro</a>
+    </div>
+    <div class="pc">
+      <div class="pc-plan">Team</div>
+      <div class="pc-price" id="p2">₹1999<small>/mo</small></div>
+      <div class="pc-cycle" id="c2">Team of 5 · shared workspace</div>
+      <div class="pc-div"></div>
+      <ul class="pc-ul">
+        <li><div class="ck">✓</div>Everything in Pro</li>
+        <li><div class="ck">✓</div>5 team seats included</li>
+        <li><div class="ck">✓</div>Shared templates and saved work</li>
+        <li><div class="ck">✓</div>Admin usage and credit controls</li>
+        <li><div class="ck">✓</div>Brand/workspace memory</li>
+        <li><div class="ck">✓</div>Priority support</li>
+      </ul>
+      <a href="/mock-razorpay?plan=business" class="btn-plan">Start Business</a>
+    </div>
+  </div>
+
+  <!-- COMPARE TABLE -->
+  <div class="compare-wrap">
+    <div class="ct-head">
+      <div class="ct-h">Features</div>
+      <div class="ct-h">Starter</div>
+      <div class="ct-h hl">Pro</div>
+      <div class="ct-h">Business</div>
+    </div>
+    <div class="ct-row"><div class="ct-c">Image Generation</div><div class="ct-c">10/day</div><div class="ct-c hi">Unlimited</div><div class="ct-c">Unlimited</div></div>
+    <div class="ct-row"><div class="ct-c">Video Creation</div><div class="ct-c">3/mo</div><div class="ct-c hi">50/mo HD</div><div class="ct-c">Unlimited</div></div>
+    <div class="ct-row"><div class="ct-c">AI Voice &amp; Music</div><div class="ct-c"><span class="no">✗</span></div><div class="ct-c hi"><span class="y">✓</span></div><div class="ct-c"><span class="y">✓</span></div></div>
+    <div class="ct-row"><div class="ct-c">Export Quality</div><div class="ct-c">720p</div><div class="ct-c hi">1080p HD</div><div class="ct-c">4K Ultra</div></div>
+    <div class="ct-row"><div class="ct-c">Watermark</div><div class="ct-c"><span class="no">Yes</span></div><div class="ct-c hi"><span class="y">None</span></div><div class="ct-c"><span class="y">None</span></div></div>
+    <div class="ct-row"><div class="ct-c">API Access</div><div class="ct-c"><span class="no">✗</span></div><div class="ct-c hi"><span class="no">✗</span></div><div class="ct-c"><span class="y">✓</span></div></div>
+    <div class="ct-row"><div class="ct-c">Team Seats</div><div class="ct-c">1</div><div class="ct-c hi">1</div><div class="ct-c">5</div></div>
+    <div class="ct-row"><div class="ct-c">Priority Support</div><div class="ct-c"><span class="no">✗</span></div><div class="ct-c hi"><span class="y">✓</span></div><div class="ct-c"><span class="y">✓</span></div></div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faqs">
+    <div class="faq-title">Frequently Asked Questions</div>
+    <div class="faq-grid">
+      <div class="faq" onclick="this.classList.toggle('open')"><p class="faq-q">Can I cancel anytime?<span class="faq-ic">+</span></p><div class="faq-a">Yes, absolutely. Cancel your subscription at any time from your account dashboard. No questions asked, no cancellation fees.</div></div>
+      <div class="faq" onclick="this.classList.toggle('open')"><p class="faq-q">What payment methods do you accept?<span class="faq-ic">+</span></p><div class="faq-a">We accept all major cards, UPI, net banking, and wallets via Razorpay. All payments are fully secured and encrypted.</div></div>
+      <div class="faq" onclick="this.classList.toggle('open')"><p class="faq-q">Do unused generations roll over?<span class="faq-ic">+</span></p><div class="faq-a">Monthly generations reset each billing cycle. Pro users get unlimited images so it rarely matters.</div></div>
+      <div class="faq" onclick="this.classList.toggle('open')"><p class="faq-q">Is there a free trial for Pro?<span class="faq-ic">+</span></p><div class="faq-a">New users get a 7-day Pro trial free of charge. No credit card required to start your trial.</div></div>
+      <div class="faq" onclick="this.classList.toggle('open')"><p class="faq-q">Can I use Suhana AI commercially?<span class="faq-ic">+</span></p><div class="faq-a">Yes. All content on Pro and Business plans is fully yours for commercial use including ads and client projects.</div></div>
+      <div class="faq" onclick="this.classList.toggle('open')"><p class="faq-q">How does the API work?<span class="faq-ic">+</span></p><div class="faq-a">Business plan users get full REST API access with comprehensive docs to integrate our AI into your own apps.</div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.btn-plan').forEach(btn=>{
+  btn.addEventListener('pointermove',event=>{
+    const r=btn.getBoundingClientRect();
+    btn.style.setProperty('--rx',`${event.clientX-r.left}px`);
+    btn.style.setProperty('--ry',`${event.clientY-r.top}px`);
+  },{passive:true});
+});
+let yearly=false;
+function toggleBilling(){
+  yearly=!yearly;
+  document.getElementById('tg').classList.toggle('y',yearly);
+  document.getElementById('ml').classList.toggle('on',!yearly);
+  document.getElementById('yl').classList.toggle('on',yearly);
+  document.getElementById('saveBadge').style.opacity=yearly?'1':'.3';
+  const pm=yearly?['₹0','₹349','₹1499']:['₹0','₹499','₹1999'];
+  const cm=yearly?['No card needed · best for trying the workspace','Billed yearly · Save ₹1800','Team of 5 · Billed yearly']:['No card needed · best for trying the workspace','Billed monthly · Cancel anytime','Team of 5 · shared workspace'];
+  ['p0','p1','p2'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.childNodes[0].textContent=pm[i];
+    el.querySelector('small').textContent=yearly&&i>0?'/mo (yearly)':'/mo';
+  });
+  ['c1','c2'].forEach((id,i)=>document.getElementById(id).textContent=cm[i+1]);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Mission Board - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.board-page{max-width:1240px;margin:0 auto;padding:48px 5% 100px;position:relative;z-index:2}
+.board-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:18px;align-items:start}
+.panel{border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,rgba(5,8,18,.88),rgba(4,16,24,.72));padding:26px;backdrop-filter:blur(20px);clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px);position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 0,rgba(98,232,255,.14),transparent 36%),radial-gradient(circle at 92% 18%,rgba(67,255,210,.1),transparent 34%);pointer-events:none}.panel>*{position:relative}
+.kicker{display:inline-flex;border:1px solid rgba(98,232,255,.22);background:rgba(98,232,255,.08);color:#62e8ff;border-radius:999px;padding:7px 12px;font-size:.7rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+.title{font-family:Orbitron,monospace;font-size:clamp(2rem,4.6vw,4.8rem);line-height:.96;letter-spacing:-.05em;text-transform:uppercase;margin:0 0 12px}.title span{background:linear-gradient(90deg,#62e8ff,#43ffd2,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:rgba(255,255,255,.52);line-height:1.75}.progress-wrap{margin:20px 0}.progress-line{height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.progress-line span{display:block;height:100%;background:linear-gradient(90deg,#62e8ff,#43ffd2);width:var(--p)}.progress-num{font-family:Orbitron,monospace;font-size:2rem;color:#43ffd2;margin-top:10px}
+.task-list{display:grid;gap:10px;margin-top:18px}.task{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);padding:13px;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.check{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-weight:950;cursor:pointer}.task.done .check{background:linear-gradient(135deg,#62e8ff,#43ffd2);color:#020304;border:0}.task b{display:block;margin-bottom:4px}.task small{display:block;color:rgba(255,255,255,.42);line-height:1.45}.tool-link{display:inline-flex;min-height:38px;align-items:center;padding:0 12px;border-radius:999px;background:rgba(98,232,255,.09);border:1px solid rgba(98,232,255,.2);color:#62e8ff;text-decoration:none;font-weight:950;font-size:.78rem;white-space:nowrap}
+.flow{margin-top:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:center}.flow-node{min-height:92px;display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);padding:12px;font-weight:950;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);position:relative}.flow-node::after{content:"";position:absolute;right:-10px;top:50%;width:20px;height:2px;background:#43ffd2;box-shadow:0 0 12px #43ffd2}.flow-node:last-child::after{display:none}.flow-node span{display:block;color:rgba(255,255,255,.42);font-size:.72rem;font-weight:800;margin-top:6px}
+.plan{line-height:1.75;color:rgba(255,255,255,.82)}.plan h1,.plan h2,.plan h3{color:#fff;letter-spacing:-.03em}.plan table{width:100%;border-collapse:collapse;min-width:680px}.plan th,.plan td{border-bottom:1px solid rgba(255,255,255,.08);padding:10px;text-align:left;vertical-align:top}.plan th{color:#62e8ff;background:rgba(98,232,255,.08)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;text-decoration:none;font-weight:950;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}.btn.primary{background:linear-gradient(135deg,#62e8ff,#43ffd2);color:#020304;border:0}
+@media(max-width:980px){.board-grid{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.flow-node::after{display:none}.task{grid-template-columns:auto 1fr}.tool-link{grid-column:2}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="board-page">
+  <section class="board-grid">
+    <div class="panel">
+      <div class="kicker">{{ mission.role|capitalize }} Mission</div>
+      <h1 class="title">{{ mission.title }} <span>Board</span></h1>
+      <p class="sub">{{ mission.timeline or "No timeline set" }} - {{ mission.success_metric or "Finish one useful output" }}</p>
+      <div class="progress-wrap">
+        <div class="progress-line" style="--p:{{ percent }}%"><span></span></div>
+        <div class="progress-num">{{ percent }}%</div>
+        <p class="sub">{{ completed }}/{{ tasks|length }} mission tasks complete</p>
+      </div>
+
+      <div class="flow" aria-label="Mission flow chart">
+        <div class="flow-node">Goal<span>What you want</span></div>
+        <div class="flow-node">Next Step<span>Do this first</span></div>
+        <div class="flow-node">Output<span>Create result</span></div>
+        <div class="flow-node">Improve<span>Check progress</span></div>
+      </div>
+
+      <div class="actions">
+        <a class="btn primary" href="/mission/{{ mission.id }}/export">Export PDF</a>
+        <a class="btn" href="/mission">New Mission</a>
+        <a class="btn" href="/dashboard">Dashboard</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="kicker">Your Steps</div>
+      <div class="task-list">
+        {% for task in tasks %}
+        <form class="task {{ 'done' if progress.get(task.id) else '' }}" method="POST" action="/mission/{{ mission.id }}/toggle">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="task_id" value="{{ task.id }}">
+          <button class="check" type="submit">{{ "✓" if progress.get(task.id) else "" }}</button>
+          <div><b>{{ task.title }}</b><small>{{ task.why }}</small></div>
+          <a class="tool-link" href="{{ task.href }}">{{ task.tool }}</a>
+        </form>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:18px">
+    <div class="kicker">Your Simple Plan</div>
+    <div class="plan">{{ plan_html }}</div>
+  </section>
+</div>
+{% endblock %}

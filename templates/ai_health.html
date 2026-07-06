@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}AI Health - Suhana AI{% endblock %}
+{% block extra_css %}
+<style>
+.health-page{max-width:900px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}.card{background:rgba(6,10,26,.86);border:1px solid rgba(125,211,252,.14);border-radius:22px;padding:24px;margin-bottom:14px}.title{font-family:'Orbitron';font-size:clamp(2rem,5vw,3.6rem)}.ok{color:#34d399}.bad{color:#fca5a5}.pill{display:inline-flex;border-radius:999px;padding:6px 10px;font-size:.75rem;font-weight:900;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}
+</style>
+{% endblock %}
+{% block content %}
+<div class="health-page">
+  <h1 class="title">AI Provider Health</h1>
+  <p style="color:rgba(255,255,255,.52);line-height:1.7;margin:12px 0 24px">Use this page when Tutor, Code, Image, or Script generation falls back. It tells whether keys are configured and whether the server can actually reach the provider.</p>
+  {% for check in checks %}
+  <section class="card">
+    <h2>{{ check.provider }} <span class="pill {{ 'ok' if check.ok else 'bad' }}">{{ 'Working' if check.ok else 'Problem' }}</span></h2>
+    <p>Configured: {{ 'Yes' if check.configured else 'No' }}</p>
+    <p class="{{ 'ok' if check.ok else 'bad' }}">{{ check.message }}</p>
+  </section>
+  {% endfor %}
+  <section class="card">
+    <h2>Exact Fix</h2>
+    <p>Set valid keys in `.env` locally and in Render Environment Variables: `GEMINI_API_KEY`, `OPENAI_API_KEY`, `ELEVENLABS_API_KEY`.</p>
+    <p>Then restart the server/redeploy. If this page still says problem, the issue is provider billing/quota/model/network, not page UI.</p>
+  </section>
+</div>
+{% endblock %}

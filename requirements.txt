@@ -1,0 +1,11 @@
+Flask
+elevenlabs
+python-dotenv
+flask-sqlalchemy
+Authlib
+pypdf
+Pillow
+openai
+cryptography
+waitress
+imageio-ffmpeg

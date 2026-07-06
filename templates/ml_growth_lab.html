@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}ML Growth Lab - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.ml-page{max-width:1280px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}.ml-grid{display:grid;grid-template-columns:390px 1fr;gap:18px}.ml-card{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(8,8,28,.86),rgba(4,10,24,.72));border-radius:28px;padding:26px;backdrop-filter:blur(18px);position:relative;overflow:hidden}.ml-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 12% 0%,rgba(125,211,252,.14),transparent 35%),radial-gradient(circle at 96% 22%,rgba(196,181,253,.1),transparent 34%);pointer-events:none}.ml-card>*{position:relative}.ml-kicker{display:inline-flex;border:1px solid rgba(125,211,252,.18);background:rgba(125,211,252,.08);border-radius:999px;padding:7px 12px;color:#7dd3fc;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}.ml-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.8rem);line-height:1.04;margin-bottom:12px}.ml-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.ml-sub{color:rgba(255,255,255,.46);line-height:1.75;margin-bottom:18px}.neural-viz{height:180px;border:1px solid rgba(255,255,255,.08);border-radius:22px;background:#020617;position:relative;overflow:hidden;margin-bottom:16px}.neuron{position:absolute;width:18px;height:18px;border-radius:50%;background:#7dd3fc;box-shadow:0 0 24px rgba(125,211,252,.7);animation:neuronPulse 2.4s ease-in-out infinite}.n1{left:42px;top:42px}.n2{left:42px;bottom:42px;animation-delay:.3s}.n3{left:145px;top:82px;animation-delay:.6s;background:#34d399}.n4{right:70px;top:42px;animation-delay:.9s;background:#c4b5fd}.n5{right:70px;bottom:42px;animation-delay:1.2s}.neural-viz svg{position:absolute;inset:0;width:100%;height:100%;opacity:.5}.field{margin-bottom:12px}.field label{display:block;font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border-radius:15px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);color:#fff;padding:0 13px;outline:none}.field input,.field select{height:47px}.field textarea{min-height:92px;padding:13px;resize:vertical;line-height:1.55}.field option{color:#020617}.ml-btn{width:100%;height:52px;border:0;border-radius:16px;background:linear-gradient(135deg,#7dd3fc,#34d399);font-weight:950;color:#020617;cursor:pointer}.score-ring{width:170px;height:170px;border-radius:50%;margin:4px auto 18px;display:grid;place-items:center;background:radial-gradient(circle at center,#08081c 56%,transparent 57%),conic-gradient(#7dd3fc 0 var(--score),rgba(255,255,255,.08) var(--score) 100%);box-shadow:0 0 58px rgba(125,211,252,.16)}.score-ring strong{font-family:'Orbitron',monospace;font-size:2.1rem}.report{line-height:1.75;color:rgba(255,255,255,.8)}.report h1,.report h2,.report h3{font-family:'Orbitron',monospace;color:#fff;margin:18px 0 8px}.md-table{overflow:auto;border-radius:16px;border:1px solid rgba(255,255,255,.08);margin:14px 0}.report table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:720px}.report th,.report td{border-bottom:1px solid rgba(255,255,255,.08);padding:10px;vertical-align:top}.report th{color:#7dd3fc;background:rgba(125,211,252,.08);text-align:left}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.actions a{border-radius:12px;padding:10px 12px;text-decoration:none;font-weight:900;font-size:.78rem}.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617}.secondary{border:1px solid rgba(255,255,255,.12);color:#fff;background:rgba(255,255,255,.05)}.empty{min-height:520px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.5)}.empty h2{font-family:'Orbitron';color:#fff;margin-bottom:8px}.recent{display:grid;gap:9px;margin-top:16px}.recent div{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:14px;padding:11px;color:rgba(255,255,255,.75)}.recent small{display:block;color:rgba(255,255,255,.36);margin-top:4px}@keyframes neuronPulse{50%{transform:scale(1.35);filter:brightness(1.3)}}@media(max-width:980px){.ml-grid{grid-template-columns:1fr}}@media(max-width:620px){.ml-page{padding:32px 20px 80px}.ml-card{padding:21px}}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="ml-page">
+  <section class="ml-grid">
+    <aside class="ml-card">
+      <div class="ml-kicker">Local ML engine</div>
+      <h1 class="ml-title">ML Growth <span>Lab</span></h1>
+      <p class="ml-sub">Predict content potential before posting using a lightweight neural-style model trained around creator growth signals.</p>
+      <div class="neural-viz" aria-hidden="true">
+        <svg><line x1="52" y1="52" x2="154" y2="91" stroke="#7dd3fc"/><line x1="52" y1="128" x2="154" y2="91" stroke="#34d399"/><line x1="154" y1="91" x2="310" y2="52" stroke="#c4b5fd"/><line x1="154" y1="91" x2="310" y2="128" stroke="#7dd3fc"/></svg>
+        <span class="neuron n1"></span><span class="neuron n2"></span><span class="neuron n3"></span><span class="neuron n4"></span><span class="neuron n5"></span>
+      </div>
+      <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field"><label>Content idea</label><input name="title" value="{{ form.title }}" placeholder="30 day fitness plan for students"></div>
+        <div class="field"><label>Format</label><select name="format_type"><option>Reel</option><option>Short</option><option>Carousel</option><option>LinkedIn Post</option><option>Ad Creative</option></select></div>
+        <div class="field"><label>Hook</label><textarea name="hook" placeholder="Stop making this biceps mistake...">{{ form.hook }}</textarea></div>
+        <div class="field"><label>Audience</label><input name="audience" value="{{ form.audience }}" placeholder="College students, founders, creators..."></div>
+        <div class="field"><label>Goal</label><input name="goal" value="{{ form.goal }}"></div>
+        <div class="field"><label>Past metrics optional</label><textarea name="metrics" placeholder="Views, saves, watch time, comments, CTR...">{{ form.metrics }}</textarea></div>
+        <button class="ml-btn" type="submit">Predict Growth Score</button>
+      </form>
+      {% if recent %}
+      <div class="recent">
+        {% for item in recent %}
+        <div>{{ item.title }}<small>Score {{ item.score }}/100 - {{ item.created_at.strftime("%d %b %Y") }}</small></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+
+    <section class="ml-card">
+      {% if result %}
+      <div class="score-ring" style="--score:{{ score }}%"><strong>{{ score }}</strong></div>
+      <div class="report">{{ result_html }}</div>
+      <div class="actions">
+        <a class="primary" href="/workflow-builder">Build Workflow</a>
+        <a class="secondary" href="/performance-coach">Analyze Posted Metrics</a>
+      </div>
+      {% else %}
+      <div class="empty"><div><div class="ml-kicker">Ready</div><h2>Predict before you post.</h2><p>This gives Suhana a real ML layer: content scoring, weak-point detection, and optimization before generation.</p></div></div>
+      {% endif %}
+    </section>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}AI Performance Coach - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.pc-page{max-width:1280px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}.pc-grid{display:grid;grid-template-columns:390px 1fr;gap:18px}.pc-card{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(8,8,28,.86),rgba(4,10,24,.72));border-radius:28px;padding:26px;backdrop-filter:blur(18px);position:relative;overflow:hidden}.pc-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 12% 0%,rgba(125,211,252,.14),transparent 35%),radial-gradient(circle at 96% 22%,rgba(52,211,153,.09),transparent 34%);pointer-events:none}.pc-card>*{position:relative}.pc-kicker{display:inline-flex;border:1px solid rgba(125,211,252,.18);background:rgba(125,211,252,.08);border-radius:999px;padding:7px 12px;color:#7dd3fc;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}.pc-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.8rem);line-height:1.04;margin-bottom:12px}.pc-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.pc-sub{color:rgba(255,255,255,.46);line-height:1.75;margin-bottom:18px}.platform-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.platform-chip{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);border-radius:16px;padding:10px;min-height:82px;color:#fff}.platform-chip svg{width:24px;height:24px;margin-bottom:6px}.platform-chip b{display:block;font-size:.76rem}.platform-chip span{display:block;color:rgba(255,255,255,.42);font-size:.68rem;line-height:1.35}.coach-viz{height:170px;border:1px solid rgba(255,255,255,.08);border-radius:22px;background:#020617;position:relative;overflow:hidden;margin-bottom:16px}.bar{position:absolute;bottom:28px;width:18px;border-radius:99px;background:linear-gradient(180deg,#7dd3fc,#34d399);box-shadow:0 0 24px rgba(125,211,252,.3);animation:barPulse 2.8s ease-in-out infinite}.b1{left:44px;height:62px}.b2{left:82px;height:96px;animation-delay:.2s}.b3{left:120px;height:44px;animation-delay:.4s}.b4{left:158px;height:118px;animation-delay:.6s}.coach-core{position:absolute;right:34px;top:42px;width:82px;height:82px;border-radius:28px;background:linear-gradient(135deg,#7dd3fc,#34d399);display:grid;place-items:center;color:#020617;font-family:'Orbitron',monospace;font-weight:900;box-shadow:0 0 60px rgba(125,211,252,.28)}.field{margin-bottom:12px}.field label{display:block;font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border-radius:15px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);color:#fff;padding:0 13px;outline:none}.field input,.field select{height:47px}.field textarea{min-height:150px;padding:13px;resize:vertical;line-height:1.55}.field option{color:#020617}.hint{color:rgba(255,255,255,.38);font-size:.74rem;line-height:1.45;margin-top:-4px;margin-bottom:10px}.pc-btn{width:100%;height:52px;border:0;border-radius:16px;background:linear-gradient(135deg,#7dd3fc,#34d399);font-weight:950;color:#020617;cursor:pointer}.brand-note{border:1px solid rgba(196,181,253,.15);background:rgba(196,181,253,.06);border-radius:16px;padding:13px;color:rgba(255,255,255,.58);line-height:1.55;font-size:.84rem;margin-bottom:14px}.publish-links{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.publish-links a{border:1px solid rgba(125,211,252,.14);background:rgba(125,211,252,.055);border-radius:14px;padding:10px;text-decoration:none;color:#fff;font-weight:900;font-size:.74rem;text-align:center}.output{min-height:760px}.result-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.source{color:#7dd3fc;border:1px solid rgba(125,211,252,.18);background:rgba(125,211,252,.08);border-radius:999px;padding:6px 10px;font-size:.72rem;font-weight:900}.report{line-height:1.75;color:rgba(255,255,255,.8)}.report h1,.report h2,.report h3{font-family:'Orbitron',monospace;color:#fff;margin:18px 0 8px}.md-table{overflow:auto;border-radius:16px;border:1px solid rgba(255,255,255,.08);margin:14px 0}.report table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:720px}.report th,.report td{border-bottom:1px solid rgba(255,255,255,.08);padding:10px;vertical-align:top}.report th{color:#7dd3fc;background:rgba(125,211,252,.08);text-align:left}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.actions a{border-radius:12px;padding:10px 12px;text-decoration:none;font-weight:900;font-size:.78rem}.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617}.secondary{border:1px solid rgba(255,255,255,.12);color:#fff;background:rgba(255,255,255,.05)}.empty{min-height:520px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.5)}.empty h2{font-family:'Orbitron';color:#fff;margin-bottom:8px}.recent{display:grid;gap:9px;margin-top:16px}.recent div{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:14px;padding:11px;color:rgba(255,255,255,.75)}.recent small{display:block;color:rgba(255,255,255,.36);margin-top:4px}@keyframes barPulse{50%{transform:scaleY(.72);filter:brightness(1.25)}}@media(max-width:980px){.pc-grid{grid-template-columns:1fr}.output{min-height:520px}}@media(max-width:620px){.pc-page{padding:32px 20px 80px}.pc-card{padding:21px}.platform-row,.publish-links{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="pc-page">
+  <section class="pc-grid">
+    <aside class="pc-card">
+      <div class="pc-kicker">Paid-value growth layer</div>
+      <h1 class="pc-title">Performance <span>Coach</span></h1>
+      <p class="pc-sub">Paste a Reel, Short, or X post link plus metrics. Suhana turns it into a creator growth diagnosis and upload-ready publishing pack.</p>
+      <div class="platform-row" aria-label="Supported creator platforms">
+        <div class="platform-chip"><svg viewBox="0 0 24 24"><path fill="#ff0033" d="M21.6 7.2s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C15.2 3.7 12 3.7 12 3.7s-3.2 0-6.4.2c-.4.1-1.4.1-2.3 1-.7.7-.9 2.3-.9 2.3s-.2 1.8-.2 3.6v1.7c0 1.8.2 3.6.2 3.6s.2 1.6.9 2.3c.9.9 2.1.9 2.6 1 1.9.2 6.1.2 6.1.2s3.2 0 6.4-.2c.4-.1 1.4-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.8.2-3.6v-1.7c0-1.8-.2-3.6-.2-3.6z"/><path fill="#fff" d="m10 15.2 5.2-3-5.2-3z"/></svg><b>YouTube</b><span>Shorts title, description, tags</span></div>
+        <div class="platform-chip"><svg viewBox="0 0 24 24"><defs><linearGradient id="igpc" x1="0" y1="24" x2="24" y2="0"><stop stop-color="#feda75"/><stop offset=".35" stop-color="#fa7e1e"/><stop offset=".65" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="url(#igpc)"/><circle cx="12" cy="12" r="4" fill="none" stroke="#fff" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="#fff"/></svg><b>Instagram</b><span>Reel caption, hashtags, hook</span></div>
+        <div class="platform-chip"><svg viewBox="0 0 24 24"><path fill="#fff" d="M18.2 2h3.3l-7.2 8.2L22.8 22h-6.7l-5.2-6.8L4.9 22H1.6l7.7-8.8L1.2 2h6.8l4.7 6.2L18.2 2zm-1.2 18h1.8L7 3.9H5.1L17 20z"/></svg><b>X</b><span>Post rewrite and thread starter</span></div>
+      </div>
+      <div class="coach-viz"><span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span><span class="bar b4"></span><div class="coach-core">ROI</div></div>
+      <div class="brand-note">{% if memory %}Using {{ memory.brand_name or "your brand" }} memory: {{ memory.niche or "niche not set" }}.{% else %}Save Brand Memory first for more accurate coaching.{% endif %}</div>
+      <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field"><label>Platform</label><select name="platform"><option {% if form.platform=="Instagram" %}selected{% endif %}>Instagram</option><option {% if form.platform=="YouTube Shorts" %}selected{% endif %}>YouTube Shorts</option><option {% if form.platform=="LinkedIn" %}selected{% endif %}>LinkedIn</option><option {% if form.platform=="X" %}selected{% endif %}>X</option><option {% if form.platform=="TikTok" %}selected{% endif %}>TikTok</option></select></div>
+        <div class="field"><label>Content type</label><select name="content_type"><option {% if form.content_type=="Reel" %}selected{% endif %}>Reel</option><option {% if form.content_type=="Carousel" %}selected{% endif %}>Carousel</option><option {% if form.content_type=="Short" %}selected{% endif %}>Short</option><option {% if form.content_type=="Post" %}selected{% endif %}>Post</option><option {% if form.content_type=="Ad Creative" %}selected{% endif %}>Ad Creative</option></select></div>
+        <div class="field"><label>Goal</label><input name="goal" value="{{ form.goal }}"></div>
+        <div class="field"><label>AI Agent</label><select name="ai_agent">{% for agent in nim_agent_options %}<option value="{{ agent.value }}" {% if form.ai_agent == agent.value %}selected{% endif %}>{{ agent.label }}</option>{% endfor %}</select></div>
+        <div class="field"><label>Reel / Short / Post link</label><input name="content_url" value="{{ form.content_url }}" placeholder="https://instagram.com/reel/... or https://youtube.com/shorts/..."></div>
+        <div class="hint">Suhana detects the platform and public slug from the link. Private watch time, comments, and upload require official OAuth/API connection.</div>
+        <div class="field"><label>Metrics / notes</label><textarea name="metrics" placeholder="Example: 2,400 views, 38 saves, 12 comments, avg watch 5s, posted at 8pm. Hook was: ...">{{ form.metrics }}</textarea></div>
+        <button class="pc-btn" type="submit" data-loading="Analyzing growth...">Analyze Performance</button>
+        <div class="publish-links">
+          <a href="https://studio.youtube.com" target="_blank" rel="noopener">Open YouTube Studio</a>
+          <a href="https://business.facebook.com/latest/reels_composer" target="_blank" rel="noopener">Open Meta Reels</a>
+          <a href="https://x.com/compose/post" target="_blank" rel="noopener">Open X Compose</a>
+        </div>
+      </form>
+      {% if reports %}
+      <div class="recent">
+        {% for report in reports %}
+        <div>{{ report.platform }} {{ report.content_type }}<small>{{ report.source }} - {{ report.created_at.strftime("%d %b %Y") }}</small></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+
+    <section class="pc-card output">
+      {% if result %}
+      <div class="result-head"><h2>Growth Diagnosis</h2><span class="source">{{ source }}</span></div>
+      <div class="report">{{ result_html }}</div>
+      <div class="actions">
+        <a class="primary" href="/workflow-builder">Build Next Post</a>
+        <a class="secondary" href="/creator-copilot">Plan 30 Days</a>
+        <a class="secondary" href="/script-generator">Write Script</a>
+      </div>
+      {% else %}
+      <div class="empty"><div><div class="pc-kicker">Ready</div><h2>Turn links into next actions.</h2><p>Paste a YouTube Short, Instagram Reel, or X post link. Add metrics if you have them. Suhana will extract safe public context, diagnose growth, and prepare a publishing pack.</p></div></div>
+      {% endif %}
+    </section>
+  </section>
+</main>
+{% endblock %}

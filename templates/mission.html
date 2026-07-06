@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Mission Mode - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.mission-page{max-width:1280px;margin:0 auto;padding:50px 5% 100px;position:relative;z-index:2}
+.mission-hero{display:grid;grid-template-columns:1fr .92fr;gap:18px;align-items:stretch;margin-bottom:18px}
+.mission-card{border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,rgba(5,8,18,.88),rgba(4,18,26,.72));padding:28px;backdrop-filter:blur(20px);position:relative;overflow:hidden;clip-path:polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px)}
+.mission-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 14% 4%,rgba(98,232,255,.16),transparent 34%),radial-gradient(circle at 88% 20%,rgba(67,255,210,.12),transparent 34%);pointer-events:none}.mission-card>*{position:relative}
+.kicker{display:inline-flex;border:1px solid rgba(98,232,255,.22);background:rgba(98,232,255,.08);color:#62e8ff;border-radius:999px;padding:7px 12px;font-size:.7rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+.mission-title{font-family:Orbitron,monospace;font-size:clamp(2.2rem,5vw,5.2rem);line-height:.96;letter-spacing:-.05em;margin:0 0 14px;text-transform:uppercase}.mission-title span{background:linear-gradient(90deg,#62e8ff,#43ffd2,#a78bfa,#ff7ac8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:rgba(255,255,255,.52);line-height:1.75;max-width:720px}.mission-form{display:grid;gap:12px;margin-top:22px}.field label{display:block;margin-bottom:7px;color:rgba(255,255,255,.44);font-size:.68rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase}.field input,.field select{width:100%;height:50px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff;padding:0 13px;outline:none}.field option{color:#020617}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.role-grid input{position:absolute;opacity:0}.role-grid span{display:block;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);padding:12px;text-align:center;font-weight:950;cursor:pointer;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}.role-grid input:checked+span{background:linear-gradient(135deg,#62e8ff,#43ffd2);color:#020304;border-color:transparent}
+.run-btn{height:56px;border:0;background:linear-gradient(135deg,#fff,#dffff9);color:#020304;font-weight:950;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.mission-model{min-height:560px;display:grid;place-items:center}.mind{width:min(500px,80vw);aspect-ratio:1;position:relative;transform-style:preserve-3d;animation:tilt 8s ease-in-out infinite}.core{position:absolute;inset:34%;display:grid;place-items:center;background:linear-gradient(135deg,#62e8ff,#43ffd2,#a78bfa);color:#020304;font-family:Orbitron,monospace;font-size:2.4rem;font-weight:950;clip-path:polygon(20% 0,100% 18%,82% 100%,0 82%);box-shadow:0 0 90px rgba(67,255,210,.36);z-index:3}.ring{position:absolute;inset:9%;border:1px solid rgba(98,232,255,.24);border-radius:50%;transform:rotateX(65deg);animation:spin 16s linear infinite}.ring.r2{inset:21%;border-color:rgba(167,139,250,.28);animation-duration:10s;animation-direction:reverse}.branch{position:absolute;left:50%;top:50%;width:44%;height:2px;background:linear-gradient(90deg,rgba(98,232,255,.9),transparent);transform-origin:0 50%;filter:drop-shadow(0 0 10px rgba(98,232,255,.6))}.b1{transform:rotate(-70deg)}.b2{transform:rotate(-28deg)}.b3{transform:rotate(18deg)}.b4{transform:rotate(62deg)}.b5{transform:rotate(118deg)}.b6{transform:rotate(178deg)}.fruit{position:absolute;width:112px;min-height:74px;padding:12px;display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.075);font-weight:950;font-size:.78rem;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);box-shadow:0 0 40px rgba(98,232,255,.12);animation:pop 3.4s ease-in-out infinite}.f1{left:12%;top:8%;color:#62e8ff}.f2{right:7%;top:18%;color:#43ffd2;animation-delay:.25s}.f3{right:3%;bottom:25%;color:#a78bfa;animation-delay:.5s}.f4{left:42%;bottom:2%;color:#ff7ac8;animation-delay:.75s}.f5{left:0;bottom:30%;color:#f7d774;animation-delay:1s}.f6{left:42%;top:0;color:#fff;animation-delay:1.25s}
+.result-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px;margin-top:18px}.plan{line-height:1.75;color:rgba(255,255,255,.82)}.plan h1,.plan h2,.plan h3{color:#fff;letter-spacing:-.03em}.plan table{width:100%;border-collapse:collapse;min-width:680px}.plan th,.plan td{border-bottom:1px solid rgba(255,255,255,.08);padding:10px;text-align:left;vertical-align:top}.plan th{color:#62e8ff;background:rgba(98,232,255,.08)}
+.mission-list{display:grid;gap:10px}.mission-link{display:block;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);padding:15px;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}.mission-link b{display:block;margin-bottom:5px}.mission-link span{color:rgba(255,255,255,.45);font-size:.78rem}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;text-decoration:none;font-weight:950;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}.btn.primary{background:linear-gradient(135deg,#62e8ff,#43ffd2);color:#020304;border:0}
+@keyframes spin{to{transform:rotateX(65deg) rotateZ(360deg)}}@keyframes tilt{50%{transform:rotateY(10deg) translateY(-12px)}}@keyframes pop{50%{transform:translateY(-10px) scale(1.04);filter:saturate(1.3)}}
+@media(max-width:980px){.mission-hero,.result-grid{grid-template-columns:1fr}.two,.role-grid{grid-template-columns:1fr}.mission-model{min-height:430px}.fruit{width:92px;font-size:.7rem}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mission-page">
+  <section class="mission-hero">
+    <div class="mission-card">
+      <div class="kicker">Start Here</div>
+      <h1 class="mission-title">Tell Suhana <span>Your Goal</span></h1>
+      <p class="sub">Write what you want to achieve. Suhana will make a simple step-by-step plan, show the next useful action, and save your progress.</p>
+      <form class="mission-form" method="POST" id="missionForm">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field">
+          <label>Who is this for?</label>
+          <div class="role-grid">
+            {% for value,label in [("student","Student"),("creator","Creator"),("engineer","Engineer"),("founder","Founder"),("normal","Everyday"),("team","Team")] %}
+            <label><input type="radio" name="role" value="{{ value }}" {% if form.role == value %}checked{% endif %}><span>{{ label }}</span></label>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="field"><label>Main goal</label><input name="goal" value="{{ form.goal }}" placeholder="Prepare for DSA interviews, grow fitness page, launch startup, pass physics exam..." required></div>
+        <div class="two">
+          <div class="field"><label>Audience / context</label><input name="audience" value="{{ form.audience }}" placeholder="Class 10 student, beginner creators, college developers..."></div>
+          <div class="field"><label>Timeline</label><input name="timeline" value="{{ form.timeline }}" placeholder="7 days, 30 days, this weekend..."></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Success metric</label><input name="success_metric" value="{{ form.success_metric }}" placeholder="Score 80%, publish 10 reels, build MVP, finish project..."></div>
+          <div class="field"><label>AI engine</label><select name="ai_agent">{% for agent in nim_agent_options %}<option value="{{ agent.value }}" {% if form.ai_agent == agent.value %}selected{% endif %}>{{ agent.label }}</option>{% endfor %}</select></div>
+        </div>
+        {% if history_items %}
+        <div class="field"><label>Continue from previous work</label><select name="history_key"><option value="">Start fresh</option>{% for item in history_items %}<option value="{{ item.key }}" {% if form.history_key == item.key %}selected{% endif %}>{{ item.label }}</option>{% endfor %}</select></div>
+        {% endif %}
+        <button class="run-btn" type="submit">Make My Plan</button>
+      </form>
+    </div>
+    <div class="mission-card mission-model" aria-hidden="true">
+      <div class="mind">
+        <div class="ring"></div><div class="ring r2"></div><div class="core">GOAL</div>
+        <div class="branch b1"></div><div class="branch b2"></div><div class="branch b3"></div><div class="branch b4"></div><div class="branch b5"></div><div class="branch b6"></div>
+        <div class="fruit f1">Learn</div><div class="fruit f2">Build</div><div class="fruit f3">Create</div><div class="fruit f4">Export</div><div class="fruit f5">Track</div><div class="fruit f6">Grow</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="result-grid">
+    <div class="mission-card">
+      <div class="kicker">Saved Missions</div>
+      <div class="mission-list">
+        {% for mission in missions %}
+        <a class="mission-link" href="/mission/{{ mission.id }}"><b>{{ mission.title }}</b><span>{{ mission.role|capitalize }} - {{ mission.status|capitalize }} - {{ mission.created_at.strftime("%d %b %Y") }}</span></a>
+        {% else %}
+        <p class="sub">No saved missions yet. Create one above and Suhana will turn it into a guided workspace.</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="mission-card">
+      {% if result %}
+      <div class="kicker">{{ source }}</div>
+      <div class="plan">{{ result_html }}</div>
+      {% if created_mission %}
+      <div class="actions">
+        <a class="btn primary" href="/mission/{{ created_mission.id }}">Open Mission Board</a>
+        <a class="btn" href="/mission/{{ created_mission.id }}/export">Export PDF</a>
+      </div>
+      {% endif %}
+      {% else %}
+      <div class="kicker">How It Works</div>
+      <h2 class="mission-title" style="font-size:clamp(1.8rem,4vw,3.8rem)">Goal → Plan → <span>Done</span></h2>
+      <p class="sub">Example: “fitness growing physique in 30 days.” Suhana gives daily steps, content ideas, workout direction, progress checks, and the next button to press.</p>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const missionForm=document.getElementById('missionForm');
+if(missionForm){missionForm.addEventListener('submit',()=>{const btn=missionForm.querySelector('button');btn.textContent='Building mission...';btn.style.opacity='.72';})}
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Prompt Engineer - Suhana AI{% endblock %}
+{% block extra_css %}
+<style>
+.bridge-page{max-width:1240px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}.bridge-hero{display:grid;grid-template-columns:1fr .9fr;gap:18px;margin-bottom:18px}.panel{border:1px solid rgba(125,211,252,.16);background:linear-gradient(145deg,rgba(6,10,28,.86),rgba(4,10,24,.68));padding:26px;box-shadow:0 24px 90px rgba(0,0,0,.26);position:relative;overflow:hidden}.panel::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 16% 0%,rgba(125,211,252,.14),transparent 34%),radial-gradient(circle at 94% 24%,rgba(52,211,153,.09),transparent 35%);pointer-events:none}.panel>*{position:relative}.kicker{display:inline-flex;color:#7dd3fc;border:1px solid rgba(125,211,252,.18);background:rgba(125,211,252,.07);padding:7px 11px;font-size:.72rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}.title{font-family:'Orbitron',monospace;font-size:clamp(2.1rem,5vw,4.5rem);line-height:1.02;margin-bottom:12px}.title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.sub{color:rgba(255,255,255,.5);line-height:1.75;max-width:720px}.prompt-orbit{min-height:330px;display:grid;place-items:center}.orb{width:min(320px,72vw);aspect-ratio:1;border:1px solid rgba(125,211,252,.18);position:relative;animation:spinBridge 22s linear infinite}.orb::before{content:'';position:absolute;inset:52px;border:1px solid rgba(52,211,153,.18)}.orb-core{position:absolute;inset:34%;display:grid;place-items:center;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;font-family:'Orbitron';font-weight:950;box-shadow:0 0 70px rgba(125,211,252,.28);animation:pulseCore 3s ease-in-out infinite}.node{position:absolute;width:86px;min-height:42px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.06);display:grid;place-items:center;text-align:center;font-size:.7rem;font-weight:900;color:rgba(255,255,255,.78);animation:counterBridge 22s linear infinite}.n1{left:50%;top:-16px;transform:translateX(-50%)}.n2{right:-26px;top:34%}.n3{left:50%;bottom:-16px;transform:translateX(-50%)}.n4{left:-26px;top:34%}@keyframes spinBridge{to{rotate:360deg}}@keyframes counterBridge{to{rotate:-360deg}}@keyframes pulseCore{50%{transform:scale(1.06);filter:hue-rotate(35deg)}}.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.bento-card{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);padding:16px;min-height:138px;position:relative;overflow:hidden}.bento-card::after{content:'';position:absolute;right:-34px;bottom:-38px;width:100px;height:100px;background:linear-gradient(135deg,rgba(125,211,252,.18),rgba(52,211,153,.08));transform:rotate(16deg)}.bento-card b{display:block;font-family:'Orbitron',monospace;margin-bottom:8px}.bento-card span{display:block;color:rgba(255,255,255,.45);font-size:.82rem;line-height:1.55}.form-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:18px}.field{margin-bottom:12px}.field label{display:block;font-size:.7rem;font-weight:950;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);color:#fff;padding:12px;outline:none}.field input,.field select{height:48px}.field textarea{min-height:170px;resize:vertical;line-height:1.6}.field option{color:#020617}.btn{border:0;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;font-weight:950;padding:13px 17px;cursor:pointer;text-decoration:none;display:inline-flex}.btn.secondary{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);color:#fff}.btn-row{display:flex;flex-wrap:wrap;gap:10px}.prompt-output{white-space:pre-wrap;line-height:1.72;color:rgba(255,255,255,.84);background:#020617;border:1px solid rgba(125,211,252,.16);padding:18px;max-height:560px;overflow:auto}.provider-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:12px}.provider-strip a{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);padding:10px;color:#fff;text-align:center;text-decoration:none;font-size:.78rem;font-weight:900}.quality{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.quality div{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);padding:14px;color:rgba(255,255,255,.58);line-height:1.55;font-size:.86rem}.quality strong{display:block;color:#fff;margin-bottom:5px}@media(max-width:980px){.bridge-hero,.form-grid,.bento,.quality{grid-template-columns:1fr}.provider-strip{grid-template-columns:repeat(2,1fr)}}
+</style>
+{% endblock %}
+{% block content %}
+<main class="bridge-page">
+  <section class="bridge-hero">
+    <div class="panel">
+      <div class="kicker">Prompt Engineering Lab</div>
+      <h1 class="title">Get the <span>best prompt</span> for any AI</h1>
+      <p class="sub">Tell Suhana what you want. Choose Gemini, ChatGPT, Claude, Llama/Groq, Copilot, or an image model. Suhana converts your rough idea into a powerful optimized prompt.</p>
+      <div class="bento">
+        <div class="bento-card"><b>Role</b><span>Gives the AI the right expert identity.</span></div>
+        <div class="bento-card"><b>Context</b><span>Adds constraints, level, audience, and resources.</span></div>
+        <div class="bento-card"><b>Output</b><span>Forces clean sections, tables, code, formulas, or JSON.</span></div>
+        <div class="bento-card"><b>Quality</b><span>Pushes the model to be specific, accurate, and useful.</span></div>
+      </div>
+    </div>
+    <div class="panel prompt-orbit" aria-hidden="true">
+      <div class="orb"><div class="orb-core">Prompt</div><div class="node n1">Gemini</div><div class="node n2">Claude</div><div class="node n3">ChatGPT</div><div class="node n4">Copilot</div></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <form method="POST" class="form-grid">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+      <div>
+        <div class="field"><label>Prompt Type</label><select name="mode">{% for item in ["Tutor","Code","Script","Quiz","Studio","Image","Business"] %}<option value="{{ item }}" {% if mode==item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></div>
+        <div class="field"><label>Target AI</label><select name="provider">{% for item in ["Gemini","ChatGPT","Claude","Llama/Groq","Copilot","Image Model"] %}<option value="{{ item }}" {% if provider==item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></div>
+        <div class="field"><label>Extra Context</label><textarea name="context" placeholder="Class level, language, files, brand, audience, constraints, style...">{{ context }}</textarea></div>
+      </div>
+      <div>
+        <div class="field"><label>What do you want?</label><textarea name="question" placeholder="Example: Create a complete prompt to teach quadratic equations to class 10 in Hinglish with formulas and practice questions." required>{{ question }}</textarea></div>
+        <button class="btn" type="submit">Generate Optimized Prompt</button>
+      </div>
+    </form>
+  </section>
+
+  {% if bridge_prompt %}
+  <section class="panel">
+    <div class="kicker">Optimized For {{ provider }}</div>
+    <div class="prompt-output" id="bridgePrompt">{{ bridge_prompt }}</div><br>
+    <div class="btn-row">
+      <button class="btn" type="button" onclick="navigator.clipboard.writeText(document.getElementById('bridgePrompt').innerText);this.textContent='Copied'">Copy Prompt</button>
+      <a class="btn secondary" href="https://gemini.google.com/app" target="_blank" rel="noopener">Open Gemini</a>
+      <a class="btn secondary" href="https://chatgpt.com" target="_blank" rel="noopener">Open ChatGPT</a>
+      <a class="btn secondary" href="https://claude.ai" target="_blank" rel="noopener">Open Claude</a>
+      <a class="btn secondary" href="https://github.com/features/copilot" target="_blank" rel="noopener">Open Copilot</a>
+    </div>
+    <div class="quality">
+      <div><strong>Best Use</strong>Paste this prompt into {{ provider }} and answer any clarification questions it asks.</div>
+      <div><strong>Upgrade Tip</strong>Add examples, exact audience, and output format when you want sharper results.</div>
+      <div><strong>Demo Line</strong>Suhana turns rough ideas into model-specific expert prompts.</div>
+    </div>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

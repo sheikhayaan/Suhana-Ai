@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.auth-page{
+  min-height:calc(100vh - 66px);
+  display:grid;
+  grid-template-columns:.95fr 1.05fr;
+  gap:34px;
+  align-items:center;
+  max-width:1180px;
+  margin:0 auto;
+  padding:56px 5% 90px;
+  position:relative;
+}
+.auth-page::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(720px,88vw);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.09),rgba(255,255,255,.025) 38%,transparent 70%);
+  filter:blur(18px);
+  pointer-events:none;
+}
+
+.auth-card,.auth-art{
+  background:rgba(8,8,28,.78);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  backdrop-filter:blur(18px);
+  overflow:hidden;
+}
+
+.auth-card{
+  padding:40px 36px;
+  border-radius:28px;
+}
+
+.auth-art{
+  min-height:560px;
+  padding:42px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.auth-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  width:max-content;
+  color:#34d399;
+  background:rgba(52,211,153,.08);
+  border:1px solid rgba(52,211,153,.2);
+  border-radius:50px;
+  padding:6px 14px;
+  font-size:.75rem;
+  letter-spacing:.05em;
+}
+
+.auth-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#34d399;
+  box-shadow:0 0 10px #34d399;
+}
+
+.auth-title{
+  font-family:'Orbitron',monospace;
+  font-size:1.65rem;
+  margin-bottom:8px;
+}
+
+.auth-sub{
+  color:rgba(255,255,255,.38);
+  font-size:.88rem;
+  margin-bottom:28px;
+  line-height:1.65;
+}
+
+.auth-field{
+  margin-bottom:16px;
+}
+
+.auth-field label{
+  display:block;
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.4);
+  margin-bottom:8px;
+}
+
+.auth-field input{
+  width:100%;
+  height:48px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+  color:#fff;
+  padding:0 15px;
+  font-family:'Inter',sans-serif;
+  outline:none;
+}
+
+.auth-field input:focus{
+  border-color:rgba(52,211,153,.45);
+  box-shadow:0 0 0 3px rgba(52,211,153,.08);
+}
+
+.auth-btn{
+  width:100%;
+  height:50px;
+  border:0;
+  border-radius:14px;
+  margin-top:8px;
+  background:linear-gradient(135deg,#34d399,#7dd3fc);
+  color:#000;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 0 30px rgba(52,211,153,.32);
+}
+
+.auth-link{
+  text-align:center;
+  margin-top:20px;
+  color:rgba(255,255,255,.38);
+  font-size:.84rem;
+}
+
+.auth-link a{
+  color:#7dd3fc;
+  text-decoration:none;
+}
+.google-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:48px;
+  border-radius:14px;
+  margin-bottom:16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  color:#fff;
+  text-decoration:none;
+  font-weight:800;
+}
+
+.auth-art h1{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2.1rem,4.5vw,4.1rem);
+  line-height:1.05;
+  margin:28px 0 14px;
+}
+
+.auth-art h1 span{
+  background:linear-gradient(90deg,#34d399,#7dd3fc,#c4b5fd);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.auth-art p{
+  color:rgba(255,255,255,.45);
+  line-height:1.75;
+  max-width:460px;
+}
+
+.auth-vector{
+  width:100%;
+  max-width:470px;
+  margin:28px auto 0;
+  display:block;
+}
+
+@media(max-width:900px){
+  .auth-page{
+    grid-template-columns:1fr;
+  }
+
+  .auth-art{
+    min-height:auto;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+
+  <section class="auth-card">
+    <h2 class="auth-title">Welcome Back</h2>
+    <p class="auth-sub">Sign in to continue creating scripts, voiceovers, and AI reels.</p>
+
+    <a class="google-btn" href="/login/google">Continue with Google</a>
+
+    <form method="POST">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="next" value="{{ next_url or '/dashboard' }}">
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Your password" autocomplete="current-password" required>
+      </div>
+
+      <button class="auth-btn" type="submit">Sign In</button>
+    </form>
+
+    <div class="auth-link">
+      New to Suhana AI? <a href="/signup">Create account</a>
+    </div>
+  </section>
+
+  <section class="auth-art">
+    <div>
+      <div class="auth-badge"><div class="auth-dot"></div>AI Studio Access</div>
+      <h1>Continue your <span>creator workflow</span></h1>
+      <p>Access your saved reels, upcoming tools, brand settings, API vault, and creator dashboard.</p>
+    </div>
+
+    <svg class="auth-vector" viewBox="0 0 520 360" fill="none">
+      <rect x="70" y="58" width="380" height="238" rx="28" fill="rgba(52,211,153,.07)" stroke="rgba(52,211,153,.28)"/>
+      <circle cx="260" cy="176" r="76" fill="rgba(125,211,252,.08)" stroke="rgba(125,211,252,.25)"/>
+      <path d="M260 114v62l44 28" stroke="#7dd3fc" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="120" y="112" width="84" height="16" rx="8" fill="#34d399" opacity=".9"/>
+      <rect x="120" y="148" width="112" height="10" rx="5" fill="white" opacity=".18"/>
+      <rect x="120" y="172" width="88" height="10" rx="5" fill="white" opacity=".13"/>
+      <rect x="310" y="228" width="96" height="38" rx="19" fill="url(#loginBtn)"/>
+      <circle cx="382" cy="112" r="18" fill="#c4b5fd" opacity=".9"/>
+      <path d="M104 316c82-24 242-30 330 0" stroke="rgba(196,181,253,.35)" stroke-width="3"/>
+      <defs>
+        <linearGradient id="loginBtn" x1="310" y1="228" x2="406" y2="266">
+          <stop stop-color="#34d399"/>
+          <stop offset="1" stop-color="#7dd3fc"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </section>
+
+</div>
+{% endblock %}

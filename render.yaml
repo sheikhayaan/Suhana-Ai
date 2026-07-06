@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: suhana-ai
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: waitress-serve --host=0.0.0.0 --port=$PORT main:app
+    envVars:
+      - key: SESSION_COOKIE_SECURE
+        value: "1"
+      - key: ENABLE_DEV_ADMIN
+        value: "0"
+      - key: PROCESS_REELS_INLINE
+        value: "1"
+      - key: START_BACKGROUND_WORKER
+        value: "0"
+      - key: REEL_WIDTH
+        value: "360"
+      - key: REEL_HEIGHT
+        value: "640"
+      - key: DEMO_FRESH_ALLOWANCE
+        value: "1"
+      - key: PUBLIC_BASE_URL
+        value: https://suhana-ai.onrender.com
+      - key: POST_RATE_LIMIT
+        value: "18"
+      - key: POST_RATE_WINDOW_SECONDS
+        value: "300"
+      - key: MAX_UPLOAD_MB
+        value: "64"
+      - key: STRICT_AI_MODE
+        value: "0"

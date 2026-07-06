@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}About Us — Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.about-page{padding:40px 48px 100px;max-width:1100px;margin:0 auto;position:relative;z-index:2}
+@media(max-width:600px){.about-page{padding:28px 20px 80px}}
+
+/* HERO */
+.ab-hero{text-align:center;padding:16px 0 60px;position:relative}
+.ab-hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,rgba(125,211,252,.3),rgba(196,181,253,.2),transparent)}
+.ab-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(196,181,253,.07);border:1px solid rgba(196,181,253,.18);border-radius:50px;padding:4px 14px 4px 8px;font-size:.72rem;color:#c4b5fd;letter-spacing:.05em;margin-bottom:20px}
+.ab-dot{width:6px;height:6px;border-radius:50%;background:#c4b5fd;box-shadow:0 0 8px #c4b5fd;animation:bl 2s .5s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.ab-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.8rem);font-weight:900;letter-spacing:-.02em;margin-bottom:18px;line-height:1.05}
+.ab-title .line2{display:block;background:linear-gradient(90deg,#f87171,#fb923c,#fde68a,#6ee7b7,#7dd3fc,#c4b5fd);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gs2 6s linear infinite}
+@keyframes gs2{0%{background-position:0%}100%{background-position:300%}}
+.ab-sub{font-size:1rem;color:rgba(255,255,255,.42);max-width:560px;margin:0 auto;line-height:1.8}
+
+/* MISSION */
+.mission-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:56px 0}
+@media(max-width:700px){.mission-row{grid-template-columns:1fr}}
+.mc{background:rgba(8,8,28,.75);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:36px 32px;position:relative;overflow:hidden;transition:.3s;backdrop-filter:blur(14px)}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px}
+.mc1::before{background:linear-gradient(90deg,transparent,rgba(125,211,252,.55),transparent)}
+.mc2::before{background:linear-gradient(90deg,transparent,rgba(196,181,253,.55),transparent)}
+.mc:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.12)}
+.mc-icon{font-size:2.2rem;margin-bottom:16px}
+.mc-t{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:#fff;margin-bottom:10px;letter-spacing:-.01em}
+.mc-d{font-size:.875rem;color:rgba(255,255,255,.4);line-height:1.75}
+
+/* STATS */
+.ab-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:20px;overflow:hidden;margin-bottom:56px}
+@media(max-width:700px){.ab-stats{grid-template-columns:repeat(2,1fr)}}
+.ab-st{background:rgba(8,8,28,.9);padding:36px 20px;text-align:center;transition:.2s}
+.ab-st:hover{background:rgba(15,15,40,.9)}
+.ab-sn{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;background:linear-gradient(90deg,#7dd3fc,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px}
+.ab-sl{font-size:.76rem;color:rgba(255,255,255,.3);letter-spacing:.05em}
+
+/* SECTION LABEL */
+.sec-label{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(125,211,252,.3),transparent)}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:minmax(260px,420px);justify-content:center;gap:14px;margin-bottom:52px}
+@media(max-width:900px){.team-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.team-grid{grid-template-columns:1fr}}
+.tc{background:rgba(8,8,28,.75);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px 20px;text-align:center;transition:.3s;cursor:default;backdrop-filter:blur(12px)}
+.tc:hover{transform:translateY(-5px);border-color:rgba(125,211,252,.2);background:rgba(125,211,252,.04)}
+.tc-av{width:76px;height:76px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:30px}
+.av1{background:linear-gradient(135deg,rgba(248,113,113,.2),rgba(251,146,60,.2));border:1px solid rgba(248,113,113,.28)}
+.av2{background:linear-gradient(135deg,rgba(125,211,252,.2),rgba(52,211,153,.2));border:1px solid rgba(125,211,252,.28)}
+.av3{background:linear-gradient(135deg,rgba(196,181,253,.2),rgba(244,114,182,.2));border:1px solid rgba(196,181,253,.28)}
+.av4{background:linear-gradient(135deg,rgba(253,230,138,.2),rgba(251,146,60,.2));border:1px solid rgba(253,230,138,.28)}
+.tc-name{font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;color:#fff;margin-bottom:4px;letter-spacing:.04em}
+.tc-role{font-size:.72rem;color:rgba(255,255,255,.35);margin-bottom:10px}
+.tc-tag{display:inline-block;font-size:.62rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:50px;background:rgba(125,211,252,.08);color:#7dd3fc;border:1px solid rgba(125,211,252,.15)}
+
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:52px}
+@media(max-width:800px){.values-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.values-grid{grid-template-columns:1fr}}
+.vc{background:rgba(8,8,28,.7);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:26px 22px;position:relative;overflow:hidden;transition:.25s;cursor:default;backdrop-filter:blur(12px)}
+.vc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:.3s}
+.vc:hover{transform:translateY(-4px);background:rgba(15,15,40,.85)}
+.vc:hover::before{opacity:1}
+.v1::before{background:linear-gradient(90deg,#f87171,#fb923c)}
+.v2::before{background:linear-gradient(90deg,#7dd3fc,#34d399)}
+.v3::before{background:linear-gradient(90deg,#c4b5fd,#f9a8d4)}
+.v4::before{background:linear-gradient(90deg,#fde68a,#fb923c)}
+.v5::before{background:linear-gradient(90deg,#34d399,#7dd3fc)}
+.v6::before{background:linear-gradient(90deg,#f9a8d4,#c4b5fd)}
+.vc-em{font-size:1.8rem;margin-bottom:12px;display:block}
+.vc-t{font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;color:#fff;margin-bottom:7px;letter-spacing:.04em}
+.vc-d{font-size:.78rem;color:rgba(255,255,255,.35);line-height:1.65}
+
+/* TECH */
+.tech-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:52px}
+.tp{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:50px;padding:7px 16px;font-size:.78rem;color:rgba(255,255,255,.5);transition:.2s;cursor:default}
+.tp:hover{background:rgba(125,211,252,.06);border-color:rgba(125,211,252,.22);color:#fff}
+
+/* CTA */
+.ab-cta{background:linear-gradient(135deg,rgba(125,211,252,.09),rgba(196,181,253,.06),rgba(52,211,153,.04));border:1px solid rgba(125,211,252,.18);border-radius:24px;padding:64px 48px;text-align:center;position:relative;overflow:hidden}
+@media(max-width:600px){.ab-cta{padding:44px 24px}}
+.cta-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:250px;background:radial-gradient(ellipse,rgba(125,211,252,.12),transparent 70%);pointer-events:none}
+.pg-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(125,211,252,.07);border:1px solid rgba(125,211,252,.18);border-radius:50px;padding:4px 14px 4px 8px;font-size:.72rem;color:#7dd3fc;letter-spacing:.05em;margin-bottom:16px;position:relative}
+.ey-dot{width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;animation:bl 2s infinite}
+.ab-cta h2{font-family:'Orbitron',monospace;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#fff;margin:0 auto 14px;max-width:500px;letter-spacing:-.02em;position:relative}
+.ab-cta p{font-size:.95rem;color:rgba(255,255,255,.4);max-width:400px;margin:0 auto 32px;line-height:1.75;position:relative}
+.btn-cta-big{display:inline-flex;align-items:center;gap:9px;font-family:'Inter',sans-serif;font-weight:700;font-size:.95rem;color:#000;background:linear-gradient(135deg,#7dd3fc,#34d399);padding:14px 34px;border-radius:50px;text-decoration:none;box-shadow:0 0 28px rgba(125,211,252,.4);transition:.25s;position:relative}
+.btn-cta-big:hover{transform:translateY(-3px);box-shadow:0 0 46px rgba(125,211,252,.65);color:#000}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-page">
+
+  <!-- HERO -->
+  <div class="ab-hero">
+    <div class="ab-badge"><div class="ab-dot"></div>Our Story</div>
+    <h1 class="ab-title">
+      We're Building the Future<br>
+      <span class="line2">of AI Creation</span>
+    </h1>
+    <p class="ab-sub">Suhana AI was born from a simple belief — every creator deserves access to world-class AI tools, regardless of budget or technical skill.</p>
+  </div>
+
+  <!-- MISSION -->
+  <div class="mission-row">
+    <div class="mc mc1">
+      <div class="mc-icon">🎯</div>
+      <div class="mc-t">Our Mission</div>
+      <p class="mc-d">To democratise AI-powered content creation for every creator, business and storyteller in India and beyond. We believe great content shouldn't require a Hollywood budget or a team of engineers.</p>
+    </div>
+    <div class="mc mc2">
+      <div class="mc-icon">🔭</div>
+      <div class="mc-t">Our Vision</div>
+      <p class="mc-d">A world where any person with an idea can produce studio-quality images, videos and reels in seconds — powered entirely by artificial intelligence built proudly in India.</p>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="ab-stats">
+    <div class="ab-st"><div class="ab-sn">2023</div><div class="ab-sl">Founded</div></div>
+    <div class="ab-st"><div class="ab-sn">5M+</div><div class="ab-sl">Creations Made</div></div>
+    <div class="ab-st"><div class="ab-sn">320K+</div><div class="ab-sl">Active Creators</div></div>
+    <div class="ab-st"><div class="ab-sn">1</div><div class="ab-sl">Founder</div></div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="sec-label">Founder</div>
+  <div class="team-grid">
+    <div class="tc">
+      <div class="tc-av av2">MA</div>
+      <div class="tc-name">Mohd Ayaan</div>
+      <div class="tc-role">Founder &amp; Builder</div>
+      <span class="tc-tag">Suhana AI</span>
+    </div>
+  </div>
+
+  <!-- VALUES -->
+  <div class="sec-label">Our Values</div>
+  <div class="values-grid">
+    <div class="vc v1"><span class="vc-em">⚡</span><div class="vc-t">Speed First</div><p class="vc-d">We believe creation should be instant. Every feature we ship obsesses over reducing latency and friction for the creator.</p></div>
+    <div class="vc v2"><span class="vc-em">🌍</span><div class="vc-t">Built for India</div><p class="vc-d">Pricing in INR, servers in India, support in Hindi &amp; English. We're proudly Made in India, built for the world.</p></div>
+    <div class="vc v3"><span class="vc-em">🔒</span><div class="vc-t">Privacy by Default</div><p class="vc-d">Your content is yours. We never train on your uploads and we never sell your data. Full stop, no exceptions.</p></div>
+    <div class="vc v4"><span class="vc-em">🎓</span><div class="vc-t">Creator First</div><p class="vc-d">Every decision starts with "does this help a creator?" If the answer isn't a clear yes, we don't ship it.</p></div>
+    <div class="vc v5"><span class="vc-em">🤝</span><div class="vc-t">Radical Transparency</div><p class="vc-d">No dark patterns. No fake urgency. No hidden fees. We tell you exactly what you're paying for, always.</p></div>
+    <div class="vc v6"><span class="vc-em">🚀</span><div class="vc-t">Always Improving</div><p class="vc-d">We ship updates every week. Every piece of feedback shapes what we build next — you drive the roadmap.</p></div>
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="sec-label">Technology Stack</div>
+  <div class="tech-row">
+    <span class="tp">🧠 GPT-4 Turbo</span>
+    <span class="tp">🎨 Stable Diffusion XL</span>
+    <span class="tp">🎬 Runway Gen-3</span>
+    <span class="tp">🗣️ ElevenLabs</span>
+    <span class="tp">🎵 Suno AI</span>
+    <span class="tp">🐍 Python / Flask</span>
+    <span class="tp">⚡ ffmpeg</span>
+    <span class="tp">☁️ AWS India</span>
+    <span class="tp">💳 Razorpay</span>
+    <span class="tp">📊 PostgreSQL</span>
+  </div>
+
+  <!-- CTA -->
+  <div class="ab-cta">
+    <div class="cta-glow"></div>
+    <div class="pg-eyebrow"><div class="ey-dot"></div>Join Us</div>
+    <h2>Be Part of the AI Revolution</h2>
+    <p>Join 320,000+ creators already using Suhana AI to bring their ideas to life — for free.</p>
+    <a href="/create" class="btn-cta-big">⚡ Start Creating Free</a>
+  </div>
+
+</div>
+{% endblock %}
+

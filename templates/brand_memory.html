@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Brand Memory - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.bm-page{max-width:1180px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}.bm-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}.bm-card{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(8,8,28,.86),rgba(4,10,24,.72));border-radius:28px;padding:28px;backdrop-filter:blur(18px);position:relative;overflow:hidden}.bm-card::before{content:'';position:absolute;right:-70px;top:-70px;width:220px;height:220px;border:1px solid rgba(125,211,252,.16);background:linear-gradient(135deg,rgba(125,211,252,.18),rgba(52,211,153,.06));transform:rotate(18deg);animation:bmFloat 8s ease-in-out infinite}.bm-card>*{position:relative}.bm-kicker{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(125,211,252,.18);background:rgba(125,211,252,.08);border-radius:999px;padding:7px 12px;color:#7dd3fc;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}.bm-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,4rem);line-height:1.04;margin-bottom:12px}.bm-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.bm-sub{color:rgba(255,255,255,.46);line-height:1.75}.bm-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.wide{grid-column:1/-1}.field label{display:block;font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:7px}.field input,.field textarea{width:100%;border-radius:15px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);color:#fff;padding:0 13px;outline:none}.field input{height:48px}.field textarea{min-height:122px;padding:13px;resize:vertical;line-height:1.55}.bm-btn{grid-column:1/-1;height:52px;border:0;border-radius:16px;background:linear-gradient(135deg,#7dd3fc,#34d399);font-weight:950;color:#020617;cursor:pointer}.memory-preview{display:grid;gap:12px;margin-top:22px}.mem-row{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:16px;padding:14px}.mem-row small{display:block;color:#7dd3fc;text-transform:uppercase;letter-spacing:.08em;font-size:.65rem;font-weight:900;margin-bottom:5px}.mem-row div{color:rgba(255,255,255,.78);line-height:1.55}.bm-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.bm-actions a{display:inline-flex;min-height:42px;align-items:center;justify-content:center;padding:0 14px;border-radius:13px;text-decoration:none;font-weight:900}.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617}.secondary{border:1px solid rgba(255,255,255,.12);color:#fff;background:rgba(255,255,255,.05)}@keyframes bmFloat{50%{transform:translate(-18px,22px) rotate(28deg)}}@media(max-width:900px){.bm-grid,.bm-form{grid-template-columns:1fr}.bm-page{padding:32px 20px 80px}.bm-card{padding:22px}}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="bm-page">
+  <section class="bm-grid">
+    <div class="bm-card">
+      <div class="bm-kicker">Persistent intelligence</div>
+      <h1 class="bm-title">Brand <span>Memory</span></h1>
+      <p class="bm-sub">Save your identity once. Suhana uses it inside Creator Copilot and Workflow Builder so every plan, script, image prompt, and reel direction feels consistent.</p>
+      <div class="memory-preview">
+        <div class="mem-row"><small>Saved niche</small><div>{{ memory.niche if memory and memory.niche else "Not saved yet" }}</div></div>
+        <div class="mem-row"><small>Audience</small><div>{{ memory.audience if memory and memory.audience else "Not saved yet" }}</div></div>
+        <div class="mem-row"><small>Voice rules</small><div>{{ memory.content_rules if memory and memory.content_rules else "Add writing rules, banned words, CTA style, and language preference." }}</div></div>
+      </div>
+      <div class="bm-actions">
+        <a class="primary" href="/workflow-builder">Open Workflow Builder</a>
+        <a class="secondary" href="/creator-copilot">Creator Copilot</a>
+      </div>
+    </div>
+
+    <div class="bm-card">
+      <form class="bm-form" method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field"><label>Brand name</label><input name="brand_name" value="{{ memory.brand_name if memory else '' }}" placeholder="Suhana AI"></div>
+        <div class="field"><label>Niche</label><input name="niche" value="{{ memory.niche if memory else '' }}" placeholder="Fitness, education, SaaS, coding..."></div>
+        <div class="field wide"><label>Audience</label><input name="audience" value="{{ memory.audience if memory else '' }}" placeholder="Students, founders, creators, agencies..."></div>
+        <div class="field"><label>Colors</label><input name="colors" value="{{ memory.colors if memory else '' }}" placeholder="Cyan, black, emerald"></div>
+        <div class="field"><label>Tone</label><input name="tone" value="{{ memory.tone if memory else '' }}" placeholder="Premium but simple, Hinglish, expert..."></div>
+        <div class="field wide"><label>Logo URL</label><input name="logo_url" value="{{ memory.logo_url if memory else '' }}" placeholder="Optional logo link"></div>
+        <div class="field wide"><label>Offer</label><input name="offer" value="{{ memory.offer if memory else '' }}" placeholder="Course, coaching, SaaS product, agency service..."></div>
+        <div class="field wide"><label>Content rules</label><textarea name="content_rules" placeholder="Example: Use simple English/Hinglish, avoid hype, always end with save/share CTA.">{{ memory.content_rules if memory else '' }}</textarea></div>
+        <button class="bm-btn" type="submit">Save Brand Memory</button>
+      </form>
+    </div>
+  </section>
+</main>
+{% endblock %}

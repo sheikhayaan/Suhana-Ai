@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.legal-page{max-width:980px;margin:0 auto;padding:52px 5% 100px;position:relative;z-index:2}.legal-card{border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,rgba(5,8,18,.9),rgba(4,18,26,.72));padding:30px;backdrop-filter:blur(20px);clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px)}.kicker{display:inline-flex;border:1px solid rgba(98,232,255,.22);background:rgba(98,232,255,.08);color:#62e8ff;border-radius:999px;padding:7px 12px;font-size:.7rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}.legal-card h1{font-family:Orbitron,monospace;font-size:clamp(2.1rem,5vw,4.8rem);line-height:.96;margin:0 0 18px}.legal-card h2{margin-top:28px;color:#fff}.legal-card p,.legal-card li{color:rgba(255,255,255,.68);line-height:1.75}.legal-card a{color:#62e8ff}.note{border:1px solid rgba(98,232,255,.18);background:rgba(98,232,255,.07);padding:14px;margin:18px 0;color:rgba(255,255,255,.78)}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="legal-page">
+  <article class="legal-card">
+    <div class="kicker">Privacy</div>
+    <h1>Privacy Policy</h1>
+    <p class="note">This is a launch-ready placeholder. Before accepting paid customers at scale, have a qualified lawyer review it for your jurisdiction.</p>
+    <p>Last updated: {{ "2026" }}</p>
+    <h2>What We Collect</h2>
+    <ul>
+      <li>Account details such as name, email, purpose, and primary goal.</li>
+      <li>Content you submit to tools, including prompts, quiz topics, code, PDF text, scripts, images, and generated outputs.</li>
+      <li>Usage data such as credits, tool activity, saved work, and feedback.</li>
+      <li>Payment metadata if you purchase credits or a plan through a payment provider.</li>
+    </ul>
+    <h2>How We Use Data</h2>
+    <ul>
+      <li>To provide AI tutoring, coding, content, PDF, image, reel, and dashboard features.</li>
+      <li>To save previous work so you can continue later.</li>
+      <li>To prevent abuse, enforce usage limits, debug failures, and improve product quality.</li>
+      <li>To process subscriptions, credits, invoices, refunds, and support requests.</li>
+    </ul>
+    <h2>AI Providers</h2>
+    <p>Suhana AI may send your prompts and files to configured AI providers such as Gemini, OpenAI, ElevenLabs, and other generation providers. Do not submit secrets, passwords, private keys, or highly sensitive personal data.</p>
+    <h2>Storage And Security</h2>
+    <p>We use reasonable safeguards such as login sessions, CSRF protection, security headers, encrypted API-key storage when configured, and limited access controls. No online service can guarantee absolute security.</p>
+    <h2>Your Choices</h2>
+    <p>You may request deletion of your account, saved work, uploaded files, or generated content by contacting support. Paid plan cancellation and refund rules are described in the Terms.</p>
+    <h2>Contact</h2>
+    <p>For privacy questions, contact the Suhana AI founder/support email listed on your deployment.</p>
+  </article>
+</div>
+{% endblock %}

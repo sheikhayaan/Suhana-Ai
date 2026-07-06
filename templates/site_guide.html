@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}AI Website Guide - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.guide-page{max-width:1240px;margin:0 auto;padding:52px 5% 100px;position:relative;z-index:2}
+.guide-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;align-items:stretch}
+.guide-card{background:rgba(6,8,24,.82);border:1px solid rgba(125,211,252,.13);border-radius:24px;padding:28px;backdrop-filter:blur(18px);position:relative;overflow:hidden}
+.guide-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 12% 0%,rgba(125,211,252,.14),transparent 34%),radial-gradient(circle at 84% 20%,rgba(52,211,153,.1),transparent 32%);pointer-events:none}
+.guide-inner{position:relative;z-index:1}
+.guide-badge{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(125,211,252,.22);background:rgba(125,211,252,.08);border-radius:999px;padding:7px 14px;color:#7dd3fc;font-size:.74rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px}
+.guide-dot{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 14px #34d399}
+.guide-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,4rem);line-height:1.04;margin-bottom:12px}
+.guide-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.guide-sub{color:rgba(255,255,255,.54);line-height:1.75;margin-bottom:22px}
+.guide-form textarea{width:100%;min-height:160px;border-radius:16px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);color:#fff;padding:15px;resize:vertical;outline:none;line-height:1.6}
+.guide-form textarea:focus{border-color:rgba(125,211,252,.5);box-shadow:0 0 0 4px rgba(125,211,252,.08)}
+.guide-btn{width:100%;margin-top:14px;height:52px;border:0;border-radius:16px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;font-weight:950;cursor:pointer;box-shadow:0 0 34px rgba(125,211,252,.24)}
+.tour-stage{min-height:380px;position:relative;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,#020617,#07111f);overflow:hidden;display:grid;place-items:center}
+.tour-ring{position:absolute;border:1px solid rgba(125,211,252,.18);border-radius:50%;animation:spin 14s linear infinite}.tour-ring.r1{width:310px;height:310px}.tour-ring.r2{width:220px;height:220px;animation-direction:reverse}.tour-ring.r3{width:145px;height:145px;animation-duration:8s}
+.tour-node{position:absolute;width:92px;min-height:52px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:grid;place-items:center;text-align:center;font-size:.72rem;font-weight:900;color:rgba(255,255,255,.78);box-shadow:0 16px 50px rgba(0,0,0,.22)}
+.n1{top:28px;left:42px}.n2{top:58px;right:34px}.n3{bottom:36px;left:58px}.n4{bottom:46px;right:48px}
+.tour-core{width:126px;height:126px;border-radius:34px;background:linear-gradient(135deg,#7dd3fc,#34d399);display:grid;place-items:center;color:#020617;font-family:'Orbitron',monospace;font-size:2.8rem;font-weight:900;box-shadow:0 0 70px rgba(125,211,252,.32);z-index:2}
+.answer{margin-top:18px;background:rgba(5,5,20,.88);border:1px solid rgba(125,211,252,.16);border-radius:22px;padding:24px;line-height:1.7;color:rgba(255,255,255,.86)}
+.answer h1,.answer h2,.answer h3{font-family:'Orbitron',monospace;color:#fff;margin:14px 0 8px}.answer p{margin:8px 0}.answer ul{margin:10px 0 10px 20px}
+.source{display:inline-flex;margin-bottom:12px;border-radius:999px;padding:6px 12px;color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.16);font-size:.72rem;font-weight:900;text-transform:uppercase}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.guide-grid{grid-template-columns:1fr}.tour-stage{min-height:320px}.tour-node{position:relative;inset:auto!important;margin:6px}.tour-stage{display:flex;flex-wrap:wrap;align-content:center;justify-content:center;padding:24px}.tour-ring{display:none}.tour-core{order:-1;width:104px;height:104px;font-size:2.3rem}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="guide-page">
+  <div class="guide-grid">
+    <section class="guide-card">
+      <div class="guide-inner">
+        <div class="guide-badge"><div class="guide-dot"></div>AI Website Guide</div>
+        <h1 class="guide-title">Ask about <span>Suhana AI</span></h1>
+        <p class="guide-sub">This guide explains every tool in English, Hindi, or Hinglish. Ask how to create reels, generate images, use credits, edit PDFs, learn with Tutor, or code with Suhana Code.</p>
+        <form class="guide-form" method="POST">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+          <textarea name="question" placeholder="Example: mujhe reel kaise banana hai? / How do I use AI Tutor? / Credits kaise milenge?" required>{{ question }}</textarea>
+          <button class="guide-btn" type="submit">Ask Website Guide</button>
+        </form>
+      </div>
+    </section>
+    <section class="guide-card">
+      <div class="guide-inner">
+        <div class="tour-stage">
+          <div class="tour-ring r1"></div><div class="tour-ring r2"></div><div class="tour-ring r3"></div>
+          <div class="tour-node n1">Tutor</div><div class="tour-node n2">Code</div><div class="tour-node n3">Reels</div><div class="tour-node n4">PDF</div>
+          <div class="tour-core">AI</div>
+        </div>
+      </div>
+    </section>
+  </div>
+  {% if result %}
+  <section class="answer"><div class="source">Generated by {{ source }}</div>{{ result_html|safe }}</section>
+  {% endif %}
+</div>
+{% endblock %}

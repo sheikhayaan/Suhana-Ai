@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Image Editor - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.edit-page{max-width:1180px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}
+.edit-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px;align-items:start}
+.edit-card{background:rgba(8,8,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:32px;backdrop-filter:blur(18px);animation:rise .45s ease both}
+.edit-card:nth-child(2){animation-delay:.06s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.badge{display:inline-flex;align-items:center;gap:8px;color:#c4b5fd;background:rgba(196,181,253,.08);border:1px solid rgba(196,181,253,.2);border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;margin-bottom:18px}
+.dot{width:7px;height:7px;border-radius:50%;background:#c4b5fd;box-shadow:0 0 10px #c4b5fd}
+.edit-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,4.8vw,3.4rem);line-height:1.05;margin-bottom:12px}
+.edit-title span{background:linear-gradient(90deg,#c4b5fd,#7dd3fc,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.edit-sub{color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:22px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.72rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:8px}
+.field input,.field select{width:100%;height:48px;border-radius:13px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;padding:0 14px;outline:none}
+.field input[type=range]{padding:0;accent-color:#7dd3fc}
+.field option{color:#000}
+.mode-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0 14px}
+.mode-pill{display:flex;gap:9px;align-items:flex-start;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px;cursor:pointer;transition:.2s}
+.mode-pill:hover{border-color:rgba(125,211,252,.25);background:rgba(125,211,252,.05);transform:translateY(-1px)}
+.mode-pill input{width:auto;height:auto;margin-top:2px}
+.mode-pill.active{border-color:rgba(52,211,153,.42);background:rgba(52,211,153,.075);box-shadow:0 0 26px rgba(52,211,153,.08)}
+.mode-name{font-weight:900;color:#fff;font-size:.84rem;margin-bottom:3px}
+.mode-desc{font-size:.72rem;color:rgba(255,255,255,.34);line-height:1.45}
+.edit-btn{width:100%;border:0;border-radius:14px;background:linear-gradient(135deg,#c4b5fd,#7dd3fc,#34d399);color:#000;font-weight:900;padding:15px 24px;cursor:pointer;box-shadow:0 0 30px rgba(125,211,252,.26);transition:.22s}
+.edit-btn:hover{transform:translateY(-2px);box-shadow:0 0 46px rgba(125,211,252,.46)}
+.preview{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;min-height:520px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.38);overflow:hidden}
+.preview img{width:100%;max-width:520px;border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.42);animation:pop .35s ease both}
+@keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+.provider{color:#7dd3fc;font-weight:900;margin-bottom:14px}
+.smart-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field.is-hidden{display:none}.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.ghost-btn{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;text-decoration:none;font-weight:900;padding:12px 16px}
+.tool-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.tool-note{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:13px}
+.tool-note strong{display:block;color:#fff;font-size:.8rem;margin-bottom:4px}
+.tool-note span{display:block;color:rgba(255,255,255,.34);font-size:.72rem;line-height:1.45}
+.vector{width:100%;max-width:420px}
+@media(max-width:980px){.edit-grid{grid-template-columns:1fr}.mode-grid,.tool-strip{grid-template-columns:1fr}}
+@media(max-width:560px){.edit-page{padding:32px 20px 80px}.edit-card{padding:22px}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="edit-page">
+  <div class="edit-grid">
+    <section class="edit-card">
+      <div class="badge"><div class="dot"></div>Image Lab</div>
+      <h1 class="edit-title">Edit images with <span>creator tools</span></h1>
+      <p class="edit-sub">Use fast local edits for everyday content polish. AI prompt editing uses OpenAI image editing when the account has working billing.</p>
+
+      <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field">
+          <label>Image</label>
+          <input type="file" name="image" accept="image/*" required>
+        </div>
+
+        <div class="field">
+          <label>Edit Mode</label>
+          <div class="mode-grid">
+            <label class="mode-pill"><input type="radio" name="operation" value="auto_enhance" checked><div><div class="mode-name">Auto Enhance</div><div class="mode-desc">Balanced contrast, color, and sharpness.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="reel_crop"><div><div class="mode-name">Reel Crop</div><div class="mode-desc">Center crop to 1080 x 1920 vertical.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="contrast"><div><div class="mode-name">Contrast</div><div class="mode-desc">Make product and portrait edges pop.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="color"><div><div class="mode-name">Color Boost</div><div class="mode-desc">Richer saturation for social posts.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="brightness"><div><div class="mode-name">Brightness</div><div class="mode-desc">Lift dark uploads cleanly.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="sharpen"><div><div class="mode-name">Sharpen</div><div class="mode-desc">Crisper detail for thumbnails.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="thumbnail"><div><div class="mode-name">YT Thumbnail</div><div class="mode-desc">Crop and punch up to 1280 x 720.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="square_canvas"><div><div class="mode-name">Square Canvas</div><div class="mode-desc">Premium 1:1 post with blurred backdrop.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="background_blur"><div><div class="mode-name">Depth Blur</div><div class="mode-desc">Soft background focus effect.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="edge_glow"><div><div class="mode-name">AI Glow Detail</div><div class="mode-desc">Stylized edge/detail enhancement.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="sepia"><div><div class="mode-name">Warm Sepia</div><div class="mode-desc">Editorial warm-tone look.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="grayscale"><div><div class="mode-name">Mono</div><div class="mode-desc">Clean black and white conversion.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="mirror"><div><div class="mode-name">Mirror</div><div class="mode-desc">Flip horizontally.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="rotate"><div><div class="mode-name">Rotate</div><div class="mode-desc">Rotate 90 degrees.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="soft_blur"><div><div class="mode-name">Soft Blur</div><div class="mode-desc">Soften harsh uploads.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="vignette"><div><div class="mode-name">Cinematic Focus</div><div class="mode-desc">Dark edge focus for product/story shots.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="posterize"><div><div class="mode-name">Poster Look</div><div class="mode-desc">Bold startup poster color treatment.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="watermark"><div><div class="mode-name">Watermark</div><div class="mode-desc">Add a clean bottom-right brand mark.</div></div></label>
+            <label class="mode-pill"><input type="radio" name="operation" value="ai_prompt"><div><div class="mode-name">AI Prompt Edit</div><div class="mode-desc">Transform with OpenAI image editing.</div></div></label>
+          </div>
+        </div>
+
+        <div class="field tune-field">
+          <label>Strength</label>
+          <input type="range" name="strength" min="0.6" max="2.4" step="0.1" value="1.4">
+        </div>
+
+        <div class="field ai-field">
+          <label>AI Edit Prompt</label>
+          <input name="ai_prompt" placeholder="Example: make this look like a premium product ad">
+        </div>
+
+        <div class="field watermark-field">
+          <label>Watermark Text</label>
+          <input name="watermark_text" placeholder="SUHANA AI">
+        </div>
+
+        <button class="edit-btn" type="submit">Apply Edit</button>
+        <div class="action-row">
+          <a class="ghost-btn" href="/tools">Back to Tools</a>
+          <a class="ghost-btn" href="/create">Use in Reel</a>
+        </div>
+      </form>
+
+      <div class="tool-strip">
+        <div class="tool-note"><strong>Local Fast</strong><span>Most edits run instantly with Pillow.</span></div>
+        <div class="tool-note"><strong>AI Ready</strong><span>Prompt edits work once OpenAI billing is active.</span></div>
+        <div class="tool-note"><strong>Reel Format</strong><span>Crop assets directly for vertical reels.</span></div>
+      </div>
+    </section>
+
+    <section class="edit-card">
+      <div class="preview">
+        {% if output_file %}
+          <div>
+            {% if provider %}<div class="provider">Edited with {{ provider }}</div>{% endif %}
+            <img src="{{ url_for('static', filename='tools/' ~ output_file) }}">
+            <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+              <a class="edit-btn" style="width:auto;text-decoration:none;padding:12px 22px" href="{{ url_for('static', filename='tools/' ~ output_file) }}" download>Download</a>
+              <a class="edit-btn" style="width:auto;text-decoration:none;padding:12px 22px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)" href="{{ url_for('static', filename='tools/' ~ output_file) }}" target="_blank">Open</a>
+            </div>
+          </div>
+        {% else %}
+          <div>
+            <svg class="vector" viewBox="0 0 520 360" fill="none">
+              <rect x="78" y="58" width="364" height="238" rx="28" fill="rgba(125,211,252,.08)" stroke="rgba(125,211,252,.3)"/>
+              <circle cx="188" cy="142" r="42" fill="#c4b5fd"/>
+              <path d="M116 260l96-86 66 58 54-42 72 70H116z" fill="rgba(52,211,153,.32)" stroke="rgba(52,211,153,.5)"/>
+              <path d="M112 326c88-24 240-30 326 0" stroke="rgba(196,181,253,.35)" stroke-width="4"/>
+            </svg>
+            <p>Your edited image preview will appear here.</p>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const modeInputs=document.querySelectorAll('input[name="operation"]');
+function syncImageMode(){
+  const active=document.querySelector('input[name="operation"]:checked')?.value || 'auto_enhance';
+  document.querySelectorAll('.mode-pill').forEach(label=>label.classList.toggle('active', label.querySelector('input')?.value===active));
+  document.querySelector('.ai-field')?.classList.toggle('is-hidden', active!=='ai_prompt');
+  document.querySelector('.watermark-field')?.classList.toggle('is-hidden', active!=='watermark');
+  document.querySelector('.tune-field')?.classList.toggle('is-hidden', ['grayscale','mirror','rotate','reel_crop','thumbnail','square_canvas','watermark','ai_prompt'].includes(active));
+}
+modeInputs.forEach(input=>input.addEventListener('change',syncImageMode));
+syncImageMode();
+</script>
+{% endblock %}

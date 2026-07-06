@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Suhana AI Checkout{% endblock %}
+{% block extra_css %}
+<style>
+.pay-page{min-height:calc(100vh - 66px);padding:70px 5%;display:grid;place-items:center;position:relative;overflow:hidden}
+.pay-page::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 18% 20%,rgba(125,211,252,.14),transparent 32%),radial-gradient(circle at 82% 62%,rgba(52,211,153,.12),transparent 34%);pointer-events:none}
+.pay-shell{width:min(1060px,100%);display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;position:relative}
+.pay-brand,.pay-card{border:1px solid rgba(125,211,252,.16);background:linear-gradient(145deg,rgba(5,8,24,.9),rgba(12,18,42,.76));border-radius:28px;box-shadow:0 30px 110px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05);backdrop-filter:blur(22px);overflow:hidden}
+.pay-brand{padding:28px;position:relative;min-height:520px}
+.pay-brand::after{content:'';position:absolute;right:-80px;bottom:-90px;width:260px;height:260px;border-radius:70px;background:linear-gradient(135deg,rgba(125,211,252,.28),rgba(52,211,153,.14));transform:rotate(18deg);filter:blur(1px)}
+.razor-mark{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(125,211,252,.16);background:rgba(125,211,252,.06);border-radius:999px;padding:9px 13px;color:#7dd3fc;font-weight:900;font-size:.82rem}
+.pay-brand h1{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,4rem);line-height:1.02;margin:44px 0 16px}
+.pay-brand p{color:rgba(255,255,255,.56);line-height:1.8;max-width:380px}
+.pay-rings{position:absolute;left:38px;bottom:34px;width:190px;height:190px;border:1px solid rgba(125,211,252,.18);border-radius:50%;animation:spin-slow 22s linear infinite}
+.pay-rings::before,.pay-rings::after{content:'';position:absolute;border-radius:50%;border:1px solid rgba(52,211,153,.16)}.pay-rings::before{inset:28px}.pay-rings::after{inset:58px;background:radial-gradient(circle,rgba(125,211,252,.2),transparent 65%)}
+.pay-card{padding:18px}
+.checkout-top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 12px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.checkout-top strong{font-family:'Orbitron',monospace}.secure{font-size:.72rem;color:#34d399;border:1px solid rgba(52,211,153,.18);background:rgba(52,211,153,.07);border-radius:999px;padding:7px 10px}
+.merchant{display:flex;align-items:center;gap:12px;margin:18px 8px}.merchant-logo{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;display:grid;place-items:center;font-family:'Orbitron',monospace;font-weight:900}.merchant small{color:rgba(255,255,255,.42)}
+.amount-box{margin:0 8px 18px;padding:20px;border-radius:22px;background:linear-gradient(135deg,rgba(125,211,252,.12),rgba(52,211,153,.06));border:1px solid rgba(125,211,252,.16)}
+.amount-box span{color:rgba(255,255,255,.45);font-size:.78rem}.amount{font-family:'Orbitron',monospace;font-size:2.8rem;color:#fff;margin-top:4px}.amount small{font-size:.9rem;color:rgba(255,255,255,.42)}
+.methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 8px}.method{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);border-radius:18px;padding:14px;min-height:88px;transition:.2s;cursor:pointer}.method:hover,.method.active{border-color:rgba(125,211,252,.36);background:linear-gradient(135deg,rgba(125,211,252,.13),rgba(52,211,153,.06));transform:translateY(-2px)}.method b{display:block;margin-bottom:6px}.method span{font-size:.74rem;color:rgba(255,255,255,.42)}
+.card-form{margin:18px 8px 0;display:grid;gap:10px}.card-form input{height:48px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);color:#fff;padding:0 14px;outline:none}.card-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay-now{height:52px;border:0;border-radius:18px;background:linear-gradient(135deg,#0ea5e9,#34d399);color:#020617;font-weight:950;cursor:pointer;box-shadow:0 18px 50px rgba(14,165,233,.22);transition:.22s}.pay-now:hover{transform:translateY(-2px);box-shadow:0 24px 70px rgba(52,211,153,.26)}
+.pay-note{font-size:.72rem;color:rgba(255,255,255,.38);text-align:center;line-height:1.6;margin-top:12px}
+.success-toast{display:none;margin:14px 8px 0;border:1px solid rgba(52,211,153,.24);background:rgba(52,211,153,.08);color:#bbf7d0;border-radius:16px;padding:12px;text-align:center;font-weight:800}
+.success-toast.show{display:block;animation:guidePop .24s ease both}
+@media(max-width:860px){.pay-shell{grid-template-columns:1fr}.pay-brand{min-height:360px}.methods{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+{% block content %}
+<section class="pay-page">
+  <div class="pay-shell">
+    <div class="pay-brand">
+      <div class="razor-mark">Razorpay Mock Checkout</div>
+      <h1>Secure credit purchase preview.</h1>
+      <p>This is a realistic demo checkout for Suhana AI pricing. Connect real Razorpay keys later to accept live payments.</p>
+      <div class="pay-rings"></div>
+    </div>
+    <div class="pay-card">
+      <div class="checkout-top"><strong>Checkout</strong><div class="secure">256-bit secure</div></div>
+      <div class="merchant">
+        <div class="merchant-logo">S</div>
+        <div><strong>Suhana AI</strong><br><small>{{ plan.name }} · {{ plan.period }}</small></div>
+      </div>
+      <div class="amount-box"><span>Total amount</span><div class="amount">₹{{ plan.price }} <small>INR</small></div></div>
+      <div class="methods">
+        <div class="method active"><b>UPI</b><span>PhonePe, GPay, Paytm, BHIM</span></div>
+        <div class="method"><b>Cards</b><span>Credit and debit cards</span></div>
+        <div class="method"><b>Netbanking</b><span>All major Indian banks</span></div>
+        <div class="method"><b>Wallet</b><span>Fast wallet checkout</span></div>
+      </div>
+      <form class="card-form" data-async="true" onsubmit="event.preventDefault();document.getElementById('successToast').classList.add('show');">
+        <input value="sheikhayaan408@upi" aria-label="UPI ID">
+        <div class="card-row"><input value="Ayaan" aria-label="Name"><input value="+91" aria-label="Phone"></div>
+        <button class="pay-now" type="submit">Pay Securely</button>
+      </form>
+      <div class="success-toast" id="successToast">Mock payment successful. Live capture will work after Razorpay API setup.</div>
+      <div class="pay-note">Demo only. No money is charged from this mock checkout page.</div>
+    </div>
+  </div>
+</section>
+{% endblock %}

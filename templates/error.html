@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ code }} - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.error-page{min-height:calc(100vh - 160px);display:grid;place-items:center;padding:52px 5%;position:relative;z-index:2}.error-card{width:min(720px,94vw);text-align:center;border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,rgba(5,8,18,.9),rgba(4,18,26,.72));padding:38px;backdrop-filter:blur(20px);clip-path:polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px)}.code{font-family:Orbitron,monospace;font-size:clamp(4rem,12vw,10rem);line-height:.82;background:linear-gradient(90deg,#62e8ff,#43ffd2,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}.error-card h1{margin:18px 0 10px}.error-card p{color:rgba(255,255,255,.62);line-height:1.7}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;text-decoration:none;font-weight:950;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}.btn.primary{background:linear-gradient(135deg,#62e8ff,#43ffd2);color:#020304;border:0}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-page">
+  <section class="error-card">
+    <div class="code">{{ code }}</div>
+    <h1>{{ title }}</h1>
+    <p>{{ message }}</p>
+    <div class="actions">
+      <a class="btn primary" href="/mission">Start With A Goal</a>
+      <a class="btn" href="/dashboard">Dashboard</a>
+      <a class="btn" href="/">Home</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

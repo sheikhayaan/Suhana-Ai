@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}{% if default_asset_type == "video" %}AI Video Studio{% else %}AI Image Studio{% endif %} - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.visual-page{max-width:1280px;margin:0 auto;padding:50px 5% 100px;position:relative;z-index:2}
+.visual-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;align-items:start}
+.visual-card{background:rgba(8,8,28,.78);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:30px;backdrop-filter:blur(18px);animation:rise .45s ease both}
+.visual-card:nth-child(2){animation-delay:.06s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.visual-badge{display:inline-flex;align-items:center;gap:8px;color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.2);border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;margin-bottom:18px}
+.visual-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399}
+.visual-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,4.8vw,3.6rem);line-height:1.05;margin-bottom:12px}
+.visual-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.visual-sub{color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:24px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:8px}
+.field input,.field select{width:100%;height:48px;border-radius:13px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;padding:0 14px;outline:none}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field option{color:#000}
+.visual-btn,.use-btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:50px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;font-weight:900;padding:13px 22px;text-decoration:none;cursor:pointer;transition:.22s}
+.use-btn.secondary{color:rgba(255,255,255,.72);background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1)}
+.visual-btn:hover,.use-btn:hover{transform:translateY(-2px);box-shadow:0 0 36px rgba(125,211,252,.36)}
+.result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.rating-box{margin-top:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
+.rating-stars{display:flex;justify-content:center;gap:6px;margin:10px 0}
+.rating-stars label{cursor:pointer;font-size:1.6rem;color:rgba(255,255,255,.22)}
+.rating-stars input{display:none}
+.rating-stars label:hover,.rating-stars label:hover~label{color:#fde68a}
+.rating-box textarea{width:100%;min-height:72px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.18);color:#fff;padding:10px;margin-bottom:10px}
+.rating-box button{width:100%;height:42px;border:0;border-radius:12px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;font-weight:900}
+.preview-box{min-height:560px;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:18px;text-align:center;color:rgba(255,255,255,.38);overflow:hidden}
+.preview-box img{width:100%;max-width:390px;border-radius:18px;box-shadow:0 20px 80px rgba(0,0,0,.35);animation:pop .35s ease both}
+@keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+.provider{color:#7dd3fc;font-weight:900;margin:14px 0}
+.recent{margin-top:18px}
+.recent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.recent-item{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:10px;color:#fff;text-decoration:none;transition:.22s}
+.recent-item:hover{transform:translateY(-3px);border-color:rgba(125,211,252,.22);background:rgba(125,211,252,.045)}
+.recent-item img{width:100%;aspect-ratio:9/12;object-fit:cover;border-radius:10px;margin-bottom:8px}
+.recent-item div{font-size:.72rem;color:rgba(255,255,255,.42)}
+.recent-actions{display:flex;gap:6px;margin-top:8px}
+.recent-actions a{flex:1;text-align:center;text-decoration:none;border-radius:9px;padding:8px 6px;font-size:.7rem;font-weight:900;color:#000;background:linear-gradient(135deg,#7dd3fc,#34d399)}
+.recent-actions a.secondary{color:rgba(255,255,255,.76);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}
+@media(max-width:960px){.visual-grid{grid-template-columns:1fr}.recent-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.visual-page{padding:32px 20px 80px}.visual-card{padding:22px}.recent-grid,.field-grid{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="visual-page">
+  <div class="visual-grid">
+    <section class="visual-card">
+      <div class="visual-badge"><div class="visual-dot"></div>{% if default_asset_type == "video" %}AI Video Studio{% else %}AI Image Studio{% endif %}</div>
+      <h1 class="visual-title">
+        {% if default_asset_type == "video" %}
+        Plan AI <span>video assets</span>
+        {% else %}
+        Generate AI <span>image assets</span>
+        {% endif %}
+      </h1>
+      <p class="visual-sub">
+        {% if default_asset_type == "video" %}
+        Build a 16:9 or vertical AI video storyboard asset first, then send it into the reel builder with one click.
+        {% else %}
+        Generate image concepts in 16:9, 9:16, square, or portrait. Provider order follows your preferred model plus Gemini/OpenAI/Pollinations fallback.
+        {% endif %}
+      </p>
+
+      <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field">
+          <label>Prompt</label>
+          <input name="prompt" placeholder="{% if default_asset_type == 'video' %}Fast product launch video, 5 scenes, cinematic lighting{% else %}Luxury fitness transformation, cinematic lighting, vertical reel{% endif %}" required>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label>Aspect Ratio</label>
+            <select name="aspect_ratio">
+              <option value="16:9" {% if default_asset_type == "video" %}selected{% endif %}>16:9 Wide</option>
+              <option value="9:16" {% if default_asset_type != "video" %}selected{% endif %}>9:16 Vertical</option>
+              <option value="1:1">1:1 Square</option>
+              <option value="4:5">4:5 Portrait</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Preferred AI Model</label>
+            <select name="preferred_model">
+              <option value="auto">Auto best free</option>
+              <option value="flux">Flux quality</option>
+              <option value="turbo">Turbo fast</option>
+              <option value="openai">OpenAI style</option>
+            </select>
+          </div>
+        </div>
+        <input type="hidden" name="asset_type" value="{{ default_asset_type or 'image' }}">
+        <button class="visual-btn" type="submit">{% if default_asset_type == "video" %}Create Video Storyboard{% else %}Generate Image{% endif %}</button>
+      </form>
+
+      {% if recent_assets %}
+      <div class="recent">
+        <div class="visual-badge"><div class="visual-dot"></div>{% if default_asset_type == "video" %}Recent Video Assets{% else %}Recent Image Assets{% endif %}</div>
+        <div class="recent-grid">
+          {% for asset in recent_assets %}
+          <div class="recent-item">
+            <img src="{{ url_for('static', filename='tools/' ~ asset.file_path) }}">
+            <div>{{ asset.asset_type }} / {{ asset.provider }}</div>
+            <div class="recent-actions">
+              <a href="/asset-to-reel/{{ asset.id }}">Use</a>
+              <a class="secondary" href="{{ url_for('static', filename='tools/' ~ asset.file_path) }}" download>Download</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </section>
+
+    <section class="visual-card">
+      <div class="preview-box">
+        {% if result %}
+          <div>
+            <img src="{{ url_for('static', filename='tools/' ~ result.file_path) }}">
+            {% if default_asset_type == "video" %}
+              <div class="provider">AI video generation is coming soon</div>
+              <p style="color:rgba(255,255,255,.42);line-height:1.6;margin-bottom:14px">For now, this creates a storyboard concept you can use in a reel workflow.</p>
+            {% else %}
+              <div class="provider">Generated by {{ result.provider }}</div>
+            {% endif %}
+            <div class="result-actions">
+              <a class="use-btn" href="/asset-to-reel/{{ result.id }}">Use This Visual in Reel</a>
+              <a class="use-btn secondary" href="{{ url_for('static', filename='tools/' ~ result.file_path) }}" download>Download</a>
+              <a class="use-btn secondary" href="{{ url_for('static', filename='tools/' ~ result.file_path) }}" target="_blank">Open</a>
+            </div>
+            <form class="rating-box" method="POST" action="/experience-feedback">
+              <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="feature" value="{{ default_asset_type }}">
+              <input type="hidden" name="target_id" value="{{ result.id }}">
+              <div style="font-weight:900;color:#fff">Rate your experience</div>
+              <div class="rating-stars">
+                {% for star in [5,4,3,2,1] %}
+                <input id="visual-star-{{ star }}" type="radio" name="rating" value="{{ star }}" {% if star == 5 %}checked{% endif %}>
+                <label for="visual-star-{{ star }}">★</label>
+                {% endfor %}
+              </div>
+              <textarea name="notes" placeholder="What should we improve?"></textarea>
+              <button type="submit">Submit Rating</button>
+            </form>
+          </div>
+        {% else %}
+          <div>
+            <div class="visual-badge"><div class="visual-dot"></div>Preview</div>
+            <p>Your generated {% if default_asset_type == "video" %}storyboard{% else %}image{% endif %} will appear here.</p>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

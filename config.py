@@ -1,0 +1,13 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+LEONARDO_API_KEY = os.getenv("LEONARDO_API_KEY")
+FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY")
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")

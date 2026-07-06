@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Overview - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.admin-page{max-width:1200px;margin:0 auto;padding:44px 5% 100px}
+.admin-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,4vw,3.3rem);margin-bottom:10px}
+.admin-sub{color:rgba(255,255,255,.46);line-height:1.7;margin-bottom:24px}
+.admin-grid{display:grid;grid-template-columns:1fr;gap:18px}
+.admin-card{background:rgba(8,8,28,.78);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:22px;overflow:auto}
+.admin-card h2{font-family:'Orbitron',monospace;font-size:1rem;margin-bottom:14px}
+.admin-table{width:100%;border-collapse:collapse;min-width:720px}
+.admin-table th,.admin-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,.07);text-align:left;font-size:.84rem}
+.admin-table th{color:#7dd3fc;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}
+.pill{display:inline-flex;border-radius:99px;padding:4px 9px;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.16);color:#7dd3fc;font-weight:800}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+  <h1 class="admin-title">Admin Overview</h1>
+  <p class="admin-sub">Signed-in users, ratings, and feedback are saved in the SQLite database at: <strong>{{ db_path }}</strong></p>
+  <div class="admin-grid">
+    <section class="admin-card">
+      <h2>Recent Sign Ins / Users</h2>
+      <table class="admin-table">
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Mode</th><th>Paid Credits</th></tr>
+        {% for user in users %}
+        <tr><td>{{ user.id }}</td><td>{{ user.name }}</td><td>{{ user.email }}</td><td><span class="pill">{{ user.generation_mode }}</span></td><td>{{ user.credits or 0 }}</td></tr>
+        {% endfor %}
+      </table>
+    </section>
+    <section class="admin-card">
+      <h2>Experience Ratings</h2>
+      <table class="admin-table">
+        <tr><th>ID</th><th>User</th><th>Feature</th><th>Rating</th><th>Notes</th><th>Date</th></tr>
+        {% for item in feedback %}
+        <tr><td>{{ item.id }}</td><td>{{ item.user_id }}</td><td>{{ item.feature }}</td><td>{{ item.rating }}/5</td><td>{{ item.notes or "" }}</td><td>{{ item.created_at }}</td></tr>
+        {% endfor %}
+      </table>
+    </section>
+    <section class="admin-card">
+      <h2>Script Ratings</h2>
+      <table class="admin-table">
+        <tr><th>ID</th><th>Script</th><th>User</th><th>Rating</th><th>Notes</th><th>Date</th></tr>
+        {% for item in script_feedback %}
+        <tr><td>{{ item.id }}</td><td>{{ item.script_id }}</td><td>{{ item.user_id }}</td><td>{{ item.rating }}/5</td><td>{{ item.notes or "" }}</td><td>{{ item.created_at }}</td></tr>
+        {% endfor %}
+      </table>
+    </section>
+  </div>
+</div>
+{% endblock %}

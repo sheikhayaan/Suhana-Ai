@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Login to Continue - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.trial-page{min-height:72vh;display:grid;place-items:center;padding:54px 5%;position:relative;z-index:2}
+.trial-modal{width:min(740px,100%);background:rgba(8,8,28,.92);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:34px;box-shadow:0 32px 130px rgba(0,0,0,.45);backdrop-filter:blur(20px);animation:pop .35s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.trial-badge{display:inline-flex;align-items:center;gap:8px;color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.2);border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;margin-bottom:18px}
+.trial-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399}
+.trial-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin-bottom:12px}
+.trial-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.trial-copy{color:rgba(255,255,255,.46);line-height:1.7;margin-bottom:24px}
+.trial-actions{display:flex;flex-wrap:wrap;gap:10px}
+.trial-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:50px;text-decoration:none;font-weight:900}
+.trial-btn.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000}
+.trial-btn.secondary{color:rgba(255,255,255,.72);background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="trial-page">
+  <section class="trial-modal">
+    <div class="trial-badge"><div class="trial-dot"></div>Free Preview Used</div>
+    <h1 class="trial-title">Create more with a <span>free account</span></h1>
+    <p class="trial-copy">You used your free guest try for {{ feature_label|lower }}. Sign in to get 3 free generations for scripts, images, and reels, save your outputs, and unlock your dashboard.</p>
+    <div class="trial-actions">
+      <a class="trial-btn primary" href="/signup">Create Free Account</a>
+      <a class="trial-btn secondary" href="/login">Login</a>
+      <a class="trial-btn secondary" href="/pricing">View Pricing</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.dash-page{max-width:1280px;margin:0 auto;padding:46px 5% 100px;position:relative;z-index:2}
+.dash-hero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:18px}
+.dash-panel,.stat-card,.tool-card{background:rgba(8,8,28,.76);border:1px solid rgba(255,255,255,.08);border-radius:20px;backdrop-filter:blur(18px)}
+.dash-main{padding:34px;min-height:300px}
+.dash-side{padding:28px;min-height:300px;display:flex;flex-direction:column;justify-content:space-between}
+.dash-badge{display:inline-flex;align-items:center;gap:8px;color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.2);border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;margin-bottom:18px}.owner-badge{margin-left:8px;color:#020617;background:linear-gradient(135deg,#fde68a,#34d399);border:0}
+.dash-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399}
+.profile-row{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+.profile-avatar{width:82px;height:82px;border-radius:24px;display:grid;place-items:center;position:relative;isolation:isolate;background:linear-gradient(135deg,rgba(125,211,252,.2),rgba(52,211,153,.12));border:1px solid rgba(125,211,252,.28);box-shadow:0 0 44px rgba(125,211,252,.16)}
+.profile-avatar::before{content:'';position:absolute;inset:-8px;border-radius:30px;background:conic-gradient(from 0deg,transparent,#7dd3fc,transparent,#34d399,transparent);opacity:.55;z-index:-1;animation:avatarSpin 8s linear infinite}
+.profile-avatar::after{content:'';position:absolute;inset:10px;border-radius:18px;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.16),transparent 35%),rgba(5,5,20,.9);z-index:-1}
+.profile-avatar span{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.avatar-orbit{position:absolute;width:12px;height:12px;border-radius:50%;background:#34d399;box-shadow:0 0 18px rgba(52,211,153,.9);animation:avatarOrbit 4.8s linear infinite}
+@keyframes avatarSpin{to{transform:rotate(360deg)}}
+@keyframes avatarOrbit{0%{transform:rotate(0deg) translateX(48px) rotate(0deg)}100%{transform:rotate(360deg) translateX(48px) rotate(-360deg)}}
+.dash-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,4.8vw,4rem);line-height:1.05;margin-bottom:12px}
+.dash-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.dash-sub,.dash-side p{color:rgba(255,255,255,.43);line-height:1.75;max-width:570px;font-size:.95rem}
+.user-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;color:rgba(255,255,255,.52);font-size:.82rem}
+.user-meta span{border:1px solid rgba(255,255,255,.08);border-radius:50px;padding:7px 12px;background:rgba(255,255,255,.035)}
+.dash-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.dash-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:50px;text-decoration:none;font-weight:800;font-size:.86rem;transition:.2s}
+.dash-btn.primary{color:#000;background:linear-gradient(135deg,#7dd3fc,#34d399);box-shadow:0 0 28px rgba(125,211,252,.35)}
+.dash-btn.secondary{color:rgba(255,255,255,.62);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.dash-btn:hover{transform:translateY(-2px)}
+.dash-side h2,.tool-head h2{font-family:'Orbitron',monospace;font-size:1rem;margin-bottom:8px}
+.score-ring{width:168px;height:168px;border-radius:50%;margin:20px auto;display:grid;place-items:center;background:radial-gradient(circle at center,#08081c 56%,transparent 57%),conic-gradient(#7dd3fc 0 78%,rgba(255,255,255,.08) 78% 100%);box-shadow:0 0 50px rgba(125,211,252,.12)}
+.score-ring strong{font-family:'Orbitron',monospace;font-size:2rem;color:#fff}
+.dash-command-orbit{
+  display:grid;
+  grid-template-columns:1.1fr .9fr 1fr;
+  gap:14px;
+  margin-bottom:18px;
+  perspective:1000px;
+}
+.dash-orbit-card{
+  position:relative;
+  min-height:180px;
+  border:1px solid rgba(125,211,252,.16);
+  border-radius:24px;
+  overflow:hidden;
+  padding:22px;
+  background:linear-gradient(145deg,rgba(8,8,28,.82),rgba(5,16,34,.68));
+  box-shadow:0 24px 90px rgba(0,0,0,.2);
+}
+.dash-orbit-card b{
+  display:block;
+  font-family:'Orbitron',monospace;
+  margin-bottom:8px;
+}
+.dash-orbit-card p{
+  max-width:320px;
+  color:rgba(255,255,255,.46);
+  line-height:1.6;
+  font-size:.86rem;
+}
+.dash-orbit-card::before{
+  content:'';
+  position:absolute;
+  right:22px;
+  bottom:20px;
+  width:94px;
+  height:94px;
+  border:1px solid rgba(125,211,252,.18);
+  border-radius:26px;
+  transform:rotateX(58deg) rotateZ(35deg);
+  animation:dashRing 10s linear infinite;
+}
+.dash-orbit-card::after{
+  content:'';
+  position:absolute;
+  right:52px;
+  bottom:50px;
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#7dd3fc,#34d399);
+  box-shadow:0 0 34px rgba(125,211,252,.34);
+  animation:dashCore 4.5s ease-in-out infinite;
+}
+.dash-orbit-card:nth-child(2){background:linear-gradient(145deg,rgba(14,12,36,.86),rgba(6,20,38,.64))}
+.dash-orbit-card:nth-child(3){background:linear-gradient(145deg,rgba(5,20,24,.82),rgba(16,14,42,.64))}
+.stat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:18px}
+.usage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.usage-card{background:rgba(8,8,28,.76);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:20px;backdrop-filter:blur(18px)}
+.usage-bar{height:7px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:12px}
+.usage-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#7dd3fc,#34d399)}
+.stat-card{padding:22px 20px}
+.stat-label{color:rgba(255,255,255,.32);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.stat-value{font-family:'Orbitron',monospace;font-size:1.8rem;line-height:1;color:#fff;text-transform:capitalize}
+.blue{color:#7dd3fc}.green{color:#34d399}.purple{color:#c4b5fd}.pink{color:#f9a8d4}.red{color:#f87171}
+.tool-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.tool-card{padding:24px}
+.tool-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+.tool-pill{color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.16);border-radius:50px;padding:4px 10px;font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.quick-action{display:block;text-decoration:none;color:#fff;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:18px;transition:.22s;position:relative;overflow:hidden}
+.quick-action::after{content:'';position:absolute;right:16px;bottom:16px;width:68px;height:68px;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.11),transparent 45%);box-shadow:0 0 26px rgba(125,211,252,.1);opacity:.46;pointer-events:none}
+.quick-action::before{content:'';position:absolute;right:42px;bottom:42px;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:15px 10px 0 rgba(255,255,255,.68),29px -4px 0 rgba(255,255,255,.45),39px 17px 0 rgba(255,255,255,.34);opacity:.45;pointer-events:none;z-index:1}
+.quick-action>*{position:relative;z-index:2}
+.quick-action:hover{transform:translateY(-3px);border-color:rgba(125,211,252,.22);background:rgba(125,211,252,.05)}
+.quick-icon{width:auto;min-width:58px;max-width:104px;height:42px;border-radius:13px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;background:rgba(125,211,252,.1);border:1px solid rgba(125,211,252,.18);font-size:.86rem;padding:0 12px;white-space:nowrap;overflow-wrap:normal;word-break:keep-all}
+.quick-title{font-weight:800;margin-bottom:5px}
+.quick-desc,.road-desc{color:rgba(255,255,255,.35);font-size:.78rem;line-height:1.55}
+.roadmap{display:flex;flex-direction:column;gap:12px}
+.road-item{display:flex;gap:12px;align-items:flex-start;padding:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px}
+.road-mark{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.22);color:#34d399;font-size:.72rem;font-weight:900}
+.road-title{font-weight:800;font-size:.86rem;margin-bottom:3px}
+.credit-callout{margin-top:16px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,rgba(125,211,252,.09),rgba(52,211,153,.055));border:1px solid rgba(125,211,252,.16);color:rgba(255,255,255,.68);font-size:.88rem;line-height:1.55}
+.credit-callout strong{color:#7dd3fc}
+.memory-strip{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-bottom:18px;padding:18px;border:1px solid rgba(125,211,252,.15);background:linear-gradient(135deg,rgba(125,211,252,.08),rgba(196,181,253,.045));border-radius:20px}.memory-strip strong{display:block;margin-bottom:5px}.memory-strip p{color:rgba(255,255,255,.42);line-height:1.55;font-size:.86rem}.memory-strip a{color:#020617;background:linear-gradient(135deg,#7dd3fc,#34d399);padding:11px 14px;border-radius:13px;text-decoration:none;font-weight:900;white-space:nowrap}
+.start-path{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}.start-step{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:18px;padding:16px;text-decoration:none;color:#fff}.start-step b{display:block;margin-bottom:6px}.start-step span{color:rgba(255,255,255,.42);font-size:.76rem;line-height:1.45}.start-step i{display:grid;place-items:center;width:30px;height:30px;border-radius:11px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;font-style:normal;font-weight:950;margin-bottom:10px}
+.live-feed{margin-bottom:18px}.live-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.live-item{display:block;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(125,211,252,.035));border-radius:18px;padding:16px;min-height:118px;position:relative;overflow:hidden}.live-item::after{content:'';position:absolute;right:-22px;bottom:-24px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(52,211,153,.18),transparent 64%)}.live-type{font-size:.66rem;font-weight:950;letter-spacing:.1em;text-transform:uppercase;color:#7dd3fc;margin-bottom:10px}.live-title{font-weight:900;line-height:1.25;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.live-meta{font-size:.75rem;color:rgba(255,255,255,.42)}.empty-live{border:1px dashed rgba(125,211,252,.24);border-radius:18px;padding:22px;color:rgba(255,255,255,.46);line-height:1.6}
+@keyframes dashRing{to{transform:rotateX(58deg) rotateZ(395deg)}}
+@keyframes dashCore{50%{transform:translateY(-8px) rotate(10deg);filter:saturate(1.25)}}
+@media(max-width:1100px){.stat-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.dash-hero,.tool-grid,.dash-command-orbit{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}.usage-grid,.live-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.start-path{grid-template-columns:1fr 1fr}}@media(max-width:560px){.dash-page{padding:32px 20px 80px}.dash-main,.dash-side,.tool-card{padding:22px}.quick-grid,.stat-grid,.start-path{grid-template-columns:1fr}.profile-row{align-items:flex-start}.profile-avatar{width:64px;height:64px;border-radius:20px}.profile-avatar span{font-size:1.7rem}.avatar-orbit{display:none}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dash-page">
+  <section class="dash-hero">
+    <div class="dash-panel dash-main">
+      <div class="profile-row">
+        <div class="profile-avatar">
+          <div class="avatar-orbit"></div>
+          <span>{{ user_name[:1]|upper }}</span>
+        </div>
+        <div>
+          <div class="dash-badge"><div class="dash-dot"></div>Personal AI Workspace</div>{% if user_email|lower == "sheikhayaan408@gmail.com" %}<div class="dash-badge owner-badge">Owner ID</div>{% endif %}
+          <h1 class="dash-title">Welcome, <span>{{ user_name }}</span></h1>
+        </div>
+      </div>
+      <p class="dash-sub">Your command center shows your saved AI work, active missions, credits, and the next useful action. Start with one goal: Suhana turns it into learning, quiz, code, content, PDF export, and progress.</p>
+      <div class="user-meta">
+        <span>{{ user_email }}</span>
+        <span>{{ generation_mode|capitalize }} mode</span>
+        <span>{{ free_remaining }} free generations left</span>
+      </div>
+      <div class="credit-callout"><strong>Free balance:</strong> {{ free_remaining }} left across scripts, AI images, and reels. Paid credits show separately for extra use after your free allowance.</div>
+      <div class="dash-actions">
+        <a class="dash-btn primary" href="/mission">Start With A Goal</a>
+        <a class="dash-btn secondary" href="/ai-tutor">Learn / Revise</a>
+        <a class="dash-btn secondary" href="/ai-quiz">Test Weak Points</a>
+        <a class="dash-btn secondary" href="/suhana-code">Code / Debug</a>
+        <a class="dash-btn secondary" href="/ai-images">AI Images</a>
+        <a class="dash-btn secondary" href="/create">Create Reel</a>
+        <a class="dash-btn secondary" href="/settings">Settings</a>
+        <a class="dash-btn secondary" href="/billing">Billing</a>
+        <a class="dash-btn secondary" href="/logout">Logout</a>
+      </div>
+    </div>
+
+    <div class="dash-panel dash-side">
+      <div>
+        <h2>Workspace Health</h2>
+        <p>Recommended path: create one mission, use Tutor/Quiz/Code/Create inside it, export useful work, and come back to continue progress.</p>
+      </div>
+      <div class="score-ring"><strong>78%</strong></div>
+    </div>
+  </section>
+
+  <section class="dash-command-orbit" aria-label="Dashboard command map">
+    <div class="dash-orbit-card"><b>Goal to workspace</b><p>One goal becomes tasks, tools, exports, and progress instead of disconnected AI chats.</p></div>
+    <div class="dash-orbit-card"><b>Saved memory</b><p>Tutor lessons, code answers, scripts, assets, and missions appear here so users can continue previous work.</p></div>
+    <div class="dash-orbit-card"><b>Paid value</b><p>Credits, exports, voice, video, and history create a clear reason to upgrade without hiding the free experience.</p></div>
+  </section>
+
+  <section class="stat-grid">
+    <div class="stat-card"><div class="stat-label">Plans</div><div class="stat-value blue">{{ plan_count }}</div></div>
+    <div class="stat-card"><div class="stat-label">Workflows</div><div class="stat-value green">{{ workflow_count }}</div></div>
+    <div class="stat-card"><div class="stat-label">Scripts</div><div class="stat-value purple">{{ script_count }}</div></div>
+    <div class="stat-card"><div class="stat-label">Assets</div><div class="stat-value pink">{{ asset_count }}</div></div>
+    <div class="stat-card"><div class="stat-label">Reports</div><div class="stat-value blue">{{ report_count }}</div></div>
+    <div class="stat-card"><div class="stat-label">Saved Work</div><div class="stat-value green">{{ saved_work_count }}</div></div>
+  </section>
+
+  <section class="start-path">
+    <a class="start-step" href="/mission"><i>1</i><b>Goal</b><span>Create a guided mission.</span></a>
+    <a class="start-step" href="/ai-tutor"><i>2</i><b>Learn</b><span>Understand the topic.</span></a>
+    <a class="start-step" href="/ai-quiz"><i>3</i><b>Test</b><span>Find weak points.</span></a>
+    <a class="start-step" href="/suhana-code"><i>4</i><b>Build</b><span>Debug or create code.</span></a>
+    <a class="start-step" href="/create"><i>5</i><b>Create</b><span>Turn work into content.</span></a>
+  </section>
+
+  <section class="memory-strip">
+    <div>
+      <strong>{{ brand_memory.brand_name if brand_memory and brand_memory.brand_name else "Brand Memory" }}</strong>
+      <p>{% if brand_memory %}{{ brand_memory.niche or "Niche not set" }} - {{ brand_memory.tone or "Tone not set" }} - {{ workflow_count }} saved workflow runs.{% else %}Save your brand once so Suhana can keep every script, image, plan, and workflow consistent.{% endif %}</p>
+    </div>
+    <a href="/brand-memory">{{ "Update" if brand_memory else "Set Up" }}</a>
+  </section>
+
+  <section class="dash-panel tool-card live-feed">
+    <div class="tool-head"><h2>Live Work Done</h2><span class="tool-pill">Recent</span></div>
+    {% if live_activity %}
+    <div class="live-grid">
+      {% for item in live_activity %}
+      <a class="live-item" href="{{ item.href }}">
+        <div class="live-type">{{ item.type }}</div>
+        <div class="live-title">{{ item.title }}</div>
+        <div class="live-meta">{{ item.meta }}</div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-live">No work yet. Start in Studio, generate a script, create an image, or run your first reel. Your latest output will appear here automatically.</div>
+    {% endif %}
+  </section>
+
+  <section class="usage-grid">
+    <div class="usage-card">
+      <div class="stat-label">Free AI Images Left</div>
+      <div class="stat-value blue">{{ usage.image.remaining }}/{{ usage.image.limit }}</div>
+      <div class="usage-bar"><div class="usage-fill" style="width:{{ [100, (usage.image.used / usage.image.limit * 100)]|min }}%"></div></div>
+    </div>
+    <div class="usage-card">
+      <div class="stat-label">Free Reels Left</div>
+      <div class="stat-value green">{{ usage.reel.remaining }}/{{ usage.reel.limit }}</div>
+      <div class="usage-bar"><div class="usage-fill" style="width:{{ [100, (usage.reel.used / usage.reel.limit * 100)]|min }}%"></div></div>
+    </div>
+    <div class="usage-card">
+      <div class="stat-label">Free Scripts Left</div>
+      <div class="stat-value purple">{{ usage.script.remaining }}/{{ usage.script.limit }}</div>
+      <div class="usage-bar"><div class="usage-fill" style="width:{{ [100, (usage.script.used / usage.script.limit * 100)]|min }}%"></div></div>
+    </div>
+    <div class="usage-card">
+      <div class="stat-label">Free Video Left</div>
+      <div class="stat-value pink">{{ usage.video.remaining }}/{{ usage.video.limit }}</div>
+      <div class="usage-bar"><div class="usage-fill" style="width:{{ [100, (usage.video.used / usage.video.limit * 100)]|min }}%"></div></div>
+    </div>
+  </section>
+
+  <section class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-head"><h2>Quick Actions</h2><span class="tool-pill">Live</span></div>
+      <div class="quick-grid">
+        <a class="quick-action" href="/mission"><div class="quick-icon">Mission</div><div class="quick-title">Mission Mode</div><div class="quick-desc">Turn one real goal into a clean flow chart, task rail, tool route, progress, and exportable plan.</div></a>
+        <a class="quick-action" href="/startup-analyzer"><div class="quick-icon">Audit</div><div class="quick-title">Startup Analyzer</div><div class="quick-desc">Analyze what users want, what is confusing, what to remove, and what to build next.</div></a>
+        <a class="quick-action" href="/studio"><div class="quick-icon">Studio</div><div class="quick-title">AI Strategy Studio</div><div class="quick-desc">Turn one real problem into a structured script, workflow, tool route, and next actions.</div></a>
+        <a class="quick-action" href="/creator-copilot"><div class="quick-icon">Plan</div><div class="quick-title">Creator Copilot</div><div class="quick-desc">Generate a 30-day plan for reels, scripts, images, and growth.</div></a>
+        <a class="quick-action" href="/workflow-builder"><div class="quick-icon">Flow</div><div class="quick-title">Workflow Builder</div><div class="quick-desc">Turn one idea into script, visual, voice direction, reel plan, and metrics.</div></a>
+        <a class="quick-action" href="/performance-coach"><div class="quick-icon">ROI</div><div class="quick-title">Performance Coach</div><div class="quick-desc">Analyze post metrics and get exact next content moves.</div></a>
+        <a class="quick-action" href="/ml-growth-lab"><div class="quick-icon">ML</div><div class="quick-title">ML Growth Lab</div><div class="quick-desc">Predict content potential before posting.</div></a>
+        <a class="quick-action" href="/brand-memory"><div class="quick-icon">Brand</div><div class="quick-title">Brand Memory</div><div class="quick-desc">Save colors, tone, audience, offer, and content rules.</div></a>
+        <a class="quick-action" href="/create"><div class="quick-icon">Go</div><div class="quick-title">Generate Reel</div><div class="quick-desc">Upload media, add script, and create a vertical reel.</div></a>
+        <a class="quick-action" href="/gallery"><div class="quick-icon">Grid</div><div class="quick-title">View Gallery</div><div class="quick-desc">Watch, open, and download your completed videos.</div></a>
+        <a class="quick-action" href="/ai-tutor"><div class="quick-icon">Tutor</div><div class="quick-title">AI Tutor</div><div class="quick-desc">Teach any topic from class 6 to BTech with examples and quizzes.</div></a>
+        <a class="quick-action" href="/suhana-code"><div class="quick-icon">Code</div><div class="quick-title">Suhana Code</div><div class="quick-desc">Solve DSA, debug code, and generate projects.</div></a>
+        <a class="quick-action" href="/ai-quiz"><div class="quick-icon">Quiz</div><div class="quick-title">AI Quiz Arena</div><div class="quick-desc">Create locked exam-style quizzes with score analysis.</div></a>
+        <a class="quick-action" href="/games"><div class="quick-icon">Play</div><div class="quick-title">Mind Games</div><div class="quick-desc">Relax with memory and two-player games.</div></a>
+        <a class="quick-action" href="/avatar-maker"><div class="quick-icon">Avatar</div><div class="quick-title">AI Avatar Maker</div><div class="quick-desc">Create profile avatars for creators and founders.</div></a>
+        <a class="quick-action" href="/pdf-merge"><div class="quick-icon">PDF</div><div class="quick-title">PDF Editor</div><div class="quick-desc">Merge, rotate, convert, and compress documents.</div></a>
+        <a class="quick-action" href="/script-generator"><div class="quick-icon">Script</div><div class="quick-title">Script Generator</div><div class="quick-desc">Create hooks, scene plans, captions, and hashtags.</div></a>
+        <a class="quick-action" href="/ai-images"><div class="quick-icon">Image</div><div class="quick-title">AI Images</div><div class="quick-desc">Generate vertical images and use them in reels.</div></a>
+        <a class="quick-action" href="/ai-video"><div class="quick-icon">Video</div><div class="quick-title">AI Video</div><div class="quick-desc">Create video storyboard assets for reel workflows.</div></a>
+        <a class="quick-action" href="/api-vault"><div class="quick-icon">Key</div><div class="quick-title">API Vault</div><div class="quick-desc">Connect ElevenLabs, OpenAI, Runway, and other providers.</div></a>
+        <a class="quick-action" href="/billing"><div class="quick-icon">Credits</div><div class="quick-title">Credit Packs</div><div class="quick-desc">Dev billing scaffold for managed mode credits.</div></a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-head"><h2>Startup Roadmap</h2><span class="tool-pill">Next</span></div>
+      <div class="roadmap">
+        <div class="road-item"><div class="road-mark">1</div><div><div class="road-title">Brand Memory</div><div class="road-desc">Live now: user identity powers Copilot and Workflow Builder.</div></div></div>
+        <div class="road-item"><div class="road-mark">2</div><div><div class="road-title">Workflow Builder</div><div class="road-desc">Live now: idea to script, image, reel plan, caption, and metrics.</div></div></div>
+        <div class="road-item"><div class="road-mark">3</div><div><div class="road-title">Team Workspace</div><div class="road-desc">Next: agencies manage clients, brands, and members.</div></div></div>
+        <div class="road-item"><div class="road-mark">4</div><div><div class="road-title">Template Marketplace</div><div class="road-desc">Next: creators sell workflows, scripts, and content systems.</div></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

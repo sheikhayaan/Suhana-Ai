@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}PDF Editor - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.pdf-page{max-width:1240px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}
+.pdf-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px;align-items:start}
+.pdf-card{background:rgba(8,8,28,.8);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:30px;backdrop-filter:blur(18px);position:relative;overflow:hidden}
+.pdf-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 16% 0%,rgba(125,211,252,.14),transparent 34%),radial-gradient(circle at 88% 20%,rgba(52,211,153,.1),transparent 32%);pointer-events:none}
+.pdf-inner{position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:8px;color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.2);border-radius:999px;padding:7px 14px;font-size:.74rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px}
+.dot{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 14px #34d399}
+.pdf-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;margin-bottom:12px}
+.pdf-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pdf-sub{color:rgba(255,255,255,.48);line-height:1.75;margin-bottom:22px}
+.op-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.op{display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:15px;padding:13px;cursor:pointer;transition:.22s}
+.op:hover{transform:translateY(-2px);border-color:rgba(125,211,252,.28);background:rgba(125,211,252,.06)}
+.op input{margin-top:3px}.op strong{display:block;color:#fff;font-size:.84rem;margin-bottom:4px}.op span{display:block;color:rgba(255,255,255,.38);font-size:.72rem;line-height:1.45}
+.upload-box{border:1px dashed rgba(125,211,252,.32);border-radius:18px;padding:18px;background:rgba(125,211,252,.04);margin-bottom:12px}
+.upload-box label{display:block;font-size:.7rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:8px}.upload-box input,.upload-box select{width:100%;color:rgba(255,255,255,.74)}
+.upload-box select{height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.06);color:#fff;padding:0 12px}.upload-box option{color:#020617}
+.upload-box small{display:block;color:rgba(255,255,255,.34);line-height:1.45;margin-top:8px}.upload-box.is-hidden{display:none}.op.active{border-color:rgba(52,211,153,.42);background:rgba(52,211,153,.075);box-shadow:0 0 28px rgba(52,211,153,.08)}
+.tool-btn{width:100%;height:52px;border:0;border-radius:16px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;font-weight:950;cursor:pointer;box-shadow:0 0 34px rgba(125,211,252,.24)}
+.doc-stage{height:420px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,#020617,#07111f);position:relative;overflow:hidden;display:grid;place-items:center}
+.doc{position:absolute;width:190px;height:260px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(125,211,252,.25);box-shadow:0 30px 80px rgba(0,0,0,.34);animation:floatDoc 4.5s ease-in-out infinite}
+.d1{transform:rotate(-10deg) translateX(-70px);animation-delay:0s}.d2{transform:rotate(8deg) translateX(72px);animation-delay:.5s}.d3{width:160px;height:220px;transform:translateY(34px);animation-delay:1s;background:rgba(52,211,153,.08)}
+.doc::before{content:'';position:absolute;left:26px;right:26px;top:46px;height:12px;border-radius:999px;background:#7dd3fc;box-shadow:0 36px 0 rgba(255,255,255,.2),0 64px 0 rgba(255,255,255,.12),0 92px 0 rgba(255,255,255,.1)}
+.spark{position:absolute;width:13px;height:13px;border-radius:50%;background:#34d399;box-shadow:0 0 28px #34d399;animation:orbit 6s linear infinite}.s1{left:42px;top:52px}.s2{right:52px;bottom:76px;animation-duration:8s}
+.feature-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.feature{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:15px;padding:13px}.feature strong{display:block;color:#fff;font-size:.82rem}.feature span{display:block;color:rgba(255,255,255,.36);font-size:.72rem;line-height:1.45;margin-top:4px}
+.result{margin-top:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px}.result a{color:#7dd3fc;font-weight:900;text-decoration:none;margin-right:12px}
+@keyframes floatDoc{50%{margin-top:-16px}}@keyframes orbit{to{transform:rotate(360deg) translateX(18px) rotate(-360deg)}}
+@media(max-width:900px){.pdf-grid{grid-template-columns:1fr}.op-grid,.feature-row{grid-template-columns:1fr}.doc-stage{height:330px}.doc{width:150px;height:210px}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pdf-page">
+  <div class="pdf-grid">
+    <section class="pdf-card">
+      <div class="pdf-inner">
+        <div class="badge"><div class="dot"></div>Document Studio</div>
+        <h1 class="pdf-title">PDF <span>Editor</span></h1>
+        <p class="pdf-sub">Merge, convert, rotate, and compress documents from one polished workspace. Built for fast investor demos and everyday creator work.</p>
+
+        <form method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+          <div class="op-grid">
+            <label class="op"><input type="radio" name="operation" value="merge" checked><div><strong>Merge PDFs</strong><span>Combine multiple PDFs into one file.</span></div></label>
+            <label class="op"><input type="radio" name="operation" value="jpg_to_pdf"><div><strong>JPG/Image to PDF</strong><span>Convert images into a PDF document.</span></div></label>
+            <label class="op"><input type="radio" name="operation" value="rotate_pdf"><div><strong>Rotate PDF</strong><span>Rotate all pages by 90, 180, or 270 degrees.</span></div></label>
+            <label class="op"><input type="radio" name="operation" value="compress_pdf"><div><strong>Compress PDF</strong><span>Optimize PDF page streams when supported.</span></div></label>
+            <label class="op"><input type="radio" name="operation" value="image_compress"><div><strong>Image Compressor</strong><span>Reduce image size for upload and sharing.</span></div></label>
+          </div>
+          <div class="upload-box op-field" data-show="merge">
+            <label>PDF files for merge</label>
+            <input type="file" name="pdfs" accept="application/pdf" multiple>
+            <small>Best for notes, reports, invoices, and assignment PDFs. Upload two or more PDFs.</small>
+          </div>
+          <div class="upload-box op-field" data-show="rotate_pdf compress_pdf">
+            <label>Single PDF for rotate/compress</label>
+            <input type="file" name="pdf" accept="application/pdf">
+            <small>Use one PDF. Rotate changes every page; compress optimizes page streams where the PDF allows it.</small>
+          </div>
+          <div class="upload-box op-field" data-show="jpg_to_pdf image_compress">
+            <label>Images for PDF or compression</label>
+            <input type="file" name="images" accept="image/*" multiple>
+            <small>For image to PDF you can upload multiple images. For image compression the first image is exported.</small>
+          </div>
+          <div class="upload-box op-field" data-show="rotate_pdf">
+            <label>Rotate angle</label>
+            <select name="angle"><option value="90">90 degrees</option><option value="180">180 degrees</option><option value="270">270 degrees</option></select>
+          </div>
+          <div class="upload-box op-field" data-show="image_compress">
+            <label>Image compression quality</label>
+            <select name="quality"><option value="72">Balanced - 72</option><option value="64" selected>Small - 64</option><option value="50">Very small - 50</option><option value="88">High quality - 88</option></select>
+          </div>
+          <div class="upload-box op-field" data-show="image_compress">
+            <label>Maximum image size</label>
+            <select name="max_size"><option value="1200">1200 px</option><option value="1600" selected>1600 px</option><option value="2200">2200 px</option><option value="3000">3000 px</option></select>
+          </div>
+          <button class="tool-btn" type="submit">Process Document</button>
+        </form>
+
+        {% if output_file %}
+        <div class="result">
+          <strong>{{ message or "File ready." }}</strong><br>
+          <a href="{{ url_for('static', filename='tools/' ~ output_file) }}" target="_blank">Open</a>
+          <a href="{{ url_for('static', filename='tools/' ~ output_file) }}" download>Download</a>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="pdf-card">
+      <div class="pdf-inner">
+        <div class="doc-stage">
+          <div class="doc d1"></div><div class="doc d2"></div><div class="doc d3"></div>
+          <div class="spark s1"></div><div class="spark s2"></div>
+        </div>
+        <div class="feature-row">
+          <div class="feature"><strong>Fast Tools</strong><span>Local PDF and image operations.</span></div>
+          <div class="feature"><strong>Clean Output</strong><span>Open or download finished files.</span></div>
+          <div class="feature"><strong>More Coming</strong><span>PDF chat and AI summarizer can be added next.</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const ops=document.querySelectorAll('input[name="operation"]');
+const fields=document.querySelectorAll('.op-field');
+function syncPdfMode(){
+  const active=document.querySelector('input[name="operation"]:checked')?.value || 'merge';
+  document.querySelectorAll('.op').forEach(label=>label.classList.toggle('active', label.querySelector('input')?.value===active));
+  fields.forEach(field=>{
+    const show=(field.dataset.show || '').split(/\s+/).includes(active);
+    field.classList.toggle('is-hidden', !show);
+  });
+}
+ops.forEach(op=>op.addEventListener('change',syncPdfMode));
+syncPdfMode();
+</script>
+{% endblock %}

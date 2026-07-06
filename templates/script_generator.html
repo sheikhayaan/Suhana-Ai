@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Script Generator - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.script-page{max-width:1280px;margin:0 auto;padding:50px 5% 100px;position:relative;z-index:2}
+.script-hero{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px;align-items:start}
+.script-card{background:rgba(8,8,28,.78);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:30px;backdrop-filter:blur(18px);animation:rise .45s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.script-badge{display:inline-flex;align-items:center;gap:8px;color:#7dd3fc;background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.2);border-radius:50px;padding:6px 14px;font-size:.75rem;letter-spacing:.05em;margin-bottom:18px}
+.script-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399}
+.script-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,4.8vw,3.6rem);line-height:1.05;margin-bottom:12px}
+.script-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.script-sub{color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:24px}
+.script-form{display:grid;gap:14px}
+.field label{display:block;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:8px}
+.field input,.field select{width:100%;height:48px;border-radius:13px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;padding:0 14px;outline:none}
+.field option{color:#000}
+.form-row{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.script-btn{height:50px;border:0;border-radius:14px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;font-weight:900;cursor:pointer;box-shadow:0 0 30px rgba(125,211,252,.28)}
+.result-grid{display:grid;gap:12px}
+.result-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:18px;transition:.22s}
+.result-box:hover{border-color:rgba(125,211,252,.22);background:rgba(125,211,252,.045)}
+.result-label{font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#7dd3fc;margin-bottom:9px}
+.result-text{white-space:pre-wrap;color:rgba(255,255,255,.78);line-height:1.7;font-size:.9rem}
+.empty-result{min-height:420px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.36)}
+.recent{margin-top:18px}
+.recent h2{font-family:'Orbitron',monospace;font-size:1rem;margin-bottom:12px}
+.recent-list{display:grid;gap:10px}
+.recent-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:14px}
+.recent-topic{font-weight:900;color:#fff;margin-bottom:4px}
+.recent-meta{color:rgba(255,255,255,.34);font-size:.78rem}
+.rate-overlay{position:fixed;inset:0;background:rgba(0,0,0,.58);display:grid;place-items:center;z-index:500;animation:fade .25s ease both}
+.rate-modal{width:min(520px,92vw);background:rgba(8,8,28,.96);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:26px;box-shadow:0 30px 120px rgba(0,0,0,.52);text-align:center}
+.rate-title{font-family:'Orbitron',monospace;font-size:1.35rem;margin-bottom:8px}
+.stars{display:flex;justify-content:center;gap:8px;margin:18px 0}
+.star{font-size:2rem;background:transparent;border:0;color:#fde68a;cursor:pointer;filter:drop-shadow(0 0 10px rgba(253,230,138,.35));transition:.18s}
+.star:hover{transform:translateY(-2px) scale(1.08)}
+.rate-note{width:100%;min-height:78px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;padding:12px;resize:none}
+.rate-actions{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.rate-btn{border:0;border-radius:50px;padding:12px 18px;font-weight:900;cursor:pointer}
+.rate-btn.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000}
+.rate-btn.secondary{background:rgba(255,255,255,.06);color:rgba(255,255,255,.72)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@media(max-width:960px){.script-hero{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+@media(max-width:560px){.script-page{padding:32px 20px 80px}.script-card{padding:22px}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="script-page">
+  <div class="script-hero">
+    <section class="script-card">
+      <div class="script-badge"><div class="script-dot"></div>Script AI v1</div>
+      <h1 class="script-title">Generate viral <span>reel scripts</span></h1>
+      <p class="script-sub">Create a hook, short-form script, scene plan, caption, and hashtags. Pick an AI agent powered through NVIDIA NIM, with Gemini as fallback when a model is slow.</p>
+
+      <form class="script-form" method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field">
+          <label>Topic</label>
+          <input name="topic" placeholder="Example: fat loss for beginners" required>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Niche</label>
+            <select name="niche" required>
+              <option value="Fitness">Fitness</option>
+              <option value="Business">Business</option>
+              <option value="Education">Education</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Food">Food</option>
+              <option value="Motivation">Motivation</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Travel">Travel</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Tone</label>
+            <select name="tone" required>
+              <option value="Professional">Professional</option>
+              <option value="Funny">Funny</option>
+              <option value="Luxury">Luxury</option>
+              <option value="Emotional">Emotional</option>
+              <option value="Hinglish">Hinglish</option>
+              <option value="Bold">Bold</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Duration</label>
+          <select name="duration" required>
+            <option value="15 seconds">15 seconds</option>
+            <option value="30 seconds">30 seconds</option>
+            <option value="60 seconds">60 seconds</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>AI Agent</label>
+          <select name="ai_agent">
+            {% for agent in nim_agent_options %}
+            <option value="{{ agent.value }}">{{ agent.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button class="script-btn" type="submit">Generate Script</button>
+      </form>
+
+      {% if recent_scripts %}
+      <div class="recent">
+        <h2>Recent Scripts</h2>
+        <div class="recent-list">
+          {% for script in recent_scripts %}
+          <div class="recent-item">
+            <div class="recent-topic">{{ script.topic }}</div>
+            <div class="recent-meta">{{ script.niche }} / {{ script.tone }} / {{ script.duration }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </section>
+
+    <section class="script-card">
+      {% if result %}
+      <a
+  href="/script-to-reel/{{ result.id }}"
+  style="display:inline-flex;margin-bottom:14px;text-decoration:none;border-radius:50px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#000;font-weight:900;padding:12px 20px;">
+  Use This Script in Reel
+</a>
+      <div class="result-grid">
+        <div class="result-box"><div class="result-label">Hook</div><div class="result-text">{{ result.hook }}</div></div>
+        <div class="result-box"><div class="result-label">Script</div><div class="result-text">{{ result.script_body }}</div></div>
+        <div class="result-box"><div class="result-label">Scene Plan</div><div class="result-text">{{ result.scene_plan }}</div></div>
+        <div class="result-box"><div class="result-label">Caption</div><div class="result-text">{{ result.caption }}</div></div>
+        <div class="result-box"><div class="result-label">Hashtags</div><div class="result-text">{{ result.hashtags }}</div></div>
+        <div class="result-box"><div class="result-label">Generated By</div><div class="result-text">{{ result.generation_source }}{% if result.error_message %} fallback - {{ result.error_message[:120] }}{% endif %}</div></div>
+      </div>
+      <form method="POST" action="/script-feedback/{{ result.id }}" style="margin-top:14px" class="result-box">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="result-label">Training Feedback</div>
+        <select name="rating" style="height:42px;border-radius:10px;margin-bottom:10px">
+          <option value="5">5 - Excellent</option>
+          <option value="4">4 - Good</option>
+          <option value="3">3 - Average</option>
+          <option value="2">2 - Weak</option>
+          <option value="1">1 - Bad</option>
+        </select>
+        <textarea name="edited_script" placeholder="Paste your improved/final version here for future model training" style="width:100%;height:110px;border-radius:12px;padding:12px"></textarea>
+        <textarea name="notes" placeholder="Notes: what should the model learn?" style="width:100%;height:70px;border-radius:12px;padding:12px;margin-top:8px"></textarea>
+        <button class="script-btn" style="margin-top:10px" type="submit">Save Feedback</button>
+      </form>
+      {% else %}
+      <div class="empty-result">
+        <div>
+          <div class="script-badge"><div class="script-dot"></div>Output Preview</div>
+          <p>Your generated script package will appear here.</p>
+        </div>
+      </div>
+      {% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if result %}
+<div class="rate-overlay" id="rateOverlay">
+  <form class="rate-modal" method="POST" action="/script-feedback/{{ result.id }}">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="rating" id="rateValue" value="5">
+    <div class="script-badge"><div class="script-dot"></div>Rate Your Experience</div>
+    <div class="rate-title">How was this script?</div>
+    <p style="color:rgba(255,255,255,.42);line-height:1.6">Your feedback helps improve Suhana AI for creators.</p>
+    <div class="stars">
+      <button class="star" type="button" onclick="setRating(1)">★</button>
+      <button class="star" type="button" onclick="setRating(2)">★</button>
+      <button class="star" type="button" onclick="setRating(3)">★</button>
+      <button class="star" type="button" onclick="setRating(4)">★</button>
+      <button class="star" type="button" onclick="setRating(5)">★</button>
+    </div>
+    <textarea class="rate-note" name="notes" placeholder="Optional note"></textarea>
+    <div class="rate-actions">
+      <button class="rate-btn primary" type="submit">Submit Rating</button>
+      <button class="rate-btn secondary" type="button" onclick="document.getElementById('rateOverlay').style.display='none'">Later</button>
+    </div>
+  </form>
+</div>
+<script>
+function setRating(value){
+  document.getElementById('rateValue').value = value;
+  document.querySelectorAll('.star').forEach((star, index) => {
+    star.style.opacity = index < value ? '1' : '.28';
+  });
+}
+setRating(5);
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.gallery-page{
+  max-width:1280px;
+  margin:0 auto;
+  padding:48px 5% 100px;
+  position:relative;
+  z-index:2;
+}
+
+.gallery-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:24px;
+  margin-bottom:34px;
+}
+
+.gallery-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(125,211,252,.07);
+  border:1px solid rgba(125,211,252,.18);
+  border-radius:50px;
+  padding:5px 15px 5px 9px;
+  font-size:.72rem;
+  color:#7dd3fc;
+  letter-spacing:.05em;
+  margin-bottom:16px;
+}
+
+.gallery-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#34d399;
+  box-shadow:0 0 10px #34d399;
+}
+
+.gallery-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2rem,5vw,3.8rem);
+  font-weight:900;
+  line-height:1.05;
+  margin-bottom:12px;
+}
+
+.gallery-title span{
+  background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.gallery-sub{
+  color:rgba(255,255,255,.42);
+  font-size:.95rem;
+  line-height:1.7;
+  max-width:560px;
+}
+
+.gallery-count{
+  min-width:150px;
+  background:rgba(8,8,28,.75);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;
+  padding:22px 24px;
+  text-align:center;
+  backdrop-filter:blur(14px);
+}
+
+.gallery-count strong{
+  display:block;
+  font-family:'Orbitron',monospace;
+  font-size:2rem;
+  color:#7dd3fc;
+  line-height:1;
+  margin-bottom:6px;
+}
+
+.gallery-count span{
+  font-size:.75rem;
+  color:rgba(255,255,255,.35);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.reel-card{
+  background:rgba(8,8,28,.8);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;
+  overflow:hidden;
+  transition:.25s;
+  backdrop-filter:blur(14px);
+}
+
+.reel-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(125,211,252,.22);
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+
+.reel-video-wrap{
+  position:relative;
+  background:#000;
+  aspect-ratio:9 / 16;
+}
+
+.reel-video-wrap video{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  background:#000;
+}
+
+.reel-tag{
+  position:absolute;
+  top:12px;
+  left:12px;
+  background:rgba(2,2,12,.72);
+  border:1px solid rgba(125,211,252,.22);
+  color:#7dd3fc;
+  border-radius:50px;
+  padding:4px 10px;
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  backdrop-filter:blur(10px);
+}
+
+.reel-info{
+  padding:16px 16px 18px;
+}
+
+.reel-name{
+  font-family:'Orbitron',monospace;
+  font-size:.82rem;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:6px;
+}
+
+.reel-file{
+  font-size:.72rem;
+  color:rgba(255,255,255,.28);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  margin-bottom:14px;
+}
+
+.reel-actions{
+  display:flex;
+  gap:8px;
+}
+
+.reel-btn{
+  flex:1;
+  text-align:center;
+  text-decoration:none;
+  border-radius:10px;
+  padding:9px 10px;
+  font-size:.78rem;
+  font-weight:700;
+  transition:.2s;
+}
+
+.reel-btn.primary{
+  color:#000;
+  background:linear-gradient(135deg,#7dd3fc,#34d399);
+}
+
+.reel-btn.secondary{
+  color:rgba(255,255,255,.62);
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+}
+
+.reel-btn:hover{
+  transform:translateY(-1px);
+}
+
+.empty-gallery{
+  background:rgba(8,8,28,.75);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:22px;
+  padding:70px 28px;
+  text-align:center;
+  color:rgba(255,255,255,.42);
+}
+
+.empty-gallery h2{
+  font-family:'Orbitron',monospace;
+  color:#fff;
+  font-size:1.3rem;
+  margin-bottom:10px;
+}
+
+.empty-gallery a{
+  display:inline-flex;
+  margin-top:24px;
+  color:#000;
+  background:linear-gradient(135deg,#7dd3fc,#34d399);
+  padding:12px 24px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:700;
+}
+
+@media(max-width:1000px){
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:650px){
+  .gallery-page{padding:32px 20px 80px}
+  .gallery-head{display:block}
+  .gallery-count{margin-top:22px;text-align:left}
+  .gallery-grid{grid-template-columns:1fr}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="gallery-page">
+
+  <div class="gallery-head">
+    <div>
+      <div class="gallery-badge">
+        <div class="gallery-dot"></div>
+        AI Reel Gallery
+      </div>
+
+      <h1 class="gallery-title">
+        Your Generated <span>Reels</span>
+      </h1>
+
+      <p class="gallery-sub">
+        View, play, open, and download reels created with Suhana AI.
+      </p>
+    </div>
+
+    <div class="gallery-count">
+      <strong>{{ reels|length }}</strong>
+      <span>Total Reels</span>
+    </div>
+  </div>
+
+  {% if reels %}
+  <div class="gallery-grid">
+    {% for reel in reels %}
+      {% if reel.output_file %}
+      <div class="reel-card">
+        <div class="reel-video-wrap">
+          <span class="reel-tag">Reel {{ loop.index }}</span>
+
+          <video
+            src="{{ url_for('static', filename='reels/' ~ reel.output_file) }}"
+            controls
+            preload="metadata">
+          </video>
+        </div>
+
+        <div class="reel-info">
+          <div class="reel-name">AI Reel {{ loop.index }}</div>
+          <div class="reel-file">{{ reel.output_file }}</div>
+
+          <div class="reel-actions">
+            <a
+              class="reel-btn primary"
+              href="{{ url_for('static', filename='reels/' ~ reel.output_file) }}"
+              target="_blank">
+              Open
+            </a>
+
+            <a
+              class="reel-btn secondary"
+              href="{{ url_for('static', filename='reels/' ~ reel.output_file) }}"
+              download>
+              Download
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-gallery">
+    <h2>No Reels Yet</h2>
+    <p>Create your first AI reel and it will appear here automatically.</p>
+    <a href="/create">Create Reel</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

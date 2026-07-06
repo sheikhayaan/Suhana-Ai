@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}AI Workflow Builder - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.wf-page{max-width:1280px;margin:0 auto;padding:54px 5% 100px;position:relative;z-index:2}.wf-grid{display:grid;grid-template-columns:390px 1fr;gap:18px}.wf-card{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(8,8,28,.86),rgba(4,10,24,.72));border-radius:28px;padding:26px;backdrop-filter:blur(18px);position:relative;overflow:hidden}.wf-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 10% 0%,rgba(125,211,252,.13),transparent 34%),radial-gradient(circle at 100% 18%,rgba(52,211,153,.09),transparent 34%);pointer-events:none}.wf-card>*{position:relative}.wf-kicker{display:inline-flex;border:1px solid rgba(125,211,252,.18);background:rgba(125,211,252,.08);border-radius:999px;padding:7px 12px;color:#7dd3fc;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}.wf-title{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,3.8rem);line-height:1.04;margin-bottom:12px}.wf-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.wf-sub{color:rgba(255,255,255,.46);line-height:1.75;margin-bottom:18px}.flow-line{display:grid;gap:9px;margin:18px 0}.flow-step{display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:15px;padding:11px;color:rgba(255,255,255,.76)}.flow-dot{width:24px;height:24px;border-radius:9px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;display:grid;place-items:center;font-size:.72rem;font-weight:950}.field{margin-bottom:12px}.field label{display:block;font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:7px}.field input,.field select{width:100%;height:47px;border-radius:15px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);color:#fff;padding:0 13px;outline:none}.field option{color:#020617}.wf-btn{width:100%;height:52px;border:0;border-radius:16px;background:linear-gradient(135deg,#7dd3fc,#34d399);font-weight:950;color:#020617;cursor:pointer}.wf-btn:disabled{opacity:.65}.brand-note{border:1px solid rgba(196,181,253,.15);background:rgba(196,181,253,.06);border-radius:16px;padding:13px;color:rgba(255,255,255,.58);line-height:1.55;font-size:.84rem;margin-bottom:14px}.output{min-height:760px}.result-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.source{color:#7dd3fc;border:1px solid rgba(125,211,252,.18);background:rgba(125,211,252,.08);border-radius:999px;padding:6px 10px;font-size:.72rem;font-weight:900}.plan{line-height:1.75;color:rgba(255,255,255,.8)}.plan h1,.plan h2,.plan h3{font-family:'Orbitron',monospace;color:#fff;margin:18px 0 8px}.plan ul{padding-left:18px}.plan li{margin:6px 0}.md-table{overflow:auto;border-radius:16px;border:1px solid rgba(255,255,255,.08);margin:14px 0}.plan table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:720px}.plan th,.plan td{border-bottom:1px solid rgba(255,255,255,.08);padding:10px;vertical-align:top}.plan th{color:#7dd3fc;background:rgba(125,211,252,.08);text-align:left}.plan code{color:#34d399;background:rgba(52,211,153,.08);border-radius:6px;padding:2px 5px}.asset-preview{display:grid;grid-template-columns:220px 1fr;gap:14px;align-items:center;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:18px;padding:12px;margin-bottom:14px}.asset-preview img{width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.08)}.asset-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.asset-actions a{border-radius:12px;padding:9px 11px;text-decoration:none;font-weight:900;font-size:.78rem}.primary{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617}.secondary{border:1px solid rgba(255,255,255,.12);color:#fff;background:rgba(255,255,255,.05)}.empty{min-height:520px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.5)}.empty h2{font-family:'Orbitron';color:#fff;margin-bottom:8px}.recent{display:grid;gap:9px;margin-top:16px}.recent div{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:14px;padding:11px;color:rgba(255,255,255,.75)}.recent small{display:block;color:rgba(255,255,255,.36);margin-top:4px}@media(max-width:980px){.wf-grid{grid-template-columns:1fr}.output{min-height:520px}}@media(max-width:620px){.wf-page{padding:32px 20px 80px}.wf-card{padding:21px}.asset-preview{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="wf-page">
+  <section class="wf-grid">
+    <div class="wf-card">
+      <div class="wf-kicker">Automation layer</div>
+      <h1 class="wf-title">AI Workflow <span>Builder</span></h1>
+      <p class="wf-sub">Turn one campaign idea into a connected package: strategy, script, image prompt, voiceover direction, reel scene plan, caption, and tracking metrics.</p>
+      <div class="brand-note">
+        {% if memory %}
+        Using Brand Memory: {{ memory.brand_name or "Your brand" }} - {{ memory.niche or "niche not set" }} - {{ memory.tone or "tone not set" }}.
+        {% else %}
+        No Brand Memory saved yet. Add it once to make every workflow consistent.
+        {% endif %}
+      </div>
+      <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="field"><label>Campaign topic</label><input name="topic" value="{{ form.topic }}" placeholder="How to build biceps, DSA roadmap, class 10 maths..." required></div>
+        <div class="field"><label>Goal</label><input name="goal" value="{{ form.goal }}"></div>
+        <div class="field"><label>Format</label><select name="content_format"><option>Short-form reel</option><option>Educational carousel</option><option>Ad creative</option><option>YouTube Shorts sequence</option><option>LinkedIn post package</option></select></div>
+        <div class="field"><label>AI Agent</label><select name="ai_agent">{% for agent in nim_agent_options %}<option value="{{ agent.value }}" {% if form.ai_agent == agent.value %}selected{% endif %}>{{ agent.label }}</option>{% endfor %}</select></div>
+        <div class="field"><label>Visual ratio</label><select name="aspect_ratio"><option value="9:16">9:16 Reel</option><option value="16:9">16:9 Landscape</option><option value="1:1">1:1 Square</option></select></div>
+        <div class="field"><label>Image model</label><select name="preferred_model"><option value="auto">Auto best available</option><option value="gemini">Gemini</option><option value="openai">OpenAI</option><option value="pollinations">Pollinations/free fallback</option></select></div>
+        <div class="field"><label>Create image asset</label><select name="make_image"><option value="yes">Yes</option><option value="no">No, plan only</option></select></div>
+        <button class="wf-btn" type="submit" data-loading="Building workflow...">Run Workflow</button>
+      </form>
+      <div class="flow-line">
+        <div class="flow-step"><span class="flow-dot">1</span>Idea</div>
+        <div class="flow-step"><span class="flow-dot">2</span>Script</div>
+        <div class="flow-step"><span class="flow-dot">3</span>Image</div>
+        <div class="flow-step"><span class="flow-dot">4</span>Voice and Reel Plan</div>
+      </div>
+      {% if latest_runs %}
+      <div class="recent">
+        {% for run in latest_runs %}
+        <div>{{ run.title }}<small>{{ run.source }} - {{ run.created_at.strftime("%d %b %Y") }}</small></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="wf-card output">
+      {% if result %}
+      <div class="result-head"><h2>Workflow Output</h2><span class="source">{{ source }}</span></div>
+      {% if image_file %}
+      <div class="asset-preview">
+        <img src="{{ url_for('static', filename='tools/' ~ image_file) }}" alt="Workflow image">
+        <div>
+          <strong>Visual asset created</strong>
+          <p class="wf-sub" style="margin:8px 0 0">Use this image in the reel generator or download it from the browser.</p>
+          <div class="asset-actions">
+            <a class="primary" href="{{ url_for('static', filename='tools/' ~ image_file) }}" download>Download Image</a>
+            <a class="secondary" href="/create">Create Reel</a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% if script %}
+      <div class="asset-actions" style="margin-bottom:14px">
+        <a class="primary" href="/script-to-reel/{{ script.id }}">Send Script to Reel</a>
+        <a class="secondary" href="/script-generator">Open Script Generator</a>
+        {% if current_run %}<a class="secondary" href="/workflow-builder/export/{{ current_run.id }}">Export PDF</a>{% endif %}
+      </div>
+      {% endif %}
+      <div class="plan">{{ result_html }}</div>
+      {% else %}
+      <div class="empty"><div><div class="wf-kicker">Ready</div><h2>Your workflow appears here.</h2><p>Start with one campaign idea. Suhana will connect the tools into one execution plan.</p></div></div>
+      {% endif %}
+    </div>
+  </section>
+</main>
+{% endblock %}

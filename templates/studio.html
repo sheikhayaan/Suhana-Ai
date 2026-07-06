@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Start Studio - Suhana AI{% endblock %}
+
+{% block extra_css %}
+<style>
+.studio-page{max-width:1180px;margin:0 auto;padding:56px 5% 100px;position:relative;z-index:2}.studio-hero{display:grid;grid-template-columns:1fr .85fr;gap:18px;margin-bottom:18px}.studio-card{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(8,8,28,.86),rgba(4,10,24,.72));border-radius:28px;padding:30px;backdrop-filter:blur(18px);position:relative;overflow:hidden}.studio-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 16% 0%,rgba(125,211,252,.14),transparent 35%),radial-gradient(circle at 95% 20%,rgba(52,211,153,.09),transparent 34%);pointer-events:none}.studio-card>*{position:relative}.studio-kicker{display:inline-flex;border:1px solid rgba(125,211,252,.18);background:rgba(125,211,252,.08);border-radius:999px;padding:7px 12px;color:#7dd3fc;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}.studio-title{font-family:'Orbitron',monospace;font-size:clamp(2.3rem,5vw,4.7rem);line-height:1.02;margin-bottom:14px}.studio-title span{background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.studio-sub{color:rgba(255,255,255,.48);line-height:1.75;max-width:680px}.creator-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}.social-card{min-height:136px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);border-radius:22px;padding:16px;text-decoration:none;color:#fff;position:relative;overflow:hidden;transition:.22s}.social-card:hover{transform:translateY(-4px);border-color:rgba(125,211,252,.28);box-shadow:0 18px 60px rgba(0,0,0,.3)}.social-card svg{width:34px;height:34px;margin-bottom:12px}.social-card b{display:block;font-family:'Orbitron',monospace;margin-bottom:6px}.social-card span{display:block;color:rgba(255,255,255,.48);font-size:.82rem;line-height:1.5}.social-card::after{content:'';position:absolute;right:-34px;bottom:-42px;width:120px;height:120px;border-radius:34px;background:linear-gradient(135deg,rgba(125,211,252,.18),rgba(52,211,153,.08));transform:rotate(16deg)}.publish-flow{display:grid;gap:10px;margin-top:16px}.flow-row{display:flex;gap:10px;align-items:center;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:16px;padding:12px;color:rgba(255,255,255,.72)}.flow-row i{width:34px;height:34px;border-radius:13px;background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;display:grid;place-items:center;font-style:normal;font-weight:950}.studio-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:18px}.step{min-height:250px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:24px;padding:22px;text-decoration:none;color:#fff;transition:.22s;position:relative;overflow:hidden}.step:hover{transform:translateY(-4px);border-color:rgba(125,211,252,.24);box-shadow:0 18px 70px rgba(0,0,0,.28)}.step-num{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#7dd3fc,#34d399);display:grid;place-items:center;color:#020617;font-weight:950;margin-bottom:16px}.step h2{font-family:'Orbitron',monospace;font-size:1.05rem;margin-bottom:10px}.step p{color:rgba(255,255,255,.45);line-height:1.65;font-size:.88rem}.step span{display:inline-flex;margin-top:18px;color:#020617;background:linear-gradient(135deg,#7dd3fc,#34d399);border-radius:12px;padding:10px 12px;font-weight:900;font-size:.78rem}.studio-orbit{min-height:300px;display:grid;place-items:center}.orb{width:min(310px,70vw);aspect-ratio:1;border-radius:50%;border:1px solid rgba(125,211,252,.18);position:relative;animation:spin-slow 18s linear infinite}.orb::before{content:'';position:absolute;inset:54px;border-radius:50%;border:1px solid rgba(52,211,153,.18)}.orb-core{position:absolute;inset:34%;border-radius:30px;background:linear-gradient(135deg,#7dd3fc,#34d399);display:grid;place-items:center;color:#020617;font-family:'Orbitron',monospace;font-weight:900;box-shadow:0 0 70px rgba(125,211,252,.28)}.orb-node{position:absolute;width:76px;height:44px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);border-radius:15px;display:grid;place-items:center;font-size:.68rem;font-weight:900;color:rgba(255,255,255,.75);animation:counterSpin 18s linear infinite}.o1{left:50%;top:-12px;transform:translateX(-50%)}.o2{right:-20px;top:38%}.o3{left:-20px;top:38%}.o4{left:50%;bottom:-12px;transform:translateX(-50%)}@keyframes counterSpin{to{rotate:-360deg}}@media(max-width:1100px){.studio-steps{grid-template-columns:repeat(3,1fr)}.creator-strip{grid-template-columns:1fr}}@media(max-width:900px){.studio-hero{grid-template-columns:1fr}.studio-page{padding:34px 20px 80px}.studio-card{padding:23px}.studio-steps{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.studio-steps{grid-template-columns:1fr}}
+.studio-intro{position:fixed;inset:0;z-index:6500;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,rgba(125,211,252,.18),transparent 34%),rgba(2,6,23,.92);backdrop-filter:blur(22px);animation:studioIntroOut .6s ease 1.15s forwards}
+.studio-intro-card{width:min(540px,90vw);text-align:center;position:relative}.studio-intro-card::before{content:'';position:absolute;left:50%;top:46%;width:320px;height:320px;margin:-160px;border:1px solid rgba(125,211,252,.18);border-radius:50%;animation:studioIntroSpin 7s linear infinite}.studio-intro-card::after{content:'';position:absolute;left:50%;top:46%;width:220px;height:120px;margin:-60px -110px;border:1px solid rgba(52,211,153,.18);border-radius:50%;transform:rotateX(62deg);animation:studioIntroSpinR 5s linear infinite}
+.studio-intro-core{width:128px;height:128px;margin:0 auto 20px;display:grid;place-items:center;background:linear-gradient(135deg,#7dd3fc,#34d399,#c4b5fd);color:#020617;font-family:'Orbitron',monospace;font-size:3rem;font-weight:900;clip-path:polygon(22% 0,100% 16%,78% 100%,0 84%);box-shadow:0 0 90px rgba(125,211,252,.42);position:relative;z-index:2;animation:studioCorePulse 1.2s ease-in-out infinite}
+.studio-intro-title{font-family:'Orbitron',monospace;font-size:1.45rem;position:relative;z-index:2}.studio-intro-sub{color:rgba(255,255,255,.52);line-height:1.7;margin-top:8px;position:relative;z-index:2}.studio-intro-line{height:7px;width:82%;margin:20px auto 0;background:linear-gradient(90deg,#7dd3fc,#34d399,#c4b5fd);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);animation:studioLine 1s ease-in-out infinite;position:relative;z-index:2}
+.studio-page{max-width:1260px!important}.studio-card,.step,.social-card{clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);border-radius:0!important}.studio-orbit{min-height:430px!important}.orb{width:min(390px,74vw)!important}.orb-core{border-radius:0!important;clip-path:polygon(22% 0,100% 16%,78% 100%,0 84%);animation:studioCorePulse 4.5s ease-in-out infinite}.publish-flow{width:100%}.flow-row{border-radius:0!important;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}.step{min-height:285px!important}
+.studio-command{display:grid;grid-template-columns:410px 1fr;gap:18px;margin:18px 0}.studio-form{display:grid;gap:12px}.studio-field label{display:block;margin-bottom:7px;color:rgba(255,255,255,.48);font-size:.68rem;font-weight:950;letter-spacing:.12em;text-transform:uppercase}.studio-field input,.studio-field select{width:100%;height:48px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff;padding:0 13px;outline:none}.studio-field option{color:#020617}.role-picks{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.role-picks label{position:relative}.role-picks input{position:absolute;opacity:0}.role-picks span{display:block;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);padding:12px;color:rgba(255,255,255,.72);font-weight:950;cursor:pointer;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}.role-picks input:checked+span{background:linear-gradient(135deg,#7dd3fc,#34d399);color:#020617;border-color:transparent}.studio-run{height:54px;border:0;background:linear-gradient(135deg,#fff,#dffff9);color:#020617;font-weight:950;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%)}.studio-output{min-height:520px}.result-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.source{border:1px solid rgba(125,211,252,.2);background:rgba(125,211,252,.08);color:#7dd3fc;border-radius:999px;padding:7px 11px;font-size:.7rem;font-weight:950}.studio-empty{min-height:430px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.54)}.studio-empty h2{font-size:clamp(2rem,5vw,5rem);line-height:.85;letter-spacing:-.06em;text-transform:uppercase;color:#fff;margin:10px 0}.plan{line-height:1.75;color:rgba(255,255,255,.82)}.plan h1,.plan h2,.plan h3{font-family:Inter,sans-serif;color:#fff;letter-spacing:-.03em;margin:20px 0 8px}.plan h1{font-size:2.1rem}.plan h2{font-size:1.45rem}.plan ul{padding-left:20px}.plan li{margin:7px 0}.md-table{overflow:auto;border:1px solid rgba(255,255,255,.1);margin:14px 0}.plan table{width:100%;border-collapse:collapse;min-width:680px;font-size:.84rem}.plan th,.plan td{border-bottom:1px solid rgba(255,255,255,.08);padding:10px;vertical-align:top}.plan th{color:#7dd3fc;background:rgba(125,211,252,.08);text-align:left}.studio-recent{display:grid;gap:9px;margin-top:16px}.studio-recent div{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);padding:11px;color:rgba(255,255,255,.75);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}.studio-recent small{display:block;color:rgba(255,255,255,.38);margin-top:4px}.studio-busy{position:fixed;inset:0;z-index:5000;display:none;place-items:center;background:rgba(0,0,0,.7);backdrop-filter:blur(18px)}.studio-busy.show{display:grid}.studio-busy-box{width:min(430px,88vw);text-align:center;border:1px solid rgba(255,255,255,.14);background:rgba(5,10,18,.9);padding:28px;clip-path:polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px)}.studio-loader{width:82px;height:82px;margin:0 auto 18px;border-radius:50%;border:1px solid rgba(125,211,252,.24);border-top-color:#34d399;animation:studioIntroSpin .8s linear infinite}
+@media(max-width:980px){.studio-command{grid-template-columns:1fr}}
+@keyframes studioIntroOut{to{opacity:0;visibility:hidden}}@keyframes studioIntroSpin{to{transform:rotate(360deg)}}@keyframes studioIntroSpinR{to{transform:rotateX(62deg) rotateZ(-360deg)}}@keyframes studioCorePulse{50%{transform:scale(1.06) rotate(42deg);filter:hue-rotate(36deg)}}@keyframes studioLine{50%{width:54%;filter:hue-rotate(40deg)}}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="studio-page">
+  <div class="studio-intro" aria-hidden="true"><div class="studio-intro-card"><div class="studio-intro-core">S</div><div class="studio-intro-title">Opening Creator Studio</div><div class="studio-intro-sub">Loading brand memory, creator routes, workflow engine, and publishing cockpit...</div><div class="studio-intro-line"></div></div></div>
+  <section class="studio-hero">
+    <div class="studio-card">
+      <div class="studio-kicker">Creator journey studio</div>
+      <h1 class="studio-title">Become a <span>creator brand</span></h1>
+      <p class="studio-sub">Plan YouTube Shorts, Instagram Reels, and X posts from one place. Suhana helps you choose ideas, generate scripts, build assets, analyze links, and prepare uploads.</p>
+      <div class="creator-strip">
+        <a class="social-card" href="/workflow-builder">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#ff0033" d="M21.6 7.2s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C15.2 3.7 12 3.7 12 3.7h0s-3.2 0-6.4.2c-.4.1-1.4.1-2.3 1-.7.7-.9 2.3-.9 2.3S2.2 9 2.2 10.8v1.7c0 1.8.2 3.6.2 3.6s.2 1.6.9 2.3c.9.9 2.1.9 2.6 1 1.9.2 6.1.2 6.1.2s3.2 0 6.4-.2c.4-.1 1.4-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.8.2-3.6v-1.7c0-1.8-.2-3.6-.2-3.6z"/><path fill="#fff" d="m10 15.2 5.2-3-5.2-3z"/></svg>
+          <b>YouTube Shorts</b><span>Create shorts scripts, thumbnails, title ideas, and upload-ready descriptions.</span>
+        </a>
+        <a class="social-card" href="/create">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="24" x2="24" y2="0"><stop stop-color="#feda75"/><stop offset=".35" stop-color="#fa7e1e"/><stop offset=".65" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="url(#ig)"/><circle cx="12" cy="12" r="4" fill="none" stroke="#fff" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="#fff"/></svg>
+          <b>Instagram Reels</b><span>Turn one idea into hook, captions, voice direction, visual prompt, and reel plan.</span>
+        </a>
+        <a class="social-card" href="/performance-coach">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18.2 2h3.3l-7.2 8.2L22.8 22h-6.7l-5.2-6.8L4.9 22H1.6l7.7-8.8L1.2 2h6.8l4.7 6.2L18.2 2zm-1.2 18h1.8L7 3.9H5.1L17 20z"/></svg>
+          <b>X / Twitter</b><span>Analyze posts, rewrite hooks, and convert creator ideas into sharper threads.</span>
+        </a>
+      </div>
+    </div>
+    <div class="studio-card studio-orbit" aria-hidden="true">
+      <div class="orb"><div class="orb-core">AI</div><div class="orb-node o1">Brand</div><div class="orb-node o2">Plan</div><div class="orb-node o3">Build</div><div class="orb-node o4">Export</div></div>
+      <div class="publish-flow" aria-hidden="false">
+        <div class="flow-row"><i>1</i><span>Paste a reel, short, or post link for analysis.</span></div>
+        <div class="flow-row"><i>2</i><span>Suhana extracts public context and combines it with your metrics.</span></div>
+        <div class="flow-row"><i>3</i><span>Prepare upload copy for YouTube, Instagram, or X.</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="studio-command">
+    <div class="studio-card">
+      <div class="studio-kicker">AI strategy composer</div>
+      <h2 class="studio-title" style="font-size:clamp(1.9rem,4vw,3.8rem)">Tell Suhana <span>the problem</span></h2>
+      <p class="studio-sub">Use this when you do not know which feature to open. Studio generates the script, workflow, and exact tool path. For a saved guided workspace with progress, open Mission Mode.</p>
+      <div style="margin:14px 0 4px"><a class="studio-run" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:0 18px;width:auto" href="/mission">Open Mission Mode</a></div>
+      <form class="studio-form" id="studioComposer" method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="studio-field">
+          <label>User type</label>
+          <div class="role-picks">
+            {% for role,label in [("student","Student"),("engineer","Engineer"),("creator","Creator"),("normal","Everyday")] %}
+            <label><input type="radio" name="role" value="{{ role }}" {% if form.role == role %}checked{% endif %}><span>{{ label }}</span></label>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="studio-field"><label>Problem / topic / idea</label><input name="topic" value="{{ form.topic }}" placeholder="Class 10 trigonometry, DSA project, fitness reels, PDF workflow..." required></div>
+        <div class="studio-field"><label>Audience</label><input name="audience" value="{{ form.audience }}" placeholder="Students weak in basics, creators, founders, engineers..."></div>
+        <div class="studio-field"><label>Goal</label><input name="goal" value="{{ form.goal }}" placeholder="Score better, grow audience, build project, save time..."></div>
+        <div class="studio-field"><label>AI engine</label><select name="ai_agent">{% for agent in nim_agent_options %}<option value="{{ agent.value }}" {% if form.ai_agent == agent.value %}selected{% endif %}>{{ agent.label }}</option>{% endfor %}<option value="fast" {% if form.ai_agent == "fast" %}selected{% endif %}>Fast fallback engine</option></select></div>
+        <button class="studio-run" type="submit">Generate Strategy</button>
+      </form>
+      {% if latest_runs %}
+      <div class="studio-recent">
+        {% for run in latest_runs %}
+        <div>{{ run.title }}<small>{{ run.source }} - {{ run.created_at.strftime("%d %b %Y") }}</small></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="studio-card studio-output">
+      {% if result %}
+      <div class="result-head"><h2>Studio Output</h2><span class="source">{{ source }}</span></div>
+      <div class="plan">{{ result_html }}</div>
+      {% else %}
+      <div class="studio-empty"><div><div class="studio-kicker">Ready</div><h2>Strategy appears here.</h2><p>Generate once, then continue into Brand Memory, Workflow Builder, Tutor, Code, PDF, or Reel Generator.</p></div></div>
+      {% endif %}
+    </div>
+  </section>
+  <section class="studio-steps">
+    <a class="step" href="/brand-memory"><div class="step-num">1</div><h2>Save Brand Memory</h2><p>Set your niche, audience, colors, tone, offer, and content rules once.</p><span>Start brand</span></a>
+    <a class="step" href="/creator-copilot"><div class="step-num">2</div><h2>Plan 30 Days</h2><p>Creator Copilot turns your brand into a calendar of reels, hooks, visuals, and CTAs.</p><span>Plan content</span></a>
+    <a class="step" href="/workflow-builder"><div class="step-num">3</div><h2>Build Campaign</h2><p>Workflow Builder creates the script, visual prompt, voice direction, reel plan, PDF, and next actions.</p><span>Run workflow</span></a>
+    <a class="step" href="/performance-coach"><div class="step-num">4</div><h2>Improve With Data</h2><p>Paste metrics after posting. Suhana tells you what failed, what worked, and the next 7 posts.</p><span>Analyze growth</span></a>
+    <a class="step" href="/ml-growth-lab"><div class="step-num">5</div><h2>Predict Before Posting</h2><p>Run a local ML score for hook clarity, specificity, emotional pull, and save-worthy utility.</p><span>Predict score</span></a>
+  </section>
+</main>
+<div class="studio-busy" id="studioBusy" aria-hidden="true"><div class="studio-busy-box"><div class="studio-loader"></div><strong>Generating structured Studio strategy...</strong><p class="studio-sub" style="margin:10px auto 0">Using your selected AI engine and falling back safely if needed.</p></div></div>
+<script>
+const studioComposer=document.getElementById('studioComposer');
+const studioBusy=document.getElementById('studioBusy');
+if(studioComposer&&studioBusy){studioComposer.addEventListener('submit',()=>studioBusy.classList.add('show'))}
+</script>
+{% endblock %}
