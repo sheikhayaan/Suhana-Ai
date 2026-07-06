@@ -22,3 +22,13 @@ tempCodeRunnerFile.py
 reel.mp4
 reel_smoke_*
 reel_voice_*
+
+# HF Spaces: exclude large binary media (use Xet or host externally)
+static/*.jpg
+static/*.jpeg
+static/*.png
+static/*.gif
+static/*.mp3
+static/*.mp4
+static/*.wav
+static/songs/*
